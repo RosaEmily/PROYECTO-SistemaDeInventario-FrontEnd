@@ -1,0 +1,284 @@
+{
+    "user":[
+        {
+            "login":"demo@demo.com",
+            "password":"secure_password"
+        }
+    ],
+    "contabilidad":{
+        "anexos":[
+            { "value": "NINGUNO", "text": "NINGUNO" },
+            { "value": "BANCO", "text": "BANCO" },
+            { "value": "CTAXCOBRAR", "text": "CTAXCOBRAR" },
+            { "value": "INVENTARIOS", "text": "INVENTARIOS" },
+            { "value": "IGDIFERIDO", "text": "IGDIFERIDO" },
+            { "value": "VALORES", "text": "VALORES" },
+            { "value": "INM_MAQ_EQ", "text": "INM_MAQ_EQ" },
+            { "value": "INTANGIBLES", "text": "INTANGIBLES" },
+            { "value": "ACT_BIOLOG", "text": "ACT BIOLOG" },
+            { "value": "TRIBUTOS", "text": "TRIBUTOS" },
+            { "value": "CTAXPAGAR", "text": "CTAXPAGAR" },
+            { "value": "CAPITAL_APORTES", "text": "CAPITAL_APORTES" },
+            { "value": "CAJA", "text": "CAJA" }
+        ],
+        "monedas":[
+            { "value": "PEN", "text": "PEN" },
+            { "value": "USD", "text": "USD" }
+        ],
+        "tipos":[
+            { "value": "NINGUNO", "text": "NINGUNO" },
+            { "value": "ACTIVO", "text": "ACTIVO" },
+            { "value": "PASYPTR", "text": "PASIVO Y PATRIMONIO" },
+            { "value": "RNATURALEZA", "text": "R. NATURALEZA" },
+            { "value": "RFUNCION", "text": "R. FUNCIÓN" },
+            { "value": "RESXNAT", "text": "R. POR NATURALEZA Y FUNCIÓN" },
+            { "value": "ORDEN", "text": "ORDEN" }
+        ],
+        "bancos":[
+            {"cod":"BCR","text":"BANCO CENTRAL DE RESERVA","value":"01"},
+            {"cod":"CRED","text":"DE CREDITO DEL PERU","value":"02"},
+            {"cod":"INTB","text":"INTERNACIONAL DEL PERU","value":"03"},
+            {"cod":"SCOT","text":"SCOTIABANK DEL PERU","value":"09"},
+            {"cod":"STAN","text":"STANDARD CHARTERED","value":"08"},
+            {"cod":"BBVA","text":"CONTINENTAL","value":"11"},
+            {"cod":"BLIM","text":"DE LIMA","value":"12"},
+            {"cod":"MERC","text":"MERCANTIL","value":"16"},
+            {"cod":"BNAC","text":"NACION","value":"18"},
+            {"cod":"SANT","text":"SANTANDER CENTRAL HISPANO","value":"22"},
+            {"cod":"BCOM","text":"DE COMERCIO","value":"23"},
+            {"cod":"BCOM","text":"DEL TRABAJO","value":"43"},
+            {"cod":"BBOS","text":"BANK BOSTON","value":"46"},
+            {"cod":"MBAN","text":"MI BANCO","value":"49"},
+            {"cod":"BNP","text":"BNP PARIBAS","value":"50"},
+            {"cod":"AGRB","text":"AGROBANCO","value":"51"},
+            {"cod":"HSBC","text":"HSBC BANK PERU S.A.","value":"53"},
+            {"cod":"BFAL","text":"BANCO FALABELLA S.A.","value":"54"},
+            {"cod":"BRIP","text":"BANCO RIPLEY","value":"55"},
+            {"cod":"BSAN","text":"BANCO SANTANDER PERU S.A","value":"56"},
+            {"cod":"BAZT","text":"BANCO AZTECA DEL PERU","value":"58"},
+            {"cod":"CTRU","text":"CAJA TRUJILLO","value":"CT"},
+            {"cod":"OTRO","text":"OTROS","value":"00"}
+        ]
+    },
+    "plantilla":{
+        "anexo":[
+            { "value": null, "text": "NINGUNO" },
+            { "value": "MERCADERIA","text": "MERCADERIA"},
+            { "value": "MAT_PRIMA","text": "MATERIA PRIMA"},
+            { "value": "PROD_TERM","text": "PRODUCTO TERMINADO"},
+            { "value": "ENVASES","text": "ENVASES"},
+            { "value": "MAT_AUXILIAR","text": "MATERIALES AUXILIARES"},
+            { "value": "EMBALAJES","text": "EMBAJALES"},
+            { "value": "RESPUESTOS","text": "REPUESTOS"},
+            { "value": "SUBPRODUCTOS","text": "SUBPRODUCTOS"},
+            { "value": "DESE_DESP","text": "DESECHOS Y DESPERDICIOS"},
+            { "value": "SUMINISTROS","text": "SUMINISTROS"},
+            { "value": "OTROS","text": "OTROS"},
+            { "value": "LISTA_TODO_KARDEX","text": "LISTA TODO KARDEX"},
+            { "value": "DESC_VIA","text": "DESCRIPCION VTA LIBRE"},
+            { "value": "PRODUCT_VIRTUAL","text": "PRODUCTO VIRTUAL"}
+        ],
+        "registros":[
+            { "value": "C01", "text": "BASE IMPONIBLE" },
+            { "value": "C02", "text": "ISC" },
+            { "value": "C03", "text": "OP.GRAV.SDCF"},
+            { "value": "C04", "text": "OP.NO GRAV"},
+            { "value": "C05", "text": "OTR.TRI/CAR NO B.IMP"},
+            { "value": "C06", "text": "IGV"},
+            { "value": "C07", "text": "PERCEP.IGV"},
+            { "value": "C08", "text": "LIQ.COM. RET RTA3"},
+            { "value": "C09", "text": "LIQ.COM. RET IGV"},
+            { "value": "C10", "text": "RETENC. RTA4"},
+            { "value": "C11", "text": "NETO A PAGAR"},
+            { "value": "C12", "text": "AFP - PS"}
+        ],
+        "debehaber":[
+            { "value": "D", "text": "D" },
+            { "value": "H", "text": "H" }
+        ],
+        "medio_pago":[
+            { "value": "000", "text": "NINGUNO" },
+            { "value": "001", "text": "DEPOSITO EN CUENTA" },
+            { "value": "002", "text": "GIRO"},
+            { "value": "003", "text": "TRANSFERENCIA DE FONDOS"},
+            { "value": "005", "text": "TARJETA DE DEBITO"},
+            { "value": "006", "text": "TARJETA DE CREDITO"},
+            { "value": "007", "text": "CHEQUE NO NEGOC. INC F. ART.5 "},
+            { "value": "008", "text": "EFECTIVO SIN OBLIGAC. MED PAGO"},
+            { "value": "009", "text": "EFECTIVO DEMAS CASOS"},
+            { "value": "010", "text": "MEDIOS PAGO COMERCIO EXTERIOR"},       
+            { "value": "011", "text": "LETRAS DE CAMBIO"},
+            { "value": "101", "text": "TRANSFERENCIAS COMERC EXTERIOR"},
+            { "value": "102", "text": "CHEQUE BANCARIO COM.EXTERIOR"},
+            { "value": "103", "text": "ORDEN PAGO SIMPLE COM.EXTERIOR"},
+            { "value": "104", "text": "ORDEN PAGO DOCUMENTARIO COM.EXT"},
+            { "value": "105", "text": "REMESA SIMPLE COM. EXTERIOR"},
+            { "value": "106", "text": "REMESA DOCUMENTARIA COM. EXTER"},
+            { "value": "107", "text": "CARTA DE CRÉDITO SIMPLE COM.EXT"},
+            { "value": "108", "text": "CARTA DE CRÉD DOCUMENT. COM.EXTER"},
+            { "value": "999", "text": "OTROS MEDIOS DE PAGO"}
+        ],
+        "cod_efecto":[
+            {"value":"AO001","text":"Cobranza de venta de bienes o servicios e ingresos operacionales"},
+            {"value":"AO005","text":"Cobranza de regalías, honorarios, comisiones y otros"},
+            {"value":"AO010","text":"Cobranza de intereses y dividendos recibidos"},
+            {"value":"AO015","text":"Otros cobros de efectivo relativos a la actividad"},
+            {"value":"AO025","text":"Pago a proveedores de bienes y servicios"},
+            {"value":"AO030","text":"Pago de remuneraciones y beneficios sociales"},
+            {"value":"AO035","text":"Pago de tributos"},
+            {"value":"AO040","text":"Pago de intereses y rendimientos"},
+            {"value":"AO045","text":"Otros pagos de efectivo relativos a la actividad"},
+            {"value":"AI001","text":"Cobranza de venta de valores e inversiones permanentes"},
+            {"value":"AI005","text":"Cobranza de venta de inmuebles, maquinaria y equipo"},
+            {"value":"AI010","text":"Cobranza de venta de activos intangibles"},
+            {"value":"AI015","text":"Otros cobros de efectivo relativos a la actividad"},
+            {"value":"AI025","text":"Pagos por compra de valores e inversiones permanentes"},
+            {"value":"AI030","text":"Pagos por compra de inmuebles, maquinaria y equipo"},
+            {"value":"AI035","text":"Pagos por compra de activos intangibles"},
+            {"value":"AI040","text":"Otros pagos de efectivo relativos a la actividad"},
+            {"value":"AF001","text":"Cobranza de emisión de acciones o nuevos aportes"},
+            {"value":"AF005","text":"Cobranza de recursos obtenidos por emisión de valores u otras obligaciones de largo plazo"},
+            {"value":"AF010","text":"Otros cobros de efectivo relativos a la actividad"},
+            {"value":"AF020","text":"Pagos de amortización o cancelación de valores u otras obligaciones de largo plazo"},
+            {"value":"AF025","text":"Pago de dividendos y otras distribuciones"},
+            {"value":"AF030","text":"Otros pagos de efectivo relativos a la actividad"},
+            {"value":"SI000","text":"Saldo Efectivo y Equivalente de Efectivo al Inicio del Ejercicio"}
+        ],
+        "filtros":[
+            {"value":"1","text":"Por Cobrar"},
+            {"value":"2","text":"Por Pagar"}
+        ],
+        "tipos":[
+            {"value":"1","text":"Cancelacion de Documentos"},
+            {"value":"2","text":"Otras Operaciones"}
+        ]        
+    },
+    "persona":{
+        "documentos":[
+            { "value": "01", "text": "RUC" },
+            { "value": "02", "text": "DNI" },
+            { "value": "03", "text": "PASAPORTE" },
+            { "value": "04", "text": "CARNET DE EXTRANJERIA" }   
+        ],
+        "estado":[
+            {"value":true,"text":"ACTIVO"}, 
+            {"value":false,"text":"DE BAJA"}
+        ]
+    },
+    "compra":{
+        "documentos":[
+            { "value":"-","text":"NINGUNO","maxLengthCorr": 8},
+            { "value":"00","text":"OTROS" ,"maxLengthCorr": 8},
+            { "value":"01","text":"FACTURA","maxLengthCorr": 8},
+            { "value":"02","text":"RECIBO POR HONORARIOS","maxLengthCorr": 20},
+            { "value":"03","text":"BOLETA DE VENTA","maxLengthCorr": 8},
+            { "value":"04","text":"LIQUIDACION DE COMPRA","maxLengthCorr": 8},
+            { "value":"05","text":"BOLETO DE AVIACION","maxLengthCorr": 8},
+            { "value":"06","text":"CARTA PORTE","maxLengthCorr": 8},
+            { "value":"07","text":"NOTA DE CREDITO","maxLengthCorr": 8},
+            { "value":"08","text":"GUIA DE REMISION REMITENTE","maxLengthCorr": 8},
+            { "value":"09","text":"RECIBO POR ARRENDAMIENTO","maxLengthCorr": 20},
+            { "value":"10","text":"POLIZA BOLSA","maxLengthCorr": 8},
+            { "value":"11","text":"TICKET","maxLengthCorr": 8},
+            { "value":"12","text":"DOCUM. EMITIDO","maxLengthCorr": 8},
+            { "value":"13","text":"RECIBO POR SERV. PUBLICOS","maxLengthCorr": 20}
+        ],
+        "operacion":[
+            { "value":"C1","text":"GRAV. DESTINADAS A  OP. GRAV Y/O EXPORT"},
+            { "value":"C2","text":"GRAV DESTINADAS A  OP.GRAV Y NO GRAV"},
+            { "value":"C3","text":"GRAVADAS DESTINADAS A  OP. NO GRAVADAS"},
+            { "value":"C4","text":"NO GRAV Y GRAV SIN DERECHO CRED. FISCAL"}
+        ],
+        "clasificacion":[
+            { "value":"1","text":"ACTIVO FIJO"},
+            { "value":"2","text":"GASTOS DE EDUCACIÓN, RECREACIÓN, SALUD, CULTURALES. REPRESENTACIÓN, CAPACITACIÓN, DE VIAJE, MANTENIMIENTO DE VEHICULO Y DE PREMIOS"},
+            { "value":"3","text":"MERCADERIA, MATERIA PRIMA, SUMINISTRO, ENVASES Y EMBALAJES"},
+            { "value":"4","text":"OTROS ACTIVOS NO CONSIDERADOS EN LOS NUMERALES 1 Y 2"},
+            { "value":"5","text":"OTROS GASTOS NO INCLUIDOS EN EL NUMERAL 4"}
+        ],
+        "opciones":[
+            { "value":"1","text":"Ninguna"},
+            { "value":"2","text":"Percepción"},
+            { "value":"3","text":"Detracción"}
+        ],
+        "cuentas":[
+            { "plc_codigo":"10","plc_descripcion":"EFECTIVO Y EQUIVALENTE"},
+            { "plc_codigo":"101","plc_descripcion":"CAJA"},
+            { "plc_codigo":"1011","plc_descripcion":"CAJA PEN"},
+            { "plc_codigo":"101101","plc_descripcion":"CAJA CHICA"},
+            { "plc_codigo":"101102","plc_descripcion":"CAJAS"}
+        ],
+        "debehaber":[
+            { "value":"D","text":"D"},
+            { "value":"H","text":"H"}
+        ],
+        "tipokardex":[
+            { "value":"MERCADERIA","text":"MERCADERIA"},
+            { "value":"MAT_PRIMA","text":"MATERIA PRIMA"},
+            { "value":"PROD_TERM","text":"PRODUCTO TERMINADO"},
+            { "value":"ENVASES","text":"ENVASES"},
+            { "value":"MAT_AUXILIAR","text":"MATERIALES AUXILIARES"},
+            { "value":"EMBALAJES","text":"EMBAJALES"},
+            { "value":"RESPUESTOS","text":"REPUESTOS"},
+            { "value":"SUBPRODUCTOS","text":"SUBPRODUCTOS"},
+            { "value":"DESE_DESP","text":"DESECHOS Y DESPERDICIOS"},
+            { "value":"SUMINISTROS","text":"SUMINISTROS"},
+            { "value":"OTROS","text":"OTROS"},
+            { "value":"LISTA_TODO_KARDEX","text":"LISTA TODO KARDEX"},
+            { "value":"DESC_VIA","text":"DESCRIPCION VTA LIBRE"},
+            { "value":"PRODUCT_VIRTUAL","text":"PRODUCTO VIRTUAL"}
+        ],
+        "detracciones":[
+            { "codigo":"001","text": "Azúcar", "porcentaje": 10},
+            { "codigo":"003","text": "Alcohol etílico", "porcentaje": 10},
+            { "codigo":"004","text": "Recursos hidrobiológicos", "porcentaje": 4},
+            { "codigo":"005","text": "Maíz amarillo duro", "porcentaje": 4},
+            { "codigo":"006","text": "Algodón", "porcentaje": 10},
+            { "codigo":"007","text": "Caña de azúcar", "porcentaje": 10},
+            { "codigo":"008","text": "Madera", "porcentaje": 4},
+            { "codigo":"009","text": "Arena y piedra.", "porcentaje": 10},
+            { "codigo":"010","text": "Residuos, subproductos, desechos, recortes y desperdicios", "porcentaje": 15},
+            { "codigo":"011","text": "Bienes del inciso A) del Apéndice I de la Ley del IGV", "porcentaje": 10},
+            { "codigo":"012","text": "Intermediación laboral y tercerización", "porcentaje": 12},
+            { "codigo":"013","text": "Animales vivos", "porcentaje": 10},
+            { "codigo":"014","text": "Carnes y despojos comestibles", "porcentaje": 4},
+            { "codigo":"015","text": "Abonos, cueros y pieles de origen animal", "porcentaje": 10},
+            { "codigo":"016","text": "Aceite de pescado", "porcentaje": 10},
+            { "codigo":"017","text": "Harina, polvo y “pellets” de pescado, crustáceos, moluscos y demás invertebrados acuáticos", "porcentaje": 4},
+            { "codigo":"018","text": "Embarcaciones pesqueras", "porcentaje": 10},
+            { "codigo":"019","text": "Arrendamiento de bienes muebles", "porcentaje": 10},
+            { "codigo":"020","text": "Mantenimiento y reparación de bienes muebles", "porcentaje": 12},
+            { "codigo":"021","text": "Movimiento de carga", "porcentaje": 10},
+            { "codigo":"022","text": "Otros servicios empresariales", "porcentaje": 12},
+            { "codigo":"023","text": "Leche", "porcentaje": 4},
+            { "codigo":"024","text": "Comisión mercantil", "porcentaje": 10},
+            { "codigo":"025","text": "Fabricación de bienes por encargo", "porcentaje": 10},
+            { "codigo":"026","text": "Servicio de transporte de personas", "porcentaje": 10},
+            { "codigo":"029","text": "Algodón en rama sin desmontar", "porcentaje": 10},
+            { "codigo":"030","text": "Contratos de construcción", "porcentaje": 4},
+            { "codigo":"031","text": "Oro gravado con el IGV", "porcentaje": 10},
+            { "codigo":"032","text": "Páprika y otros frutos de los géneros capsicum o pimienta", "porcentaje": 10},
+            { "codigo":"033","text": "Espárragos", "porcentaje": 10},
+            { "codigo":"034","text": "Minerales metálicos no auríferos", "porcentaje": 10},
+            { "codigo":"035","text": "Bienes exonerados del IGV", "porcentaje": 1.5},
+            { "codigo":"036","text": "Oro y demás minerales metálicos exonerados del IGV", "porcentaje": 1.5},
+            { "codigo":"037","text": "Demás servicios gravados con el IGV", "porcentaje": 12},
+            { "codigo":"039","text": "Minerales no metálicos", "porcentaje": 10},
+            { "codigo":"040","text": "Bien inmueble gravado con IGV", "porcentaje": 10}
+        ],
+        "notacredito": [
+            { "value": "01", "text":"Anulacion de la operación"},
+            { "value": "02", "text":"Anulacion por error en el RUC"},
+            { "value": "03", "text":"Corrección por error en la descripción"},
+            { "value": "04", "text":"Descuento global"},
+            { "value": "05", "text":"Descuento por ítem"},
+            { "value": "06", "text":"Devolución total"},
+            { "value": "07", "text":"Devolución por ítem"},
+            { "value": "08", "text":"Bonificación"},
+            { "value": "09", "text":"Disminución en el valor"},
+            { "value": "10", "text":"Otros conceptos"},
+            { "value": "11", "text":"Ajustes de operaciones de exportación"},
+            { "value": "12", "text":"Ajustes afectos al IVA"}
+        ]
+    }
+}

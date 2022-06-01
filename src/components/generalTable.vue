@@ -1,0 +1,393 @@
+<script>
+/* eslint-disable */
+import Vue from "vue";
+import { BootstrapVue } from "bootstrap-vue";
+import store from "@/store/index";
+import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+import vSelect from "vue-select";
+import Ripple from "vue-ripple-directive";
+import VueSweetalert2 from "vue-sweetalert2";
+import moment from "moment";
+
+Vue.use(VueSweetalert2);
+Vue.use(BootstrapVue);
+export default {
+    props: ["paramsGrid"],
+    components: {
+        vSelect,
+    },
+    directives: {
+        Ripple,
+    },
+    data() {
+        return {
+            selected: [],
+            currentPage: 1,
+            rows: 0,
+            showEntrie: 10,
+            totalElements: 0,
+            entries: [10, 20, 50, 100],
+            dataSource: [],
+            optionFilter: {
+                column: null,
+            },
+            arrayFilters:[],
+        };
+    },
+    mounted() {
+        this.loadDataSource();
+    },
+    methods: {
+        limpiarOtrosFiltros(exceptKey) {
+            for (let i = 0; i < this.paramsGrid.fields.length; i++) {
+                if (this.paramsGrid.fields[i].key != exceptKey) {
+                    this.paramsGrid.filters[this.paramsGrid.fields[i].key] = "";
+                }
+            }
+        },
+
+        filterColumn(field) {
+            if (this.paramsGrid.filters[field.key].trim() != "") {
+                this.optionFilter.column = field.key;
+                //this.limpiarOtrosFiltros(field.key);
+            } else {
+                this.optionFilter.column = null;
+            }
+            // recorrer todos los filtros para ver si es que existe
+            // sino existe agregar, si existe o eliminar o editar dependiendo si es que existe tiene datos
+            const propertyNames = Object.keys(this.paramsGrid.filters);
+            var indexFind=null
+            for (let i = 0; i < this.arrayFilters.length; i++) {
+                if(this.arrayFilters[i].keyContains == field.key){
+                    indexFind = i
+                }
+            }
+            console.log('indexFind', indexFind)
+            if(indexFind!=null){
+                if (this.paramsGrid.filters[field.key].trim() != "") {
+                    this.arrayFilters[indexFind].value=this.paramsGrid.filters[field.key].trim()
+                    //editar
+                }else{
+                    // eliminar
+                    this.arrayFilters.splice(indexFind,1)
+                }
+            }else{
+                //añadir
+                this.arrayFilters.push({
+                    keyContains:field.key,
+                    key:"contains",
+                    value:this.paramsGrid.filters[field.key].trim()
+                })
+            }
+            console.log('this.arrayFilters', this.arrayFilters)
+            this.loadDataSource();
+        },
+
+        async deleteItem(item) {
+            this.$swal({
+                title: "Está seguro que desea eliminar el registro?",
+                text: "",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Si, eliminar!",
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: "btn btn-outline-danger ml-1",
+                },
+                buttonsStyling: false,
+            }).then((result) => {
+                if (result.value) {
+                    let request = {
+                        url: this.paramsGrid.delete.ruta + "/" + item.id,
+                        method: "DELETE",
+                    };
+                    try {
+                        store.dispatch("back/EXECUTE", request).then((r) => {
+                            if (r.status === 200) {
+                                this.$swal({
+                                    icon: "success",
+                                    title: "Eliminado!",
+                                    text: "El registro fue eliminado.",
+                                    customClass: {
+                                        confirmButton: "btn btn-success",
+                                    },
+                                });
+                                this.loadDataSource();
+                                this.$emit("deletedCompra");
+                            }
+                            if(r.status==400){
+                                this.$toast({
+                                    component: ToastificationContent,
+                                    props: {
+                                        title: r.message,
+                                        icon: "AlertTriangleIcon",
+                                        variant: "danger",
+                                    },
+                                });                                
+                            }
+                        });
+                    } catch (e) {
+                        console.log(e.message);
+                    }
+                }
+            });
+        },
+
+        cambioPagina(e) {
+            this.currentPage = e;
+            this.loadDataSource();
+        },
+
+        changeSizePage() {
+            this.loadDataSource();
+        },
+
+        async loadDataSource() {
+            var url = this.paramsGrid.urlBack;
+            url += "?limit=" + this.showEntrie + "&page=" + this.currentPage;
+            // if (this.optionFilter.column) {
+            //     url += "&contains=" + this.optionFilter.column + "&value=" + this.paramsGrid.filters[this.optionFilter.column];
+            // }
+            if(this.arrayFilters.length>0){
+                url += "&filter="+JSON.stringify(this.arrayFilters)
+            }
+            let request = {
+                url: url,
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                    )}`,
+                },
+            };
+            var respRoles = await store.dispatch("back/EXECUTE", request);
+
+            respRoles.rows.forEach(respuesta => {
+                Object.values(respuesta).forEach((elemento, index) => {
+                    if(typeof(elemento)=="string" && moment(elemento.substring(0,10), "YYYY-MM-DD", true).isValid()){
+                        respuesta[Object.keys(respuesta)[index]] = moment(elemento.substring(0,10), "YYYY-MM-DD").format("DD/MM/YYYY");
+                    }
+                });
+            });
+
+            console.log("respuesta", respRoles);
+
+            this.dataSource = respRoles.rows;
+            this.totalElements = respRoles.responseFilter.total_rows;
+            this.rows = respRoles.responseFilter.total_rows;
+            this.showEntrie = respRoles.responseFilter.limit;
+        },
+
+        editElement(item) {
+            if (this.paramsGrid.edit.redirect) {
+                this.$router.push(this.paramsGrid.edit.ruta + "/" + item.id);
+            } else {
+                this.$children[3].showModal();
+            }
+        },
+        
+        onRowSelected(items) {
+            this.selected = items;
+        },
+    },
+};
+</script>
+
+<template>
+    <div>
+        <b-row class="mb-1">
+            <b-col sm="9"> </b-col>
+        </b-row>
+        <b-row>
+            <b-col cols="12">
+                <b-table
+                    show-empty
+                    selectable
+                    :select-mode="'single'"
+                    responsive
+                    empty-text="No matching records found"
+                    :items="dataSource"
+                    :fields="paramsGrid.fields"
+                    v-on:row-selected="onRowSelected"
+                >
+                    <template slot="top-row">
+                        <td v-for="field in paramsGrid.fields" :key="field.key">
+                            <input
+                                v-if="
+                                    !field.key.includes('actions') &&
+                                    !field.key.includes('row')
+                                "
+                                class="form-control form-control-sm"
+                                v-model="paramsGrid.filters[field.key]"
+                                @change="filterColumn(field)"
+                                :placeholder="field.label"
+                            />
+                        </td>
+                    </template>
+                    <template #cell(row)="data">
+                        <div style="width: 0px !important">
+                            <b-form-checkbox
+                                :checked="selected.includes(data.item)"
+                            ></b-form-checkbox>
+                        </div>
+                    </template>
+                    <template #cell(actions)="data">
+                        <div class="text-nowrap" v-if="data.item.nota_credito">
+                            <div class="text-nowrap" v-if="data.item.nota_credito.length==0">
+                                <feather-icon
+                                    v-if="paramsGrid.edit.available"
+                                    :id="`invoice-row-${data.item.id}-preview-icon`"
+                                    icon="PenToolIcon"
+                                    size="16"
+                                    class="mx-1"
+                                    @click="editElement(data.item)"
+                                />
+                                <b-tooltip
+                                    title="Editar"
+                                    :target="`invoice-row-${data.item.id}-preview-icon`"
+                                />
+                                <feather-icon
+                                    v-if="paramsGrid.delete.available"
+                                    :id="`invoice-row-${data.item.id}-delete-icon`"
+                                    icon="Trash2Icon"
+                                    size="16"
+                                    @click="deleteItem(data.item)"
+                                    class="mx-1"
+                                />
+                                <b-tooltip
+                                    title="Eliminar"
+                                    :target="`invoice-row-${data.item.id}-delete-icon`"
+                                />
+                            </div>
+                            <div class="text-nowrap" v-else>
+                                <div class="text-nowrap" v-if="data.item.nota_credito[data.item.nota_credito.length-1].nc_estado=='1'">
+                                    <feather-icon
+                                        v-if="paramsGrid.edit.available"
+                                        :id="`invoice-row-${data.item.id}-preview-icon`"
+                                        icon="PenToolIcon"
+                                        size="16"
+                                        class="mx-1"
+                                        style="color:#Fe6b7b"
+                                    />
+                                    <feather-icon
+                                        v-if="paramsGrid.delete.available"
+                                        :id="`invoice-row-${data.item.id}-delete-icon`"
+                                        icon="Trash2Icon"
+                                        size="16"
+                                        class="mx-1"
+                                        style="color:#Fe6b7b"
+                                    />
+                                </div>
+                                <div class="text-nowrap" v-if="data.item.nota_credito[data.item.nota_credito.length-1].nc_estado=='0'">
+                                    <feather-icon
+                                        v-if="paramsGrid.edit.available"
+                                        :id="`invoice-row-${data.item.id}-preview-icon`"
+                                        icon="PenToolIcon"
+                                        size="16"
+                                        class="mx-1"
+                                        @click="editElement(data.item)"
+                                    />
+                                    <b-tooltip
+                                        title="Editar"
+                                        :target="`invoice-row-${data.item.id}-preview-icon`"
+                                    />
+                                    <feather-icon
+                                        v-if="paramsGrid.delete.available"
+                                        :id="`invoice-row-${data.item.id}-delete-icon`"
+                                        icon="Trash2Icon"
+                                        size="16"
+                                        @click="deleteItem(data.item)"
+                                        class="mx-1"
+                                    />
+                                    <b-tooltip
+                                        title="Eliminar"
+                                        :target="`invoice-row-${data.item.id}-delete-icon`"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-nowrap" v-else>
+                            <feather-icon
+                                v-if="paramsGrid.edit.available"
+                                :id="`invoice-row-${data.item.id}-preview-icon`"
+                                icon="PenToolIcon"
+                                size="16"
+                                class="mx-1"
+                                @click="editElement(data.item)"
+                            />
+                            <b-tooltip
+                                title="Editar"
+                                :target="`invoice-row-${data.item.id}-preview-icon`"
+                            />
+                            <feather-icon
+                                v-if="paramsGrid.delete.available"
+                                :id="`invoice-row-${data.item.id}-delete-icon`"
+                                icon="Trash2Icon"
+                                size="16"
+                                @click="deleteItem(data.item)"
+                                class="mx-1"
+                            />
+                            <b-tooltip
+                                title="Eliminar"
+                                :target="`invoice-row-${data.item.id}-delete-icon`"
+                            />
+                        </div>
+                    </template>
+                    <template #cell()="data">
+                        <span class="text-nowrap">{{ data.value }}</span>
+                    </template>
+                </b-table>
+            </b-col>
+        </b-row>
+        <b-row v-if="paramsGrid.pagination">
+            <b-col sm="3">
+                <b-form-group
+                    label-cols="4"
+                    label-cols-md="4"
+                    label-size="md"
+                    label="Entradas:"
+                    label-for="input-md"
+                >
+                    <b-form-select
+                        v-model="showEntrie"
+                        :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                        label="title"
+                        @change="changeSizePage"
+                        :options="entries"
+                    />
+                </b-form-group>
+            </b-col>
+            <b-col sm="3" class="mt-75" style="font-size: 12px">
+                <span>{{ totalElements }} Registros en total</span>
+            </b-col>
+            <b-col sm="6" style="text-align: right">
+                <b-pagination
+                    v-model="currentPage"
+                    :per-page="showEntrie"
+                    v-on:change="cambioPagina"
+                    :total-rows="totalElements"
+                    :align="'right'"
+                />
+            </b-col>
+        </b-row>
+        <slot></slot>
+    </div>
+</template>
+
+<style lang="scss" scoped>
+.per-page-selector {
+    width: 90px;
+}
+.invoice-filter-select {
+    min-width: 190px;
+    ::v-deep .vs__selected-options {
+        flex-wrap: nowrap;
+    }
+    ::v-deep .vs__selected {
+        width: 100px;
+    }
+}
+</style>
+<style lang="scss">
+    @import "@core/scss/vue/libs/vue-select.scss";
+</style>
