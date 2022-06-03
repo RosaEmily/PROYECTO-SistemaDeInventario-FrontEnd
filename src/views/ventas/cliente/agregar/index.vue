@@ -4,7 +4,7 @@
 <template>
     <div>
         <b-card>
-            <validation-observer ref="simpleRules">
+            <validation-observer ref="rulesAgregarCliente">
                 <b-form class="ml-1 mr-1 mt-1">
                     <b-row>
                         <b-col sm="6">
@@ -34,7 +34,7 @@
                                         <b-input-group-append>
                                             <b-button
                                                 variant="outline-primary"
-                                                @click.prevent="validar"
+                                                @click.prevent="validarDocumento"
                                             >
                                                 Consultar
                                             </b-button>
@@ -133,7 +133,7 @@
                         v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                         variant="primary"
                         class="mr-1"
-                        @click.prevent="validationForm"
+                        @click.prevent="validationAgregarCliente"
                     >
                         Guardar
                     </b-button>
@@ -194,10 +194,10 @@
         },
         mounted() {},
         methods: {
-            validationForm() {
-                this.$refs.simpleRules.validate().then((success) => {
+            validationAgregarCliente() {
+                this.$refs.rulesAgregarCliente.validate().then((success) => {
                     if (success) {
-                        this.Guardar();
+                        this.saveCliente();
                     }
                 });
             },
@@ -206,37 +206,29 @@
                 this.$router.push({ name: "ventas-lista-cliente" });
             },
             
-            validar() {
+            validarDocumento() {
                 this.isLoading = true;
                 if (this.customerData.doi.length === 8) {
-                    axios
-                        .get(API_PERU_URL + "dni/" + this.customerData.doi + "?api_token=" + API_PERU_TOKEN)
-                        .then((result) => {
-                            if (result.data.success) {
-                                this.customerData.nombre = result.data.data.nombres;
-                                this.customerData.apellido =
-                                    result.data.data.apellido_paterno +
-                                    " " +
-                                    result.data.data.apellido_materno;
-                                    this.customerData.direccion =
-                                        result.data.data.direccion_completa;
-                            } else {
-                                this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
-                            }
-                        });
+                    axios.get(API_PERU_URL + "dni/" + this.customerData.doi + "?api_token=" + API_PERU_TOKEN)
+                    .then((result) => {
+                        if (result.data.success) {
+                            this.customerData.nombre = result.data.data.nombres;
+                            this.customerData.apellido = result.data.data.apellido_paterno + " " + result.data.data.apellido_materno;
+                            this.customerData.direccion = result.data.data.direccion_completa;
+                        } else {
+                            this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
+                        }
+                    });
                 } else if (this.customerData.doi.length === 11) {
-                    axios
-                        .get(API_PERU_URL + "ruc/" + this.customerData.doi + "?api_token=" + API_PERU_TOKEN)
-                        .then((result) => {
-                            if (result.data.success) {
-                                this.customerData.nombre =
-                                    result.data.data.nombre_o_razon_social;
-                                this.customerData.direccion =
-                                    result.data.data.direccion_completa;
-                            } else {
-                                this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
-                            }
-                        });
+                    axios.get(API_PERU_URL + "ruc/" + this.customerData.doi + "?api_token=" + API_PERU_TOKEN)
+                    .then((result) => {
+                        if (result.data.success) {
+                            this.customerData.nombre = result.data.data.nombre_o_razon_social;
+                            this.customerData.direccion = result.data.data.direccion_completa;
+                        } else {
+                            this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
+                        }
+                    });
                 } else {
                     this.sendMessage("Documento no valido","AlertTriangleIcon","danger");
                 }
@@ -253,11 +245,6 @@
                     },
                 });
             },
-            
-            Guardar() {
-                console.log(this.plantilla);
-                this.saveCliente();
-            },
 
             async saveCliente() {
                 let request = {
@@ -267,13 +254,13 @@
                 };
                 try {
                     var respRoles = await store.dispatch("back/EXECUTE", request);
-                    if (respRoles.status == 200) {
-                        this.sendMessage("Cliente registrado satisfactoriamente","CheckSquareIcon","success");
-                        this.$router.push({ name: "ventas-lista-cliente" });
-                    } else if (respRoles.status == 500) {
-                        this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
+                    if (respRoles == 201) {
+                        this.sendMessage("Proveedor registrado satisfactoriamente","CheckSquareIcon","success");
+                        this.$router.push({ name: "compras-lista-proveedor" });
+                    } else if (respRoles == 400) {
+                        this.sendMessage("El proveedor que intenta registrar ya existe","AlertTriangleIcon","danger");
                     } else {
-                        this.sendMessage(respRoles.message,"AlertTriangleIcon","danger");
+                        this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
                     }
                 } catch (e) {
                     console.log(e.message);

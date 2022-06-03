@@ -4,7 +4,7 @@
 <template>
     <div>
         <b-card>
-            <validation-observer ref="simpleRules">
+            <validation-observer ref="rulesEditarCliente">
                 <b-form class="ml-1 mr-1 mt-1">
                     <b-row>
                         <b-col sm="6">
@@ -36,7 +36,7 @@
                                         <b-input-group-append>
                                             <b-button
                                                 variant="outline-primary"
-                                                @click="validar"
+                                                @click="validarDocumento"
                                             >
                                                 Consultar
                                             </b-button>
@@ -135,7 +135,7 @@
                         v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                         variant="primary"
                         class="mr-1"
-                        @click.prevent="validationForm"
+                        @click.prevent="validationEditarCliente"
                     >
                         Guardar
                     </b-button>
@@ -203,14 +203,13 @@
                     method: "GET",
                 };
                 var respRoles = await store.dispatch("back/EXECUTE", request);
-                this.customerData= respRoles;             
-                console.log("get", respRoles);
+                this.customerData= respRoles;
             },
             
-            validationForm() {
-                this.$refs.simpleRules.validate().then((success) => {
+            validationEditarCliente() {
+                this.$refs.rulesEditarCliente.validate().then((success) => {
                     if (success) {
-                        this.Guardar();
+                        this.saveCliente();
                     }
                 });
             },
@@ -219,34 +218,28 @@
                 this.$router.push({ name: "ventas-lista-cliente" });
             },
             
-            validar() {
+            validarDocumento() {
                 if (this.customerData.doi.length === 8) {
-                    axios
-                        .get(API_PERU_URL + "dni/" + this.customerData.doi + "?api_token=" + API_PERU_TOKEN)
-                        .then((result) => {
+                    axios.get(API_PERU_URL + "dni/" + this.customerData.doi + "?api_token=" + API_PERU_TOKEN)
+                    .then((result) => {
                             if (result.data.success) {
                                 this.customerData.nombre = result.data.data.nombres;
-                                this.customerData.apellido =
-                                    result.data.data.apellido_paterno +
-                                    " " +
-                                    result.data.data.apellido_materno;
-                                console.log(result.data);
+                                this.customerData.apellido = result.data.data.apellido_paterno + " " + result.data.data.apellido_materno;
+                                this.customerData.direccion = result.data.data.direccion_completa;
                             } else {
                                 this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
                             }
                         });
                 } else if (this.customerData.doi.length === 11) {
-                    axios
-                        .get(API_PERU_URL + "ruc/" + this.customerData.doi + "?api_token=" + API_PERU_TOKEN)
-                        .then((result) => {
-                            if (result.data.success) {
-                                console.log(result.data);
-                                this.customerData.nombre =
-                                    result.data.data.nombre_o_razon_social;
-                            } else {
-                                this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
-                            }
-                        });
+                    axios.get(API_PERU_URL + "ruc/" + this.customerData.doi + "?api_token=" + API_PERU_TOKEN)
+                    .then((result) => {
+                        if (result.data.success) {
+                            this.customerData.nombre = result.data.data.nombre_o_razon_social;
+                            this.customerData.direccion = result.data.data.direccion_completa;
+                        } else {
+                            this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
+                        }
+                    });
                 }
             },
             
@@ -260,11 +253,6 @@
                     },
                 });
             },
-
-            Guardar() {
-                console.log(this.plantilla);
-                this.saveCliente();
-            },
             
             async saveCliente() {
                 let request = {
@@ -274,13 +262,11 @@
                 };
                 try {
                     var respRoles = await store.dispatch("back/EXECUTE", request);
-                    if (respRoles.status == 200) {
-                        this.sendMessage("Registro editado satisfactoriamente","EditIcon","success");
-                        this.$router.push({ name: "ventas-lista-cliente" });
-                    } else if (respRoles.status == 500) {
-                        this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
+                    if (respRoles == 201) {
+                        this.sendMessage("Proveedor editado satisfactoriamente","CheckSquareIcon","success");
+                        this.$router.push({ name: "compras-lista-proveedor" });
                     } else {
-                        this.sendMessage(respRoles.message,"AlertTriangleIcon","danger");
+                        this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
                     }
                 } catch (e) {
                     console.log(e.message);

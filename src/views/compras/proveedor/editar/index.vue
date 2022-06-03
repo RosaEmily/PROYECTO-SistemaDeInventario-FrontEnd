@@ -4,7 +4,7 @@
 <template>
     <div>
         <b-card>
-            <validation-observer ref="simpleRules">
+            <validation-observer ref="rulesEditarProveedor">
                 <b-form class="ml-1 mr-1 mt-1">
                     <b-row class="">
                         <b-col sm="6">
@@ -35,7 +35,7 @@
                                         <b-input-group-append>
                                             <b-button
                                                 variant="outline-primary"
-                                                @click="validar"
+                                                @click="validarDocumento"
                                             >
                                                 Consultar
                                             </b-button>
@@ -108,7 +108,7 @@
                         v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                         variant="primary"
                         class="mr-1"
-                        @click.prevent="validationForm"
+                        @click.prevent="validationEditarProveedor"
                     >
                         Guardar
                     </b-button>
@@ -177,14 +177,13 @@
                     method: "GET",
                 };
                 var respRoles = await store.dispatch("back/EXECUTE", request);
-                this.suplierData= respRoles;               
-                console.log("get", respRoles);
+                this.suplierData = respRoles;
             },
             
-            validationForm() {
-                this.$refs.simpleRules.validate().then((success) => {
+            validationEditarProveedor() {
+                this.$refs.rulesEditarProveedor.validate().then((success) => {
                     if (success) {
-                        this.Guardar();
+                        this.saveProveedor(); 
                     }
                 });
             },
@@ -193,41 +192,30 @@
                 this.$router.push({ name: "compras-lista-proveedor" });
             },
             
-            validar() {
+            validarDocumento() {
                 if (this.suplierData.doi.length == 8) {
-                    axios
-                        .get(API_PERU_URL + "dni/" + this.suplierData.doi + "?api_token=" + API_PERU_TOKEN)
-                        .then((result) => {
-                            if (result.data.success) {
-                                this.suplierData.nombre =
-                                    result.data.data.nombre_completo;
-                                this.suplierData.direccion =
-                                    result.data.data.direccion_completa;
-                            } else {
-                                this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
-                            }
-                        });
+                    axios.get(API_PERU_URL + "dni/" + this.suplierData.doi + "?api_token=" + API_PERU_TOKEN)
+                    .then((result) => {
+                        if (result.data.success) {
+                            this.suplierData.nombre = result.data.data.nombre_completo;
+                            this.suplierData.direccion = result.data.data.direccion_completa;
+                        } else {
+                            this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
+                        }
+                    });
                 } else if (this.suplierData.doi.length == 11) {
-                    axios
-                        .get(API_PERU_URL + "ruc/" + this.suplierData.doi + "?api_token=" + API_PERU_TOKEN)
-                        .then((result) => {
-                            if (result.data.success) {
-                                this.suplierData.nombre =
-                                    result.data.data.nombre_o_razon_social;
-                                this.suplierData.direccion =
-                                    result.data.data.direccion_completa;
-                            } else {
-                                this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
-                            }
-                        });
+                    axios.get(API_PERU_URL + "ruc/" + this.suplierData.doi + "?api_token=" + API_PERU_TOKEN)
+                    .then((result) => {
+                        if (result.data.success) {
+                            this.suplierData.nombre = result.data.data.nombre_o_razon_social;
+                            this.suplierData.direccion = result.data.data.direccion_completa;
+                        } else {
+                            this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");
+                        }
+                    });
                 } else {
                     this.sendMessage("Documento no valido","AlertTriangleIcon","danger");
                 }
-            },
-
-            Guardar() {
-                console.log(this.suplierData);
-                this.saveProveedor();                
             },
             
             async saveProveedor() {
@@ -238,14 +226,11 @@
                 };
                 try {
                     var respRoles = await store.dispatch("back/EXECUTE", request);
-                    console.log("RESP", respRoles);
-                    if (respRoles.status == 200) {
-                        this.sendMessage("Proveedor editado satisfactoriamente","EditIcon","success");
+                    if (respRoles == 201) {
+                        this.sendMessage("Proveedor editado satisfactoriamente","CheckSquareIcon","success");
                         this.$router.push({ name: "compras-lista-proveedor" });
-                    } else if (respRoles.status == 500) {
-                        this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
                     } else {
-                        this.sendMessage(respRoles.message,"AlertTriangleIcon","danger");
+                        this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
                     }
                 } catch (e) {
                     console.log(e.message);
