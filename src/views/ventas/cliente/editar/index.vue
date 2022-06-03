@@ -203,13 +203,7 @@
                     method: "GET",
                 };
                 var respRoles = await store.dispatch("back/EXECUTE", request);
-                this.customerData.tipoDoi = respRoles.cli_tipo_doi;
-                this.customerData.apellido = respRoles.cli_apellido;
-                this.customerData.doi = respRoles.cli_doi;
-                this.customerData.nombre = respRoles.cli_nombre;
-                this.customerData.direccion = respRoles.cli_direccion;
-                this.customerData.email = respRoles.cli_email;
-                this.customerData.estado = respRoles.cli_estado;
+                this.customerData= respRoles;             
                 console.log("get", respRoles);
             },
             
@@ -270,7 +264,6 @@
             Guardar() {
                 console.log(this.plantilla);
                 this.saveCliente();
-                this.$router.push({ name: "ventas-lista-cliente" });
             },
             
             async saveCliente() {
@@ -283,6 +276,7 @@
                     var respRoles = await store.dispatch("back/EXECUTE", request);
                     if (respRoles.status == 200) {
                         this.sendMessage("Registro editado satisfactoriamente","EditIcon","success");
+                        this.$router.push({ name: "ventas-lista-cliente" });
                     } else if (respRoles.status == 500) {
                         this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
                     } else {

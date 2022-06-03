@@ -162,7 +162,8 @@
                     email: "",
                     tipoDoi: generalData.persona.documentos[0].value,
                     direccion: "",
-                    estado: "",
+                    id:0,
+                    estado:true,
                 },
             };
         },
@@ -176,12 +177,7 @@
                     method: "GET",
                 };
                 var respRoles = await store.dispatch("back/EXECUTE", request);
-                this.suplierData.tipoDoi = respRoles.prov_tipo_doi;
-                this.suplierData.doi = respRoles.prov_doi;
-                this.suplierData.nombre = respRoles.prov_nombre;
-                this.suplierData.email = respRoles.prov_email;
-                this.suplierData.direccion = respRoles.prov_direccion;
-                this.suplierData.estado = respRoles.prov_estado;
+                this.suplierData= respRoles;               
                 console.log("get", respRoles);
             },
             
@@ -231,20 +227,21 @@
 
             Guardar() {
                 console.log(this.suplierData);
-                this.saveProveedor();
-                this.$router.push({ name: "compras-lista-proveedor" });
+                this.saveProveedor();                
             },
             
             async saveProveedor() {
                 let request = {
-                    url: "/api/proveedor/" + this.$route.params.id,
+                    url: "/api/proveedor/editar",
                     method: "PUT",
                     data: this.suplierData,
                 };
                 try {
                     var respRoles = await store.dispatch("back/EXECUTE", request);
+                    console.log("RESP", respRoles);
                     if (respRoles.status == 200) {
                         this.sendMessage("Proveedor editado satisfactoriamente","EditIcon","success");
+                        this.$router.push({ name: "compras-lista-proveedor" });
                     } else if (respRoles.status == 500) {
                         this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
                     } else {

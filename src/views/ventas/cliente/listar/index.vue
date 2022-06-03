@@ -28,8 +28,8 @@
                     },
                     fields: [
                         { key: "row", label: "", sortable: false },
-                        { key: "cli_doi", label: "Doi", sortable: true },
-                        { key: "cli_nombre", label: "Nombre", sortable: true },
+                        { key: "doi", label: "Doi", sortable: true },
+                        { key: "nombre", label: "Nombre", sortable: true },
                         {
                             key: "actions",
                             label: "Acciones",
@@ -39,10 +39,10 @@
                         },
                     ],
                     filters: {
-                        cli_doi: "",
-                        cli_nombre: "",
+                        doi: "",
+                        nombre: "",
                     },
-                    urlBack: "/api/cliente/1",
+                    urlBack: "/api/cliente",
                     items: [
                         {
                             isActive: true,

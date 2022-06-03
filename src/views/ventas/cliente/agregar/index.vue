@@ -257,12 +257,11 @@
             Guardar() {
                 console.log(this.plantilla);
                 this.saveCliente();
-                this.$router.push({ name: "ventas-lista-cliente" });
             },
 
             async saveCliente() {
                 let request = {
-                    url: "/api/cliente/1",
+                    url: "/api/cliente/",
                     method: "POST",
                     data: this.customerData,
                 };
@@ -270,6 +269,7 @@
                     var respRoles = await store.dispatch("back/EXECUTE", request);
                     if (respRoles.status == 200) {
                         this.sendMessage("Cliente registrado satisfactoriamente","CheckSquareIcon","success");
+                        this.$router.push({ name: "ventas-lista-cliente" });
                     } else if (respRoles.status == 500) {
                         this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
                     } else {
