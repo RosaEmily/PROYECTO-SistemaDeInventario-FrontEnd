@@ -263,8 +263,10 @@
                 try {
                     var respRoles = await store.dispatch("back/EXECUTE", request);
                     if (respRoles == 201) {
-                        this.sendMessage("Proveedor editado satisfactoriamente","CheckSquareIcon","success");
-                        this.$router.push({ name: "compras-lista-proveedor" });
+                        this.sendMessage("Cliente editado satisfactoriamente","CheckSquareIcon","success");
+                        this.$router.push({ name: "ventas-lista-cliente" });
+                    } else if (respRoles == 400) {
+                        this.sendMessage("El cliente que intenta editar ya existe","AlertTriangleIcon","danger");
                     } else {
                         this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
                     }

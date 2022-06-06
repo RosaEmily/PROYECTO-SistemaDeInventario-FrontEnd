@@ -255,10 +255,10 @@
                 try {
                     var respRoles = await store.dispatch("back/EXECUTE", request);
                     if (respRoles == 201) {
-                        this.sendMessage("Proveedor registrado satisfactoriamente","CheckSquareIcon","success");
-                        this.$router.push({ name: "compras-lista-proveedor" });
+                        this.sendMessage("Cliente registrado satisfactoriamente","CheckSquareIcon","success");
+                        this.$router.push({ name: "ventas-lista-cliente" });
                     } else if (respRoles == 400) {
-                        this.sendMessage("El proveedor que intenta registrar ya existe","AlertTriangleIcon","danger");
+                        this.sendMessage("El cliente que intenta registrar ya existe","AlertTriangleIcon","danger");
                     } else {
                         this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
                     }

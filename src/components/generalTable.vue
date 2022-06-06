@@ -103,7 +103,7 @@ export default {
                     };
                     try {
                         store.dispatch("back/EXECUTE", request).then((r) => {
-                            if (r.status === 200) {
+                            if (r === 200) {
                                 this.$swal({
                                     icon: "success",
                                     title: "Eliminado!",
@@ -115,7 +115,7 @@ export default {
                                 this.loadDataSource();
                                 this.$emit("deletedCompra");
                             }
-                            if(r.status==400){
+                            if(r === 400){
                                 this.$toast({
                                     component: ToastificationContent,
                                     props: {

@@ -207,7 +207,7 @@
                 let request = {
                     url: "/api/proveedor/",
                     method: "POST",
-                    data: this.suplierData,
+                    data: this.suplierData, 
                 };
                 try {
                     var respRoles = await store.dispatch("back/EXECUTE", request);

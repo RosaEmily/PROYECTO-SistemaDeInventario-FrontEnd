@@ -229,6 +229,8 @@
                     if (respRoles == 201) {
                         this.sendMessage("Proveedor editado satisfactoriamente","CheckSquareIcon","success");
                         this.$router.push({ name: "compras-lista-proveedor" });
+                    } else if (respRoles == 400) {
+                        this.sendMessage("El proveedor que intenta editar ya existe","AlertTriangleIcon","danger");
                     } else {
                         this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
                     }
