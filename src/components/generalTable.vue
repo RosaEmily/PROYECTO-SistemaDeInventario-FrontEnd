@@ -32,6 +32,7 @@ export default {
                 column: null,
             },
             arrayFilters:[],
+            filtro:"",
         };
     },
     mounted() {
@@ -47,22 +48,20 @@ export default {
         },
 
         filterColumn(field) {
+
+            //this.filtro="&doi="+this.paramsGrid.filters["doi"].trim()+"&nombre="+this.paramsGrid.filters["nombre"].trim();
             if (this.paramsGrid.filters[field.key].trim() != "") {
                 this.optionFilter.column = field.key;
                 //this.limpiarOtrosFiltros(field.key);
             } else {
                 this.optionFilter.column = null;
             }
-            // recorrer todos los filtros para ver si es que existe
-            // sino existe agregar, si existe o eliminar o editar dependiendo si es que existe tiene datos
-            const propertyNames = Object.keys(this.paramsGrid.filters);
             var indexFind=null
             for (let i = 0; i < this.arrayFilters.length; i++) {
                 if(this.arrayFilters[i].keyContains == field.key){
                     indexFind = i
                 }
             }
-            console.log('indexFind', indexFind)
             if(indexFind!=null){
                 if (this.paramsGrid.filters[field.key].trim() != "") {
                     this.arrayFilters[indexFind].value=this.paramsGrid.filters[field.key].trim()
@@ -74,12 +73,10 @@ export default {
             }else{
                 //añadir
                 this.arrayFilters.push({
-                    keyContains:field.key,
-                    key:"contains",
+                    keyContains:field.key,                    
                     value:this.paramsGrid.filters[field.key].trim()
                 })
-            }
-            console.log('this.arrayFilters', this.arrayFilters)
+            }         
             this.loadDataSource();
         },
 
@@ -112,6 +109,7 @@ export default {
                                         confirmButton: "btn btn-success",
                                     },
                                 });
+                                this.currentPage=1;
                                 this.loadDataSource();
                                 this.$emit("deletedCompra");
                             }
@@ -149,8 +147,14 @@ export default {
             //     url += "&contains=" + this.optionFilter.column + "&value=" + this.paramsGrid.filters[this.optionFilter.column];
             // }
             if(this.arrayFilters.length>0){
+                for(let i=0;i<this.arrayFilters.length;i++){
+                    this.filtro +="&"+this.arrayFilters[i].keyContains+"="+this.arrayFilters[i].value;
+                }
                 url += "&filter="+JSON.stringify(this.arrayFilters)
+            }else{
+                url += "&filter=nada"
             }
+            //url+=this.filtro;
             let request = {
                 url: url,
                 method: "GET",
@@ -159,8 +163,10 @@ export default {
                         "accessToken"
                     )}`,
                 },
-            };
+            };            
             var respRoles = await store.dispatch("back/EXECUTE", request);
+
+            console.log("respuesta", respRoles);
 
             respRoles.rows.forEach(respuesta => {
                 Object.values(respuesta).forEach((elemento, index) => {
@@ -170,7 +176,6 @@ export default {
                 });
             });
 
-            console.log("respuesta", respRoles);
 
             this.dataSource = respRoles.rows;
             this.totalElements = respRoles.responseFilter.total_rows;

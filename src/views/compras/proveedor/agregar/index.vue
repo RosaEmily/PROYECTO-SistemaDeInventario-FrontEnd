@@ -205,7 +205,7 @@
 
             async saveProveedor() {
                 let request = {
-                    url: "/api/proveedor/",
+                    url: "/api/proveedor",
                     method: "POST",
                     data: this.suplierData, 
                 };

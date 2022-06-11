@@ -173,7 +173,7 @@
         methods: {
             async getInfoByID() {
                 let request = {
-                    url: "/api/proveedor/supplier/" + this.$route.params.id,
+                    url: "/api/proveedor/" + this.$route.params.id,
                     method: "GET",
                 };
                 var respRoles = await store.dispatch("back/EXECUTE", request);
@@ -220,7 +220,7 @@
             
             async saveProveedor() {
                 let request = {
-                    url: "/api/proveedor/editar",
+                    url: "/api/proveedor/"+this.$route.params.id,
                     method: "PUT",
                     data: this.suplierData,
                 };

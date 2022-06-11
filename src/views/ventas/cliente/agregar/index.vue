@@ -248,7 +248,7 @@
 
             async saveCliente() {
                 let request = {
-                    url: "/api/cliente/",
+                    url: "/api/cliente",
                     method: "POST",
                     data: this.customerData,
                 };

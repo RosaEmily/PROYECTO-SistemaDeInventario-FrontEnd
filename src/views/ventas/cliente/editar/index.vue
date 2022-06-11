@@ -199,7 +199,7 @@
         methods: {
             async getInfoByID() {
                 let request = {
-                    url: "/api/cliente/client/" + this.$route.params.id,
+                    url: "/api/cliente/" + this.$route.params.id,
                     method: "GET",
                 };
                 var respRoles = await store.dispatch("back/EXECUTE", request);
