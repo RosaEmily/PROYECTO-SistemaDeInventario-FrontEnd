@@ -141,7 +141,7 @@ export default [
     title: 'Categorias',
     route:
     {
-      name: 'inventario-categoria-index',
+      name: 'inventario-categoria-listar-index',
     },
   },
   {

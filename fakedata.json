@@ -5,6 +5,13 @@
             "password":"secure_password"
         }
     ],
+    "inventario":{
+        "unidades":[
+            { "value": "kg", "text": "Kilagromos" },
+            { "value": "lt", "text": "Litros" },
+            { "value": "m", "text": "Metros" }
+        ]
+    },
     "contabilidad":{
         "anexos":[
             { "value": "NINGUNO", "text": "NINGUNO" },

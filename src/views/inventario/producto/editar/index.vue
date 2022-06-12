@@ -10,6 +10,31 @@
                         <b-form class="ml-1 mr-1 mt-1">
                             <b-row>
                                 <b-col sm="12">
+                                    <b-form-group label="Codigo: ">
+                                        <validation-provider
+                                            #default="{ errors }"
+                                            name="Codigo"
+                                            rules="required"
+                                        >
+                                            <b-input-group>
+                                                <b-form-input
+                                                    v-model="productData.codigo"
+                                                    type="text"
+                                                    :state="
+                                                        errors.length > 0
+                                                            ? false
+                                                            : null
+                                                    "
+                                                    placeholder="Ingrese codigo"
+                                                />
+                                            </b-input-group>
+                                            <small class="text-danger">{{
+                                                errors[0]
+                                            }}</small>
+                                        </validation-provider>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="12">
                                     <b-form-group label="Nombre: ">
                                         <validation-provider
                                             #default="{ errors }"
@@ -35,6 +60,31 @@
                                     </b-form-group>
                                 </b-col>
                                 <b-col sm="12">
+                                    <b-form-group label="Descripcion: ">
+                                        <validation-provider
+                                            #default="{ errors }"
+                                            name="Descripcion"
+                                            rules="required"
+                                        >
+                                            <b-input-group>
+                                                <b-form-input
+                                                    v-model="productData.descripcion"
+                                                    type="text"
+                                                    :state="
+                                                        errors.length > 0
+                                                            ? false
+                                                            : null
+                                                    "
+                                                    placeholder="Ingrese descripcion"
+                                                />
+                                            </b-input-group>
+                                            <small class="text-danger">{{
+                                                errors[0]
+                                            }}</small>
+                                        </validation-provider>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="12">
                                     <b-form-group label="Marca: ">
                                         <b-input-group>
                                             <b-form-input
@@ -48,37 +98,15 @@
                                 <b-col sm="12">
                                     <b-form-group label="Categoria: ">
                                         <v-select
-                                            v-model="productData.categorias"
+                                            v-model="productData.categoria"
                                             :dir="'ltr'"
-                                            multiple
-                                            label="cat_nombre"
+                                            label="nombre"
                                             :value.sync="categorias.id"
                                             :options="categorias"
+                                            placeholder="Ingrese categoria"
                                         />
                                     </b-form-group>
-                                </b-col>
-                                <b-col sm="12">
-                                    <b-form-group label="Kardex: ">
-                                        <b-form-select
-                                            v-model="
-                                                productData.prod_tipo_kardex
-                                            "
-                                            :options="kardex"
-                                        />
-                                    </b-form-group>
-                                </b-col>
-                                <b-col sm="12">
-                                    <b-form-group label="Sucursal: ">
-                                        <v-select
-                                            v-model="productData.sucursales"
-                                            :dir="'ltr'"
-                                            multiple
-                                            label="suc_nombre"
-                                            :value.sync="sucursales.id"
-                                            :options="sucursales"
-                                        />
-                                    </b-form-group>
-                                </b-col>
+                                </b-col>                               
                                 <b-col sm="6">
                                     <b-form-group label="Stock: ">
                                         <validation-provider
@@ -107,9 +135,9 @@
                                 <b-col sm="6">
                                     <b-form-group label="Unidad de medida: ">
                                         <b-form-select
-                                            v-model="productData.idUnm"
-                                            value-field="id"
-                                            text-field="unm_nombre"
+                                            v-model="productData.unidad"
+                                            value-field="value"
+                                            text-field="text"
                                             :options="unidades"
                                         />
                                     </b-form-group>
@@ -275,20 +303,20 @@ export default {
         return {
             kardex: generalData.compra.tipokardex,
             productData: {
+                codigo:"",
                 nombre: "",
                 marca: "",
-                stock: "",
-                prod_tipo_kardex: "MERCADERIA",
-                precio: 50,
-                idEmpresa: 1,
-                categorias: [],
+                descripcion:"",
+                stock: 0,
+                categoria: null,
+                unidad:"",
                 sucursales: [],
                 idUnm: 1,
                 precios: [],
             },
             categorias: [],
             sucursales: [],
-            unidades: [],
+            unidades: generalData.inventario.unidades,
             fields: [
                 {
                     key: "prepro_isprincipal",
@@ -314,7 +342,6 @@ export default {
     },
     mounted() {
         this.getConfiguraciones();
-        console.log(this.kardex);
     },
     methods: {
         checkFormValidity() {
@@ -346,73 +373,43 @@ export default {
                 this.$refs["my-modal"].toggle("#toggle-btn");
             });
         },
-        async getConfiguraciones() {
-            let suc = {
-                url: "/api/sucursal",
-                method: "GET",
-            };
-            var respSuc = await store.dispatch("back/EXECUTE", suc);
-            this.sucursales = respSuc.rows;
-
+        async getConfiguraciones() {         
             let cat = {
-                url: "/api/categoria/1",
+                url: "/api/categoria/lista",
                 method: "GET",
             };
             var respCat = await store.dispatch("back/EXECUTE", cat);
             this.categorias = respCat;
 
-            let unid = {
-                url: "/api/unidadMedida",
+            let request = {
+                url: "/api/producto/" + this.$route.params.id,
                 method: "GET",
             };
-            var respUnid = await store.dispatch("back/EXECUTE", unid);
-            this.unidades = respUnid;
+            var respRoles = await store.dispatch("back/EXECUTE", request);
+            this.productData= respRoles;         
         },
         async Guardar() {
-            var i;
-            var result = [];
-            for (i in this.productData.categorias) {
-                var obj = {};
-                obj["cat_id"] = this.productData.categorias[i].id;
-                result.push(obj);
-            }
-            var sucur = [];
-            for (i in this.productData.sucursales) {
-                var obj = {};
-                obj["suc_id"] = this.productData.sucursales[i].id;
-                sucur.push(obj);
-            }
+            console.log(this.productData);        
             let request = {
-                url: "/api/producto",
-                method: "POST",
+                url: "/api/producto/"+ this.$route.params.id,
+                method: "PUT",
                 // data:this.productData
-                data: {
-                    nombre: this.productData.nombre,
-                    marca: this.productData.marca,
-                    stock: this.productData.stock,
-                    precio: this.productData.precio,
-                    idEmpresa: this.productData.idEmpresa,
-                    prod_tipo_kardex: this.productData.prod_tipo_kardex,
-                    categorias: result,
-                    sucursales: sucur,
-                    idUnm: this.productData.idUnm,
-                    precios: this.productData.precios,
-                },
+                data: this.productData,
             };
             try {
                 var respRoles = await store.dispatch("back/EXECUTE", request);
                 console.log("respuesta", respRoles);
-                if (respRoles.status == 200) {
+                if (respRoles == 201) {
                     this.sendMessage(
                         "Producto registrado satisfactoriamente",
                         "EditIcon",
                         "success"
                     );
                     this.$router.push({ name: "inventario-lista-index" });
-                } else if (respRoles.status == 500) {
-                    this.sendMessage("Error de servidor", "EditIcon", "error");
+                } else if (respRoles == 400) {
+                    this.sendMessage("El producto que quiere registrar ya existe", "EditIcon", "error");
                 } else {
-                    this.sendMessage(respRoles.message, "EditIcon", "error");
+                    this.sendMessage("Error de servidor", "EditIcon", "error");
                 }
             } catch (e) {
                 console.log(e.message);
@@ -425,7 +422,6 @@ export default {
                 }
             });
         },
-        agregar() {},
         cancelar() {
             this.$router.push({ name: "inventario-lista-index" });
         },

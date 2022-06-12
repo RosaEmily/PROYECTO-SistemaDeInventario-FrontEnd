@@ -25,9 +25,11 @@ export default {
                 },
                 fields: [
                     { key: "row", label: "", sortable: false },
-                    { key: "prod_nombre", label: "Nombre", sortable: true },
-                    {
-                        key: "prod_stock_actual",
+                    { key: "codigo", label: "Codigo", sortable: true },
+                    { key: "nombre", label: "Nombre", sortable: true },
+                    { key: "categoria.nombre", label: "Categoria", sortable: true },
+{
+                        key: "stock",
                         label: "Stock",
                         sortable: true,
                     },
@@ -40,10 +42,12 @@ export default {
                     },
                 ],
                 filters: {
-                    prod_nombre: "",
-                    prod_stock_actual: "",
+                    codigo: "",
+                    nombre: "",
+                    stock: "",
+                    categoria:"",
                 },
-                urlBack: "/api/producto/1",
+                urlBack: "/api/producto",
                 items: [
                     {
                         isActive: true,
@@ -73,7 +77,7 @@ export default {
                 edit: {
                     available: true,
                     redirect: true,
-                    ruta: "/inventario/editar/index",
+                    ruta: "/inventario/producto/editar/index",
                 },
                 delete: {
                     available: true,
