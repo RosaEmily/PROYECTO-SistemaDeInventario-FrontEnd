@@ -5,6 +5,8 @@
     import Vue from "vue";
     import { BootstrapVue } from "bootstrap-vue";
     import generalTable from "@/components/generalTable.vue";
+    import * as XLSX from 'xlsx/xlsx.mjs';
+import store from '@/store';
 
     Vue.use(BootstrapVue);
 
@@ -18,6 +20,7 @@
                 parse_csv: [],
                 sortOrders: {},
                 alertMsg: [],
+                prepareForExport: [],
                 prepareForImport: false,
                 paramsGrid: {
                     selectOptions: {
@@ -85,6 +88,40 @@
             };
         },
         methods: {
+            getDateNow(){
+                let date = new Date();
+                let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
+                return output;
+            },
+
+            async getProveedores(){
+                let request = {
+                    url: this.paramsGrid.urlBack+"/all",
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                };
+                var respRoles = await store.dispatch("back/EXECUTE", request);
+                return respRoles;
+            },
+
+            async exportar(){
+                let request = {
+                    url: this.paramsGrid.urlBack+"/all",
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                };
+                var respRoles = await store.dispatch("back/EXECUTE", request);
+                let data = XLSX.utils.json_to_sheet(respRoles)
+                const workbook = XLSX.utils.book_new()
+                const filename = 'Proveedores'+this.getDateNow()
+                XLSX.utils.book_append_sheet(workbook, data, filename)
+                XLSX.writeFile(workbook, `${filename}.xlsx`)
+            },
+
             importarCsv() {
             },
             
@@ -208,7 +245,7 @@
         <b-card>
             <b-row>
                 <b-col md="6" class="">
-                    <b-button variant="success"> Exportar </b-button>
+                    <b-button variant="success" @click="exportar"> Exportar </b-button>
                     <b-button class="ml-25" variant="light" @click="importar">
                         Importar
                     </b-button>
