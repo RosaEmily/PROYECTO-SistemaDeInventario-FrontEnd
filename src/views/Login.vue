@@ -186,12 +186,23 @@ export default {
                         url: "/api/auth/login",
                         method: "POST",
                         data: {
-                            usu_email: this.userEmail,
-                            usu_password: this.password,
+                            email: this.userEmail,
+                            password: this.password,
                         },
                     };
                     var respRoles = await store.dispatch("back/EXECUTE",request);
-                    if (respRoles == 200) {
+                    if (respRoles == 200) {                     
+                        let requestCorreo = {
+                            url: "/api/auth/correo",
+                            method: "POST",
+                            data: {
+                                email: this.userEmail,
+                            },
+                        };
+                        var repCorreo = await store.dispatch("back/EXECUTE",requestCorreo);
+                        localStorage.setItem("userData", repCorreo);
+                        localStorage.setItem("accessToken","token")
+                        console.log(" USERDATRA ->> ",localStorage.getItem("userData"))
                         this.$toast({
                             component: ToastificationContent,
                             props: {
@@ -200,7 +211,6 @@ export default {
                                 variant: "success",
                             },
                         });
-                        localStorage.setItem("accessToken","token")
                         router.push({name:"index"})
                     } else if (respRoles == 403)  {
                         this.$toast({

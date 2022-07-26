@@ -74,13 +74,6 @@ export default [
     },
   },
   {
-    title: 'Plantillas Compras',
-    route:
-    {
-      name: 'compras-plantilla',
-    },
-  },
-  {
     title: 'Proveedores',
     route:
     {
@@ -105,14 +98,7 @@ export default [
     {
       name: 'nota-credito-venta-lista-index',
     },
-  },
-  {
-    title: 'Plantillas Ventas',
-    route:
-    {
-      name: 'ventas-plantilla',
-    },
-  },
+  },  
   {
     title: 'Clientes',
     route:
@@ -143,122 +129,23 @@ export default [
     {
       name: 'inventario-categoria-listar-index',
     },
+  },   
+ 
+  {
+    header: 'Módulo De Seguridad',
   },
   {
-    title: 'Plantillas Inventario',
+    title: 'Usuarios',
     route:
     {
-      name: 'inventario-plantilla',
+      name: 'usuario-lista-index',
     },
   },
   {
-    header: 'Módulo Caja y Bancos',
-  },
-  {
-        title: "Registro de C y B",
-        children: [
-      {
-        title: 'Cobros y Pagos',
-      // icon: 'ShoppingBagIcon',
-        route:
-        {
-          name: 'caja-pago-cobro-index',
-        },
-      },
-      {
-        title: 'Otros Procesos',
-      // icon: 'ShoppingBagIcon',
-        route:
-        {
-          name: 'caja-otro-index',
-        },
-      },
-        ]
-  }, 
-  {
-    title: 'Plantillas de C y B',
+    title: 'Roles',
     route:
     {
-      name: 'caja-plantilla',
+      name: 'rol-lista-index',
     },
-  },
-  {
-    header: 'Módulo Diario',
-  },
-  {
-    title: 'Listar Diario',
-    route:
-    {
-      name: 'diario-lista-index',
-    },
-  },
-  {
-    title: 'Plantillas Diario',
-    route:
-    {
-      name: 'diario-plantilla',
-    },
-  },
-  {
-    header: 'Módulo Contabilidad',
-  },
-  {
-    title: 'Planes Contables',
-    route:
-    {
-      name: 'contabilidad-configuracion-plan-cuenta',
-    },
-  },
-  {
-    title: 'Tributos',
-    route:
-    {
-      name: 'contabilidad-configuracion-tributo',
-    },
-  },
-  {
-    title: 'Proyectos',
-    route:
-    {
-      name: 'contabilidad-configuracion-proyecto',
-    },
-  },
-  {
-    title: "Reportes",
-    children: [
-  {
-    title: 'Libro Diario',
-  // icon: 'ShoppingBagIcon',
-    route:
-    {
-      name: 'contabilidad-reportes-libro-diario',
-    },
-  },
-  {
-    title: 'Libro Mayor',
-  // icon: 'ShoppingBagIcon',
-    route:
-    {
-      name: 'contabilidad-reportes-libro-mayor',
-    },
-  },
-    ]
-}, 
-  {
-    header: 'Configuración',
-  },
-  {
-    title: 'Sucursales',
-    route:
-    {
-      name: 'configuracion-sucursal',
-    },
-  },
-  {
-    title: 'Cuenta Bancaria',
-    route:
-    {
-      name: 'configuracion-cuenta-bancaria',
-    },
-  },
+  } 
 ]

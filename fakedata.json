@@ -163,9 +163,7 @@
     "persona":{
         "documentos":[
             { "value": "01", "text": "RUC" },
-            { "value": "02", "text": "DNI" },
-            { "value": "03", "text": "PASAPORTE" },
-            { "value": "04", "text": "CARNET DE EXTRANJERIA" }   
+            { "value": "02", "text": "DNI" } 
         ],
         "estado":[
             {"value":true,"text":"ACTIVO"}, 
@@ -173,22 +171,9 @@
         ]
     },
     "compra":{
-        "documentos":[
-            { "value":"-","text":"NINGUNO","maxLengthCorr": 8},
-            { "value":"00","text":"OTROS" ,"maxLengthCorr": 8},
+        "documentos":[            
             { "value":"01","text":"FACTURA","maxLengthCorr": 8},
-            { "value":"02","text":"RECIBO POR HONORARIOS","maxLengthCorr": 20},
-            { "value":"03","text":"BOLETA DE VENTA","maxLengthCorr": 8},
-            { "value":"04","text":"LIQUIDACION DE COMPRA","maxLengthCorr": 8},
-            { "value":"05","text":"BOLETO DE AVIACION","maxLengthCorr": 8},
-            { "value":"06","text":"CARTA PORTE","maxLengthCorr": 8},
-            { "value":"07","text":"NOTA DE CREDITO","maxLengthCorr": 8},
-            { "value":"08","text":"GUIA DE REMISION REMITENTE","maxLengthCorr": 8},
-            { "value":"09","text":"RECIBO POR ARRENDAMIENTO","maxLengthCorr": 20},
-            { "value":"10","text":"POLIZA BOLSA","maxLengthCorr": 8},
-            { "value":"11","text":"TICKET","maxLengthCorr": 8},
-            { "value":"12","text":"DOCUM. EMITIDO","maxLengthCorr": 8},
-            { "value":"13","text":"RECIBO POR SERV. PUBLICOS","maxLengthCorr": 20}
+            { "value":"02","text":"BOLETA DE VENTA","maxLengthCorr": 8}
         ],
         "operacion":[
             { "value":"C1","text":"GRAV. DESTINADAS A  OP. GRAV Y/O EXPORT"},

@@ -35,7 +35,7 @@
         <template #button-content>
           <div class="d-sm-flex d-none user-nav">
             <p class="user-name font-weight-bolder mb-0">
-              John Doe
+              {{ userData.nombre }}
             </p>
             <span class="user-status">Admin</span>
           </div>
@@ -120,6 +120,7 @@ export default {
         { value: '11', text: '202111' },
         { value: '12', text: '202112' },
       ],
+      userData: localStorage.getItem('userData'),
     }
   },
   created() {

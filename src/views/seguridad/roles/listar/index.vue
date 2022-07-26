@@ -25,19 +25,9 @@ export default {
                     selectMode: "single",
                 },
                 fields: [
-                    { key: "row", label: "", sortable: true,combox:false,imput:false  },
-                    { key: "codigo", label: "Codigo", sortable: true,combox:false,imput:true  },
-                    { key: "nombre", label: "Nombre", sortable: true,combox:false,imput:true  },
-                    { key: "categoria.nombre", label: "Categoria", sortable: true,combox:true,
-                        url:"/api/categoria/lista",value:"codigo",text:"nombre", datoCombox:[], 
-                        arrayInicial:[{"nombre":"TODOS","codigo":" "}],imput:false },
-                    {
-                        key: "stock",
-                        label: "Stock",
-                        sortable: true,
-                        combox:false,
-                        imput:true 
-                    },
+                    { key: "row", label: "", sortable: true,combox:false,imput:false },
+                    { key: "id", label: "Id", sortable: true,combox:false,imput:false },
+                    { key: "rol", label: "Roles", sortable: true,combox:false,imput:true },                 
                     {
                         key: "actions",
                         label: "Acciones",
@@ -45,16 +35,13 @@ export default {
                         thClass: "text-center",
                         sortable: false,
                         combox:false,
-                        imput:false 
+                        imput:false
                     },
                 ],
                 filters: {
-                    codigo: "",
-                    nombre: "",
-                    stock: "",
-                    categoria:"",
+                    rol: "",                
                 },
-                urlBack: "/api/producto",
+                urlBack: "/api/rol",
                 items: [
                     {
                         isActive: true,
@@ -84,11 +71,11 @@ export default {
                 edit: {
                     available: true,
                     redirect: true,
-                    ruta: "/inventario/producto/editar/index",
+                    ruta: "/seguridad/roles/editar/index",
                 },
                 delete: {
                     available: true,
-                    ruta: "/api/producto",
+                    ruta: "/api/rol",
                 },
                 options: {
                     responsive: true,
@@ -101,16 +88,7 @@ export default {
     mounted() {
         this.listaCategoria();
     },
-    methods: {
-        async listaCategoria(){
-            let cat = {
-                url: "/api/categoria/lista",
-                method: "GET",
-            };
-            var respCat = await store.dispatch("back/EXECUTE", cat);
-            this.datosCombox = respCat;
-            console.log(this.datosCombox)        
-        },
+    methods: {        
         async importarCsv() {
             let request = {
                 url: "/api/producto/insertArrayProduct/1",
@@ -196,7 +174,7 @@ export default {
             }
         },
         agregarCuenta() {
-            this.$router.push({ name: "inventario-agregar-index" });
+            this.$router.push({ name: "rol-agregar-index" });
         },
     },
 };

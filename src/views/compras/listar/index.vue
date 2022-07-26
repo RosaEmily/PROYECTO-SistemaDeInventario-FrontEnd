@@ -37,23 +37,22 @@
                         selectMode: "single",
                     },
                     fields: [
-                        { key: "row", label: "", sortable: false },
-                        { key: "cut", label: "Cut", sortable: true },
-                        { key: "ca_created_at", label: "Fecha", sortable: true },
-                        { key: "ca_serie", label: "Serie", sortable: true },
-                        { key: "ca_correlativo", label: "Nro", sortable: true },
-                        { key: "ca_doi", label: "RUC", sortable: true },
-                        { key: "ca_razon_social", label: "Razon Social", sortable: true },
-                        { key: "monto_total", label: "Importe", sortable: true },
+                        { key: "row", label: "", sortable: false,imput:false  },
+                        { key: "serie", label: "serie", sortable: true,imput:true  },
+                        { key: "correlativo", label: "correlativo", sortable: true,imput:true  },
+                        { key: "proveedor.nombre", label: "Proveedor", sortable: true,imput:true  },
+                        { key: "create_at", label: "Fecha de Emision", sortable: false,imput:false  },
+                        { key: "total", label: "Importe", sortable: false },
                         {
                             key: "actions",
                             label: "Acciones",
                             tdClass: "text-center",
                             thClass: "text-center",
                             sortable: false,
+                            imput:false 
                         },
                     ],
-                    urlBack: "/api/compra/1/1",
+                    urlBack: "/api/compra",
                     items: [
                         {
                             isActive: true,
@@ -81,7 +80,9 @@
                         },
                     ],
                     filters: {
-                        ca_correlativo: "",
+                        serie: "",
+                        correlativo: "",
+                        proveedor: "",                        
                     },
                     edit: {
                         available: true,
@@ -302,8 +303,7 @@
             },
 
             agregarCuenta(){
-                this.loadDataSource();           
-                this.$refs["modal-plantilla"].show();
+                this.$router.push({ name: "compras-agregar-index" });
             },
 
             limpiarOtrosFiltros(exceptKey){

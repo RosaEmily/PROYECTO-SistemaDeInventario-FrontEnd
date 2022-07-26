@@ -37,6 +37,7 @@ export default {
     },
     mounted() {
         this.loadDataSource();
+        this.loadDataCombox();
     },
     methods: {
         limpiarOtrosFiltros(exceptKey) {
@@ -48,7 +49,6 @@ export default {
         },
 
         filterColumn(field) {
-
             //this.filtro="&doi="+this.paramsGrid.filters["doi"].trim()+"&nombre="+this.paramsGrid.filters["nombre"].trim();
             if (this.paramsGrid.filters[field.key].trim() != "") {
                 this.optionFilter.column = field.key;
@@ -135,12 +135,27 @@ export default {
             this.currentPage = e;
             this.loadDataSource();
         },
-
+ 
         changeSizePage() {
             this.loadDataSource();
         },
 
-        async loadDataSource() {
+        async loadDataCombox(){
+            for(let i=0;i<this.paramsGrid.fields.length;i++){
+                if(this.paramsGrid.fields[i].combox){
+                    let combox = {
+                        url: this.paramsGrid.fields[i].url,
+                        method: "GET",
+                    };
+                    var repcombox = await store.dispatch("back/EXECUTE", combox);
+                    repcombox=this.paramsGrid.fields[i].arrayInicial.concat(repcombox);
+                    this.paramsGrid.filters[this.paramsGrid.fields[i].key]=" ";
+                    this.paramsGrid.fields[i].datoCombox = repcombox;
+                }
+            }
+            //console.log("ASASASA",this.paramsGrid.fields);
+        },
+        async loadDataSource() {            
             var url = this.paramsGrid.urlBack;
             url += "?limit=" + this.showEntrie + "&page=" + this.currentPage;
             // if (this.optionFilter.column) {
@@ -219,13 +234,20 @@ export default {
                         <td v-for="field in paramsGrid.fields" :key="field.key">
                             <input
                                 v-if="
-                                    !field.key.includes('actions') &&
-                                    !field.key.includes('row')
+                                    field.imput
                                 "
                                 class="form-control form-control-sm"
                                 v-model="paramsGrid.filters[field.key]"
                                 @change="filterColumn(field)"
                                 :placeholder="field.label"
+                            />
+                            <b-form-select
+                                v-if="field.combox"
+                                v-model="paramsGrid.filters[field.key]"
+                                :value-field=field.value
+                                :text-field=field.text
+                                :options="field.datoCombox"
+                                @change="filterColumn(field)"
                             />
                         </td>
                     </template>

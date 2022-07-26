@@ -5,6 +5,8 @@ import { BootstrapVue } from "bootstrap-vue";
 import generalTable from "@/components/generalTable.vue";
 import planCuenta from "@/components/plan-cuenta/edicion.vue";
 import store from "@/store/index";
+import jquery from "jquery";
+
 Vue.use(BootstrapVue);
 export default {
     components: {
@@ -25,18 +27,20 @@ export default {
                     selectMode: "single",
                 },
                 fields: [
-                    { key: "row", label: "", sortable: true,combox:false,imput:false  },
-                    { key: "codigo", label: "Codigo", sortable: true,combox:false,imput:true  },
-                    { key: "nombre", label: "Nombre", sortable: true,combox:false,imput:true  },
-                    { key: "categoria.nombre", label: "Categoria", sortable: true,combox:true,
-                        url:"/api/categoria/lista",value:"codigo",text:"nombre", datoCombox:[], 
-                        arrayInicial:[{"nombre":"TODOS","codigo":" "}],imput:false },
+                    { key: "row", label: "", sortable: true,combox:false,imput:false },
+                    { key: "nombre", label: "Nombre", sortable: true,combox:false,imput:true },
+                    { key: "apellido", label: "Apellido", sortable: true,combox:false,imput:true },                  
                     {
-                        key: "stock",
-                        label: "Stock",
+                        key: "email",
+                        label: "Correo",
                         sortable: true,
-                        combox:false,
-                        imput:true 
+                        combox:false,imput:false
+                    },
+                     {
+                        key: "rol.rol",
+                        label: "Rol",
+                        sortable: true,
+                        combox:false,imput:false
                     },
                     {
                         key: "actions",
@@ -44,17 +48,15 @@ export default {
                         tdClass: "text-center",
                         thClass: "text-center",
                         sortable: false,
-                        combox:false,
-                        imput:false 
+                        combox:false,imput:false
                     },
                 ],
                 filters: {
-                    codigo: "",
                     nombre: "",
-                    stock: "",
-                    categoria:"",
+                    apellido: "",
+                    rol:"",
                 },
-                urlBack: "/api/producto",
+                urlBack: "/api/auth",
                 items: [
                     {
                         isActive: true,
@@ -84,11 +86,11 @@ export default {
                 edit: {
                     available: true,
                     redirect: true,
-                    ruta: "/inventario/producto/editar/index",
+                    ruta: "/seguridad/usuarios/editar/index",
                 },
                 delete: {
                     available: true,
-                    ruta: "/api/producto",
+                    ruta: "/api/auth",
                 },
                 options: {
                     responsive: true,
@@ -99,18 +101,14 @@ export default {
         };
     },
     mounted() {
-        this.listaCategoria();
     },
-    methods: {
-        async listaCategoria(){
-            let cat = {
-                url: "/api/categoria/lista",
-                method: "GET",
-            };
-            var respCat = await store.dispatch("back/EXECUTE", cat);
-            this.datosCombox = respCat;
-            console.log(this.datosCombox)        
+    methods: {        
+        exportar(){
+             
         },
+        exportCsv(){
+            this.$refs.table.exportCsv();                
+        }, 
         async importarCsv() {
             let request = {
                 url: "/api/producto/insertArrayProduct/1",
@@ -196,11 +194,12 @@ export default {
             }
         },
         agregarCuenta() {
-            this.$router.push({ name: "inventario-agregar-index" });
+            this.$router.push({ name: "usuario-agregar-index" });
         },
     },
 };
 </script>
+
 
 <template>
     <div>
@@ -248,7 +247,7 @@ export default {
         <b-card>
             <b-row>
                 <b-col md="6" class="">
-                    <b-button variant="success"> Exportar </b-button>
+                    <b-button variant="success" @click="exportar"> Exportar </b-button>
                     <b-button class="ml-25" variant="light" @click="importar">
                         Importar
                     </b-button>

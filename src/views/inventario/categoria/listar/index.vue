@@ -27,15 +27,16 @@
                         selectMode: "single",
                     },
                     fields: [
-                        { key: "row", label: "", sortable: false },
-                        { key: "codigo", label: "Codigo", sortable: true },
-                        { key: "nombre", label: "Nombre", sortable: true },
+                        { key: "row", label: "", sortable: false,imput:false  },
+                        { key: "codigo", label: "Codigo", sortable: true,imput:true  },
+                        { key: "nombre", label: "Nombre", sortable: true,imput:true  },
                         {
                             key: "actions",
                             label: "Acciones",
                             tdClass: "text-center",
                             thClass: "text-center",
                             sortable: false,
+                            imput:false 
                         },
                     ],
                     filters: {

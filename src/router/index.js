@@ -461,32 +461,7 @@ const router = new VueRouter({
                     },
                 ],
             },
-        },
-        {
-            path: "/ventas/plantillas/editar/:id",
-            name: "ventas-plantilla-editar",
-            component: () => import("@/views/ventas/plantilla/editar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Editar Plantilla de Ventas",
-                breadcrumb: [
-                    {
-                        text: "Ventas",
-                        to: { name: "ventas-lista-index" },
-                        active: false,
-                    },
-                    {
-                        text: "Plantillas",
-                        to: { name: "ventas-plantilla" },
-                        active: false,
-                    },
-                    {
-                        text: "Editar",
-                        active: true,
-                    },
-                ],
-            },
-        },
+        },      
         {
             path: "/ventas/clientes/listar/",
             name: "ventas-lista-cliente",
@@ -561,220 +536,7 @@ const router = new VueRouter({
                     },
                 ],
             },
-        },
-        {
-            path: "/contabilidad-configuracion-plan-cuenta",
-            name: "contabilidad-configuracion-plan-cuenta",
-            component: () =>
-                import("@/views/contabilidad/plan-cuentas/listar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Lista de Plan de Cuentas",
-                breadcrumb: [
-                    {
-                        text: "Contabilidad",
-                        active: true,
-                    },
-                    {
-                        text: "Plan de Cuentas",
-                        to: { name: "contabilidad-configuracion-plan-cuenta" },
-                        active: false,
-                    },
-                    {
-                        text: "Listar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/contabilidad-configuracion-tributo",
-            name: "contabilidad-configuracion-tributo",
-            component: () => import("@/views/contabilidad/tributos/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Tributo",
-                breadcrumb: [
-                    {
-                        text: "Contabilidad",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/contabilidad-agregar",
-            name: "contabilidad-agregar",
-            component: () =>
-                import("@/views/contabilidad/plan-cuentas/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Plan de Cuentas",
-                breadcrumb: [
-                    {
-                        text: "Contabilidad",
-                        active: true,
-                    },
-                    {
-                        text: "Plan de Cuentas",
-                        to: { name: "contabilidad-configuracion-plan-cuenta" },
-                        active: false,
-                    },
-                    {
-                        text: "Agregar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/contabilidad/editar/:id",
-            name: "contabilidad-editar-id",
-            component: () =>
-                import("@/views/contabilidad/plan-cuentas/editar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Plan Contable:",
-                breadcrumb: [
-                    {
-                        text: "Contabilidad",
-                        active: true,
-                    },
-                    {
-                        text: "Plan de Cuentas",
-                        to: { name: "contabilidad-configuracion-plan-cuenta" },
-                        active: false,
-                    },
-                    {
-                        text: "Editar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/contabilidad-configuracion-proyecto",
-            name: "contabilidad-configuracion-proyecto",
-            component: () =>
-                import("@/views/contabilidad/proyectos/listar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Proyecto",
-                breadcrumb: [
-                    {
-                        text: "Contabilidad",
-                        active: true,
-                    },
-                    {
-                        text: "Proyecto",
-                        to: { name: "contabilidad-configuracion-proyecto" },
-                        active: false,
-                    },
-                    {
-                        text: "Listar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/contabilidad/proyecto/editar/:id",
-            name: "/contabilidad/proyecto/editar",
-            component: () =>
-                import("@/views/contabilidad/proyectos/editar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Editar Proyecto",
-                breadcrumb: [
-                    {
-                        text: "Contabilidad",
-                        active: true,
-                    },
-                    {
-                        text: "Proyecto",
-                        to: { name: "contabilidad-configuracion-proyecto" },
-                        active: false,
-                    },
-                    {
-                        text: "Editar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/contabilidad/reportes/libro_diario",
-            name: "contabilidad-reportes-libro-diario",
-            component: () =>
-                import("@/views/contabilidad/reportes/libro_diario/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Libro Diario",
-                breadcrumb: [
-                    {
-                        text: "Contabilidad",
-                        active: true,
-                    },
-                    {
-                        text: "Reportes",
-                        active: true,
-                    },
-                    {
-                        text: "Libro Diario",
-                        active: false,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/contabilidad/reportes/libro_mayor",
-            name: "contabilidad-reportes-libro-mayor",
-            component: () =>
-                import("@/views/contabilidad/reportes/libro_mayor/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Libro Mayor",
-                breadcrumb: [
-                    {
-                        text: "Contabilidad",
-                        active: true,
-                    },
-                    {
-                        text: "Reportes",
-                        active: true,
-                    },
-                    {
-                        text: "Libro Mayor",
-                        active: false,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/proyecto-agregar-index",
-            name: "proyecto-agregar-index",
-            component: () =>
-                import("@/views/contabilidad/proyectos/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Agregar Proyecto",
-                breadcrumb: [
-                    {
-                        text: "Contabilidad",
-                        active: true,
-                    },
-                    {
-                        text: "Proyecto",
-                        to: { name: "contabilidad-configuracion-proyecto" },
-                        active: false,
-                    },
-                    {
-                        text: "Agregar",
-                        active: true,
-                    },
-                ],
-            },
-        },
+        },      
         {
             path: "/inventario-lista-index",
             name: "inventario-lista-index",
@@ -848,20 +610,21 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/inventario-plantilla",
-            name: "inventario-plantilla",
-            component: () => import("@/views/inventario/plantilla/index.vue"),
+            path: "/usuario-lista-index",
+            name: "usuario-lista-index",
+            component: () => import("@/views/seguridad/usuarios/listar/index.vue"),
             meta: {
                 middleware: auth,
-                pageTitle: "Plantilla",
+                pageTitle: "Lista de Usuarios",
                 breadcrumb: [
                     {
-                        text: "Inventario",
+                        text: "Seguridad",
                         active: true,
                     },
                     {
-                        text: "Plantilla",
-                        active: true,
+                        text: "Usuarios",
+                        to: { name: "usuario-lista-index" },
+                        active: false,
                     },
                     {
                         text: "Listar",
@@ -870,6 +633,126 @@ const router = new VueRouter({
                 ],
             },
         },
+        {
+            path: "/usuario-agregar-index",
+            name: "usuario-agregar-index",
+            component: () => import("@/views/seguridad/usuarios/agregar/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Agregar Usuario",
+                breadcrumb: [
+                    {
+                        text: "Seguridad",
+                        active: true,
+                    },
+                    {
+                        text: "Usuarios",
+                        to: { name: "usuario-lista-index" },
+                        active: false,
+                    },
+                    {
+                        text: "Agregar",
+                        active: true,
+                    },
+                ],
+            },
+        },
+        {
+            path: "/seguridad/usuarios/editar/index/:id",
+            name: "usuario-editar-index",
+            component: () => import("@/views/seguridad/usuarios/editar/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Editar Usuario",
+                breadcrumb: [
+                    {
+                        text: "Seguridad",
+                        active: true,
+                    },
+                    {
+                        text: "Usuarios",
+                        to: { name: "usuario-lista-index" },
+                        active: false,
+                    },
+                    {
+                        text: "Editar",
+                        active: true,
+                    },
+                ],
+            },
+        },
+        {
+            path: "/rol-lista-index",
+            name: "rol-lista-index",
+            component: () => import("@/views/seguridad/roles/listar/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Lista de Roles",
+                breadcrumb: [
+                    {
+                        text: "Seguridad",
+                        active: true,
+                    },
+                    {
+                        text: "Roles",
+                        to: { name: "rol-lista-index" },
+                        active: false,
+                    },
+                    {
+                        text: "Listar",
+                        active: true,
+                    },
+                ],
+            },
+        },
+        {
+            path: "/rol-agregar-index",
+            name: "rol-agregar-index",
+            component: () => import("@/views/seguridad/roles/agregar/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Agregar Rol",
+                breadcrumb: [
+                    {
+                        text: "Seguridad",
+                        active: true,
+                    },
+                    {
+                        text: "Roles",
+                        to: { name: "rol-lista-index" },
+                        active: false,
+                    },
+                    {
+                        text: "Agregar",
+                        active: true,
+                    },
+                ],
+            },
+        },
+        {
+            path: "/seguridad/roles/editar/index/:id",
+            name: "rol-editar-index",
+            component: () => import("@/views/seguridad/roles/editar/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Editar Usuario",
+                breadcrumb: [
+                    {
+                        text: "Seguridad",
+                        active: true,
+                    },
+                    {
+                        text: "Roles",
+                        to: { name: "rol-lista-index" },
+                        active: false,
+                    },
+                    {
+                        text: "Editar",
+                        active: true,
+                    },
+                ],
+            },
+        },            
         {
             path: "/inventario-categoria-listar-index",
             name: "inventario-categoria-listar-index",
@@ -964,504 +847,7 @@ const router = new VueRouter({
                     },
                 ],
             },
-        },
-        {
-            path: "/caja-pago-cobro-index",
-            name: "caja-pago-cobro-index",
-            component: () => import("@/views/caja/pago_cobro/listar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Lista de Caja",
-                breadcrumb: [
-                    {
-                        text: "Caja",
-                        active: true,
-                    },
-                    {
-                        text: "Cobro y Pago",
-                        active: true,
-                    },
-                    {
-                        text: "Listar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/caja-pago-cobro-agregar",
-            name: "caja-pago-cobro-agregar",
-            component: () => import("@/views/caja/pago_cobro/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Agregar de Caja",
-                breadcrumb: [
-                    {
-                        text: "Caja",
-                        active: true,
-                    },
-                    {
-                        text: "Cobro y Pago",
-                        active: true,
-                    },
-                    {
-                        text: "Agregar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/caja/pago_cobro/ver/:id",
-            name: "caja-pago-cobro-ver",
-            component: () => import("@/views/caja/pago_cobro/ver/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Lista de Caja",
-                breadcrumb: [
-                    {
-                        text: "Caja",
-                        active: true,
-                    },
-                    {
-                        text: "Cobro y Pago",
-                        active: true,
-                    },
-                    {
-                        text: "Ver",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/caja-otro-index",
-            name: "caja-otro-index",
-            component: () => import("@/views/caja/otro/listar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Lista de Caja",
-                breadcrumb: [
-                    {
-                        text: "Caja",
-                        active: true,
-                    },
-                    {
-                        text: "Otro Procesos",
-                        active: true,
-                    },
-                    {
-                        text: "Listar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/caja-otro-agregar",
-            name: "caja-otro-agregar",
-            component: () => import("@/views/caja/otro/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Agregar de Caja",
-                breadcrumb: [
-                    {
-                        text: "Caja",
-                        active: true,
-                    },
-                    {
-                        text: "Otro Procesos",
-                        active: true,
-                    },
-                    {
-                        text: "Agregar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/caja/otro/ver/:id",
-            name: "caja-otro-ver",
-            component: () => import("@/views/caja/otro/ver/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Lista de Caja",
-                breadcrumb: [
-                    {
-                        text: "Caja",
-                        active: true,
-                    },
-                    {
-                        text: "Otro Procesos",
-                        active: true,
-                    },
-                    {
-                        text: "Ver",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/caja-plantilla",
-            name: "caja-plantilla",
-            component: () => import("@/views/caja/plantilla/listar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Plantilla",
-                breadcrumb: [
-                    {
-                        text: "Caja",
-                        active: true,
-                    },
-                    {
-                        text: "Plantilla",
-                        to: { name: "caja-plantilla" },
-                        active: false,
-                    },
-                    {
-                        text: "Listar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/caja-plantilla-agregar",
-            name: "caja-plantilla-agregar",
-            component: () => import("@/views/caja/plantilla/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Plantilla",
-                breadcrumb: [
-                    {
-                        text: "Caja",
-                        active: true,
-                    },
-                    {
-                        text: "Plantilla",
-                        to: { name: "caja-plantilla" },
-                        active: false,
-                    },
-                    {
-                        text: "Agregar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/caja/plantilla/editar/:id",
-            name: "caja-plantilla-editar",
-            component: () => import("@/views/caja/plantilla/editar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Plantilla",
-                breadcrumb: [
-                    {
-                        text: "Caja",
-                        active: true,
-                    },
-                    {
-                        text: "Plantilla",
-                        to: { name: "caja-plantilla" },
-                        active: false,
-                    },
-                    {
-                        text: "Editar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/diario-lista-index",
-            name: "diario-lista-index",
-            component: () => import("@/views/diario/lista/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Lista de Diario",
-                breadcrumb: [
-                    {
-                        text: "Diario",
-                        to: { name: "diario-lista-index" },
-                        active: false,
-                    },  
-                    {
-                        text: "Lista",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/diario-agregar-index",
-            name: "diario-agregar-index",
-            component: () => import("@/views/diario/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Agregar Diario",
-                breadcrumb: [
-                    {
-                        text: "Diario",
-                        to: { name: "diario-lista-index" },
-                        active: false,
-                    },  
-                    {
-                        text: "Agregar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/diario/ver/:id",
-            name: "diario-ver-index",
-            component: () => import("@/views/diario/ver/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Lista de Diario",
-                breadcrumb: [
-                    {
-                        text: "Diario",
-                        to: { name: "diario-lista-index" },
-                        active: false,
-                    },                 
-                    {
-                        text: "Ver",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/diario-plantilla",
-            name: "diario-plantilla",
-            component: () => import("@/views/diario/plantilla/listar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Plantilla",
-                breadcrumb: [
-                    {
-                        text: "Diario",
-                        active: true,
-                    },
-                    {
-                        text: "Plantilla",
-                        to: { name: "diario-plantilla" },
-                        active: false,
-                    },
-                    {
-                        text: "Listar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/diario-plantilla-agregar",
-            name: "diario-plantilla-agregar",
-            component: () => import("@/views/diario/plantilla/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Plantilla",
-                breadcrumb: [
-                    {
-                        text: "Diario",
-                        active: true,
-                    },
-                    {
-                        text: "Plantilla",
-                        to: { name: "diario-plantilla" },
-                        active: false,
-                    },
-                    {
-                        text: "Agregar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/diario/plantilla/editar/:id",
-            name: "diario-plantilla-editar",
-            component: () => import("@/views/diario/plantilla/editar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Plantilla",
-                breadcrumb: [
-                    {
-                        text: "Diario",
-                        active: true,
-                    },
-                    {
-                        text: "Plantilla",
-                        to: { name: "diario-plantilla" },
-                        active: false,
-                    },
-                    {
-                        text: "Editar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/configuracion-sucursal",
-            name: "configuracion-sucursal",
-            component: () => import("@/views/configuracion/sucursal/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Sucursal",
-                breadcrumb: [
-                    {
-                        text: "Configuración",
-                        active: true,
-                    },
-                    {
-                        text: "Sucursal",
-                        to: { name: "configuracion-sucursal" },
-                        active: false,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/configuracion-sucursal-agregar",
-            name: "configuracion-sucursal-agregar",
-            component: () =>
-                import("@/views/configuracion/sucursal/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Sucursal",
-                breadcrumb: [
-                    {
-                        text: "Configuración",
-                        active: true,
-                    },
-                    {
-                        text: "Sucursal",
-                        to: { name: "configuracion-sucursal" },
-                        active: false,
-                    },
-                    {
-                        text: "Agregar",
-                        to: { name: "configuracion-sucursal-agregar" },
-                        active: false,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/configuracion/sucursal/editar/:id",
-            name: "configuracion-sucursal-editar",
-            component: () =>
-                import("@/views/configuracion/sucursal/editar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Sucursal",
-                breadcrumb: [
-                    {
-                        text: "Configuración",
-                        active: true,
-                    },
-                    {
-                        to: { name: "configuracion-sucursal" },
-                        active: false,
-                    },
-                    {
-                        text: "Editar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/configuracion-cuenta-bancaria",
-            name: "configuracion-cuenta-bancaria",
-            component: () => import("@/views/configuracion/cuenta_bancaria/listar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Cuenta Bancaria",
-                breadcrumb: [
-                    {
-                        text: "Configuración",
-                        active: true,
-                    },
-                    {
-                        text: "Cuenta Bancaria",
-                        to: { name: "configuracion-cuenta-bancaria" },
-                        active: false,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/configuracion-cuenta-bancaria-agregar",
-            name: "configuracion-cuenta-bancaria-agregar",
-            component: () =>
-                import("@/views/configuracion/cuenta_bancaria/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Cuenta Bancaria",
-                breadcrumb: [
-                    {
-                        text: "Configuración",
-                        active: true,
-                    },
-                    {
-                        text: "Cuenta Bancaria",
-                        to: { name: "configuracion-cuenta-bancaria" },
-                        active: false,
-                    },
-                    {
-                        text: "Agregar",
-                        active:true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/configuracion/cuenta_bancaria/editar/:id",
-            name: "configuracion-cuenta-bancaria-editar",
-            component: () =>
-                import("@/views/configuracion/cuenta_bancaria/editar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Cuenta Bancaria",
-                breadcrumb: [
-                    {
-                        text: "Configuración",
-                        active: true,
-                    },                   
-                    {
-                        text: "Cuenta Bancaria",
-                        to: { name: "configuracion-cuenta-bancaria" },
-                        active: false,
-                    },
-                    {
-                        text: "Editar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/configuracion-index",
-            name: "configuracion-index",
-            component: () => import("@/views/configuracion/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Configuracion",
-                breadcrumb: [
-                    {
-                        text: "Configuracion",
-                        active: true,
-                    },
-                ],
-            },
-        },
+        },        
         {
             path: "/login",
             name: "login",
