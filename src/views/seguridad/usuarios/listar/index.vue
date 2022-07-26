@@ -5,7 +5,6 @@ import { BootstrapVue } from "bootstrap-vue";
 import generalTable from "@/components/generalTable.vue";
 import planCuenta from "@/components/plan-cuenta/edicion.vue";
 import store from "@/store/index";
-import jquery from "jquery";
 
 Vue.use(BootstrapVue);
 export default {
