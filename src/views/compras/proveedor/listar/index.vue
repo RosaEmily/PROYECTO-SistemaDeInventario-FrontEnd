@@ -5,6 +5,7 @@
     import Vue from "vue";
     import { BootstrapVue } from "bootstrap-vue";
     import generalTable from "@/components/generalTable.vue";
+    import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
     import * as XLSX from 'xlsx/xlsx.mjs';
 import store from '@/store';
 
@@ -22,6 +23,7 @@ import store from '@/store';
                 alertMsg: [],
                 prepareForExport: [],
                 prepareForImport: false,
+                proveedor:[],
                 paramsGrid: {
                     selectOptions: {
                         allowSelect: true,
@@ -115,14 +117,63 @@ import store from '@/store';
                     },
                 };
                 var respRoles = await store.dispatch("back/EXECUTE", request);
-                let data = XLSX.utils.json_to_sheet(respRoles)
+                var respuestas= [];
+                respRoles.forEach(element => {
+                    let respuesta = {
+                        "DOI": element.doi,
+                        "TIPO DOI": element.tipo_doi==1?"RUC":"DNI",
+                        "NOMBRE": element.nombre,
+                        "DIRECCIÓN": element.direccion,
+                        "EMAIL": element.email?element.email:"N/A",
+                        "ESTADO": element.estado?"ACTIVO":"INACTIVO",
+                        "FECHA CREACIÓN": element.created_at,
+                    };
+                    respuestas.push(respuesta);
+                });
+                let data = XLSX.utils.json_to_sheet(respuestas)
                 const workbook = XLSX.utils.book_new()
-                const filename = 'Proveedores'+this.getDateNow()
+                const filename = 'Proveedores' + this.getDateNow()
                 XLSX.utils.book_append_sheet(workbook, data, filename)
                 XLSX.writeFile(workbook, `${filename}.xlsx`)
             },
 
-            importarCsv() {
+            addImport(){
+                this.proveedor.forEach(element => {
+                    this.saveImport(element);
+                });
+                this.$refs["modal-import"].hide();
+                this.proveedor = [];
+            },
+
+            async saveImport(proveedor) {
+                let request = {
+                    url: "/api/proveedor",
+                    method: "POST",
+                    data: proveedor, 
+                };
+                try {
+                    var respRoles = await store.dispatch("back/EXECUTE", request);
+                    if (respRoles == 201) {
+                        this.sendMessage("Proveedor registrado satisfactoriamente","CheckSquareIcon","success");
+                    } else if (respRoles == 400) {
+                        this.sendMessage("El proveedor que intenta registrar ya existe","AlertTriangleIcon","danger");
+                    } else {
+                        this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
+                    }
+                } catch (e) {
+                    console.log(e.message);
+                }
+            },
+
+            sendMessage(title, icon, variant) {
+                this.$toast({
+                    component: ToastificationContent,
+                    props: {
+                        title: title,
+                        icon: icon,
+                        variant: variant,
+                    },
+                });
             },
             
             importar() {
@@ -131,23 +182,45 @@ import store from '@/store';
                 this.$refs["modal-import"].show();
             },
             
-            validarCsv() {
-                let msgError = [];
-                return msgError;
+            validarCsv(parsedCsv) {
+                this.alertMsg = [];
+                var contador=0;
+                console.log("parsed",parsedCsv);
+                if(parsedCsv.length == 0){
+                    this.prepareForImport = false;
+                    return "El archivo no contiene datos";
+                } else if(!(Object.keys(parsedCsv[0])[1]=="doi"&&Object.keys(parsedCsv[0])[2]=="email"&&Object.keys(parsedCsv[0])[3]=="tipoDoi"&&Object.keys(parsedCsv[0])[4]=="direccion")){
+                    this.prepareForImport = false;
+                    return "El archivo no contiene el formato necesario";
+                } else {
+                    parsedCsv.forEach(element => {
+                        if(!(element.doi && element.tipoDoi && element.nombre)){
+                            contador++;
+                        }
+                    });
+                    if(contador>0){
+                        this.prepareForImport = false;
+                        return "El archivo contiene "+ contador +" filas con campos obligatorios vacíos";
+                    } else {
+                        this.prepareForImport = true;
+                        return "El archivo esta listo para importar";
+                    }
+                }
             },
             
             csvJSON(csv) {
                 var lines = csv.split("\n");
                 var result = [];
-                var headers = lines[0].split(",");
-                this.parse_header = lines[0].split(",");
-                lines[0].split(",").forEach((key) => {
+                this.proveedor = [];
+                var headers = lines[0].split(";");
+                this.parse_header = lines[0].split(";");
+                lines[0].split(";").forEach((key) => {
                     this.sortOrders[key] = 1;
                 });
                 lines.map(function (line, indexLine) {
                     if (indexLine < 1) return; // Jump header line
                     var obj = {};
-                    var currentline = line.split(",");
+                    var currentline = line.split(";");
                     headers.map(function (header, indexHeader) {
                         header = header.trim();
                         if (currentline[indexHeader]) {
@@ -161,7 +234,7 @@ import store from '@/store';
                     result.push(obj);
                 });
                 result.pop();
-                console.log("result", result);
+                this.proveedor = result;
                 return result;
             },
             
@@ -173,15 +246,8 @@ import store from '@/store';
                         var csv = event.target.result;
                         this.parse_csv = this.csvJSON(csv);
                         //validar si es error limpiar
-                        let error = this.validarCsv();
-                        if (error != []) {
-                            e.target.value = "";
-                            this.prepareForImport = false;
-                            this.alertMsg = error;
-                        } else {
-                            this.prepareForImport = true;
-                            this.alertMsg = ["Datos listos para la importación"];
-                        }
+                        let error = [this.validarCsv(this.parse_csv)];
+                        this.alertMsg = error;
                     };
                     reader.onerror = function (evt) {
                         if (evt.target.error.name == "NotReadableError") {
@@ -212,7 +278,7 @@ import store from '@/store';
         >
             <b-card-text class="">
                 <b-form-group
-                    label="CSV file to import: *"
+                    label="CSV file to import:"
                     label-for="account-nombres"
                     class="text-center"
                 >
@@ -221,6 +287,7 @@ import store from '@/store';
                         id="csv_file"
                         name="csv_file"
                         class="form-control"
+                        accept="text/csv"
                         @change="loadCSV($event)"
                     />
                 </b-form-group>
@@ -237,8 +304,8 @@ import store from '@/store';
                 </b-alert>
             </b-card-text>
             <div class="text-center">
-                <b-button variant="primary" @click="importarCsv"
-                    >Importar Datos
+                <b-button variant="primary" @click="addImport()" :disabled="!prepareForImport">
+                    Importar Datos
                 </b-button>
             </div>
         </b-modal>
