@@ -11,6 +11,7 @@
     import moment from "moment";
     import {VBPopover, BButton} from 'bootstrap-vue'
     import Ripple from 'vue-ripple-directive'
+    import generalData from "@fakedata";
 
     Vue.use(BootstrapVue);
     
@@ -29,6 +30,7 @@
                 parse_header: [],
                 parse_csv: [],
                 sortOrders: {},
+                tipos_doc: generalData.compra.documentos,
                 alertMsg: [],
                 prepareForImport: false,
                 paramsGrid: {
@@ -161,17 +163,15 @@
                         selectMode: "single",
                     },
                     fields: [
-                        { key: "cut", label: "Cut", sortable: false },
-                        { key: "ca_created_at", label: "Fecha", sortable: false },
-                        { key: "libd_nro_cta", label: "CTA", sortable: false },
-                        { key: "libd_descripcion", label: "Descripcion", sortable: false },
-                        { key: "libd_debe", label: "DEBE MO", sortable: false },
-                        { key: "libd_haber", label: "HABER MO", sortable: false },
-                        { key: "ca_tipo_cambio", label: "TC", sortable: false },
-                        { key: "libd_debe_cambio", label: "DEBE MN", sortable: false },
-                        { key: "libd_haber_cambio", label: "HABER MN", sortable: false },
+                        { key: "serie", label: "Serie", sortable: false },
+                        { key: "correlativo", label: "Correlativo", sortable: false },
+                        { key: "created_at", label: "Fecha de Emision", sortable: false },
+                        { key: "tipodoc", label: "DescDocumento", sortable: false },
+                        { key: "tipo_cambio", label: "TC", sortable: false },
+                        { key: "producto", label: "producto", sortable: false },
+                        { key: "monedaO", label: "MO", sortable: false },
+                        { key: "monedaN", label: "MN", sortable: false },
                     ],
-                    urlBack: "/api/compra/detalleLibro/1/1",
                     items: [
                         {
                             isActive: true,
@@ -198,22 +198,6 @@
                             last_name: "Carney",
                         },
                     ],
-                    filters: {
-                        ca_correlativo: "",
-                    },
-                    edit: {
-                        available: true,
-                        redirect: true,
-                        ruta: "/compras/editar",
-                    },
-                    delete: {
-                        available: true,
-                        ruta: "/api/compra",
-                    },
-                    options: {
-                        responsive: true,
-                        primaryKey: "id",
-                    },
                     pagination: true,
                 },            
             };
@@ -353,18 +337,13 @@
                 var respRoles = await store.dispatch("back/EXECUTE", request);
                 this.dataSource = [{"id": 0, "pl_glosa": "Nota de crédito", "pl_nombre": "Nota de crédito"}].concat(respRoles.rows);
                 this.dataSource=[{"id": null, "pl_glosa": "Sin plantilla", "pl_nombre": "Sin plantilla"}].concat(this.dataSource);
-                console.log("dataSource", this.dataSource);
                 this.totalElements = respRoles.responseFilter.total_rows;
                 this.rows = respRoles.responseFilter.total_rows;
                 this.showEntrie = respRoles.responseFilter.limit;
             },
 
             async loadDataSource2(){
-                var url = this.paramsGridAsientosContables.urlBack;
-                url += "?limit=" + this.showEntrie2 + "&page=" + this.currentPage;
-                if (this.optionFilter.column) {
-                    url += "&contains=" + this.optionFilter.column + "&value=" + this.paramsGridAsientosContables.filters[this.optionFilter.column];
-                }
+                var url = "/api/compra/detalle";               
                 let request = {
                     url: url,
                     method: "GET",
@@ -372,24 +351,38 @@
                         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                     },
                 };
-                /*var respRoles = await store.dispatch("back/EXECUTE", request);
-
-                respRoles.rows.forEach(detalle => {
-                    detalle.libd_debe_cambio=(detalle.libd_debe_cambio).toFixed(2);
-                    detalle.libd_haber_cambio=(detalle.libd_haber_cambio).toFixed(2);
-                    detalle.libd_debe=(detalle.libd_debe).toFixed(2);
-                    detalle.libd_haber=(detalle.libd_haber).toFixed(2);
-                    detalle.ca_tipo_cambio=(detalle.ca_tipo_cambio).toFixed(2);
-                    detalle.ca_created_at=moment(detalle.ca_created_at).format("DD/MM/YYYY");
+                var respRoles = await store.dispatch("back/EXECUTE", request);
+                var totalO=0.00,totalN=0.00;
+                for(let i=0;i<respRoles.length;i++){
+                    for(let j=0;j<respRoles[i].detalle_producto.length;j++){
+                        this.dataSource2.push({
+                            serie: respRoles[i].serie,
+                            correlativo: respRoles[i].correlativo,
+                            created_at: respRoles[i].created_at,
+                            tipodoc:  this.tipos_doc.find((doc) => doc.value == respRoles[i].tipodoc).text,
+                            tipo_cambio: parseFloat(respRoles[i].tipo_cambio).toFixed(2),
+                            producto:respRoles[i].detalle_producto[j].producto.nombre,
+                            monedaO:parseFloat(parseInt(respRoles[i].detalle_producto[j].cantidad)*
+                                    parseFloat(respRoles[i].detalle_producto[j].precio)).toFixed(2),
+                            monedaN:parseFloat(parseInt(respRoles[i].detalle_producto[j].cantidad)*
+                                    parseFloat(respRoles[i].detalle_producto[j].precio)*parseFloat(respRoles[i].tipo_cambio)).toFixed(2),            
+                        });
+                        totalO+=parseFloat(parseInt(respRoles[i].detalle_producto[j].cantidad)*
+                                    parseFloat(respRoles[i].detalle_producto[j].precio));
+                        totalN+=parseFloat(parseInt(respRoles[i].detalle_producto[j].cantidad)*
+                                    parseFloat(respRoles[i].detalle_producto[j].precio)*parseFloat(respRoles[i].tipo_cambio))
+                    }
+                }
+                this.dataSource2.push({
+                    serie: "",
+                    correlativo: "",
+                    created_at: "",
+                    tipodoc:  "",
+                    tipo_cambio: "",
+                    producto:"",
+                    monedaO:parseFloat(totalO).toFixed(2),
+                    monedaN:parseFloat(totalN).toFixed(2),            
                 });
-
-                if(respRoles.totales[0].totalDebe!=null && respRoles.totales[0].totalHaber!=null){
-                    this.dataSource2 = respRoles.rows.concat( [{"cut": "TOTAL", "ca_created_at": "", "libd_nro_cta": ""
-                    , "libd_descripcion": "", "libd_debe": "", "libd_haber": "", "ca_tipo_cambio": ""
-                    , "libd_debe_cambio": respRoles.totales[0].totalDebe.toFixed(2), "libd_haber_cambio": respRoles.totales[0].totalHaber.toFixed(2), "status": "awesome"
-                    }]);
-                    this.showEntrie2 = respRoles.responseFilter.limit;
-                };*/
             },
 
             verElement(item){
@@ -492,7 +485,7 @@
                     </b-row>
                     <generalTable @deletedCompra="loadDataSource2()" :paramsGrid="paramsGrid"> </generalTable>
                 </b-tab>
-                <b-tab title="Diario / Asientos Contables">
+                <b-tab title="Detalle de Productos">
                     <div>
                         <b-row class="mb-1">
                             <b-col sm="9"> </b-col>
@@ -528,87 +521,7 @@
                     </div>
                 </b-tab>
             </b-tabs>
-        </b-card>
-        <b-modal
-            id="modal-plantilla"
-            ref="modal-plantilla"
-            centered
-            title="Lista de Plantillas"
-            ok-only
-            hide-footer
-            size="md"
-        >
-            <b-card-text>
-                <div>
-                    <b-row class="mb-1">
-                        <b-col sm="9"> </b-col>
-                    </b-row>
-                    <b-row>
-                        <b-col cols="12">
-                            <b-table
-                                show-empty
-                                selectable
-                                :select-mode="'single'"
-                                responsive
-                                empty-text="No matching records found"
-                                :items="dataSource"
-                                :fields="paramsGridPlantilla.fields"
-                                v-on:row-selected="onRowSelected"
-                            >
-                                <template slot="top-row">
-                                    <td v-for="field in paramsGridPlantilla.fields" :key="field.key">
-                                        <input
-                                            v-if="!field.key.includes('actions') && !field.key.includes('row')"
-                                            class="form-control form-control-sm"
-                                            v-model="paramsGridPlantilla.filters[field.key]"
-                                            @change="filterColumn(field)"
-                                            :placeholder="field.label"
-                                        />
-                                    </td>
-                                </template>
-                                <template #cell(row)="data">
-                                    <div style="width: 0px !important">
-                                        <b-form-checkbox
-                                            :checked="selected.includes(data.item)"
-                                        ></b-form-checkbox>
-                                    </div>
-                                </template>
-                                <template #cell(actions)="data">
-                                    <div class="text-nowrap">
-                                        <feather-icon
-                                            v-if="paramsGridPlantilla.edit.available"
-                                            :id="`invoice-row-${data.item.id}-preview-icon`"
-                                            icon="ArrowRightCircleIcon"
-                                            size="16"
-                                            class="mx-1"
-                                            @click="verElement(data.item)"
-                                        />
-                                        <b-tooltip
-                                            title="Seleccionar"
-                                            :target="`invoice-row-${data.item.id}-preview-icon`"
-                                        />                                        
-                                    </div>
-                                </template>
-                                <template #cell()="data">
-                                    <span class="text-nowrap">{{ data.value }}</span>
-                                </template>
-                            </b-table>
-                        </b-col>
-                    </b-row>
-                    <b-row v-if="paramsGridPlantilla.pagination">
-                        <b-col sm="12">
-                            <b-pagination
-                                v-model="currentPage"
-                                :per-page="showEntrie"
-                                v-on:change="cambioPagina"
-                                :total-rows="20"
-                                :align="'center'"
-                            />
-                        </b-col>
-                    </b-row>
-                </div>                           
-            </b-card-text>      
-        </b-modal>
+        </b-card>       
     </div>
 </template>
 <style lang="scss">

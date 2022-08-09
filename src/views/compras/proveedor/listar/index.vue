@@ -109,7 +109,7 @@
             },
 
             async exportar(){
-                /*let request = {
+                let request = {
                     url: this.paramsGrid.urlBack+"/all",
                     method: "GET",
                     headers: {
@@ -134,7 +134,7 @@
                 const workbook = XLSX.utils.book_new()
                 const filename = 'Proveedores' + this.getDateNow()
                 XLSX.utils.book_append_sheet(workbook, data, filename)
-                XLSX.writeFile(workbook, `${filename}.xlsx`)*/
+                XLSX.writeFile(workbook, `${filename}.xlsx`)
             },
 
             addImport(){
@@ -143,6 +143,7 @@
                 });
                 this.$refs["modal-import"].hide();
                 this.proveedor = [];
+                this.$refs.generalTable.loadDataSource();
             },
 
             async saveImport(proveedor) {
@@ -253,11 +254,12 @@
                         if (evt.target.error.name == "NotReadableError") {
                             alert("Canno't read file !");
                         }
-                    };
+                    };                              
                 } else {
                     alert("FileReader are not supported in this browser.");
                 }
             },
+
             
             agregarCuenta() {
                 this.$router.push({ name: "compras-proveedor-agregar" });
@@ -272,7 +274,7 @@
             title="Importación de datos"
             ok-only
             hide-footer
-            id="modal-import"
+            id="modal-import" 
             ref="modal-import"
             size="md"
         >
@@ -321,9 +323,9 @@
                     <b-button variant="primary" @click="agregarCuenta">
                         Agregar Elemento
                     </b-button>
-                </b-col>
+                </b-col>               
             </b-row>
-            <generalTable :paramsGrid="paramsGrid"> </generalTable>
+            <generalTable ref="generalTable" :paramsGrid="paramsGrid"> </generalTable>
         </b-card>
     </div>
 </template>

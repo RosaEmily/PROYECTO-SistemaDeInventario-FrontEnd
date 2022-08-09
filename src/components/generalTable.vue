@@ -155,7 +155,8 @@ export default {
             }
             //console.log("ASASASA",this.paramsGrid.fields);
         },
-        async loadDataSource() {            
+        async loadDataSource() {
+            //console.log("passsoooooooooooooooooo");      
             var url = this.paramsGrid.urlBack;
             url += "?limit=" + this.showEntrie + "&page=" + this.currentPage;
             // if (this.optionFilter.column) {
@@ -190,7 +191,6 @@ export default {
                     }
                 });
             });
-
 
             this.dataSource = respRoles.rows;
             this.totalElements = respRoles.responseFilter.total_rows;
