@@ -51,13 +51,13 @@
                         doi: "", 
                         nombre: "",                    
                     },
-                    urlBack: "/api/notaCredito",
+                    urlBack: "/api/notaCredito/compra",
                     edit: {
                         available: false,
                     },
                     delete: {
                         available: true,
-                        ruta: "/api/notaCredito",
+                        ruta: "/api/notaCredito/compra",
                     },
                     options: {
                         responsive: true,

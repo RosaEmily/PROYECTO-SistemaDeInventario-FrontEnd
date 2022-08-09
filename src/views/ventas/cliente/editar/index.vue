@@ -32,15 +32,7 @@
                                             "
                                             placeholder="Ingrese documento"
                                             readonly
-                                        />
-                                        <b-input-group-append>
-                                            <b-button
-                                                variant="outline-primary"
-                                                @click="validarDocumento"
-                                            >
-                                                Consultar
-                                            </b-button>
-                                        </b-input-group-append>
+                                        />                                       
                                     </b-input-group>
                                     <small class="text-danger">{{
                                         errors[0]
@@ -67,27 +59,7 @@
                                     }}</small>
                                 </validation-provider>
                             </b-form-group>
-                        </b-col>
-                        <b-col v-if="customerData.tipoDoi == '02'" sm="6">
-                            <b-form-group label="Apellido" >
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Apellido"
-                                    rules="required"
-                                >
-                                    <b-form-input
-                                        v-model="customerData.apellido"
-                                        :state="
-                                            errors.length > 0 ? false : null
-                                        "
-                                        placeholder="Apellido"
-                                    />
-                                    <small class="text-danger">{{
-                                        errors[0]
-                                    }}</small>
-                                </validation-provider>
-                            </b-form-group>
-                        </b-col>
+                        </b-col>                        
                         <b-col sm="6">
                             <b-form-group label="Dirección: " >
                                 <b-form-input
@@ -184,7 +156,6 @@
                 tipos: generalData.persona.documentos,
                 customerData: {
                     nombre: "",
-                    apellido: "",
                     doi: "",
                     direccion: "",
                     email: "",
@@ -223,8 +194,7 @@
                     axios.get(API_PERU_URL + "dni/" + this.customerData.doi + "?api_token=" + API_PERU_TOKEN)
                     .then((result) => {
                             if (result.data.success) {
-                                this.customerData.nombre = result.data.data.nombres;
-                                this.customerData.apellido = result.data.data.apellido_paterno + " " + result.data.data.apellido_materno;
+                                this.customerData.nombre =result.data.data.apellido_paterno + " " + result.data.data.apellido_materno+" "+ result.data.data.nombres;
                                 this.customerData.direccion = result.data.data.direccion_completa;
                             } else {
                                 this.sendMessage("Ocurrió un error","AlertTriangleIcon","danger");

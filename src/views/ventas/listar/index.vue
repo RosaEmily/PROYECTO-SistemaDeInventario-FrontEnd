@@ -7,10 +7,11 @@
     import store from "@/store/index";
     import generalTable from "@/components/generalTable.vue";
     import { concat } from 'postcss-rtl/lib/affected-props';
-    import { VBPopover,BTable } from 'bootstrap-vue'
+    import { BTable } from 'bootstrap-vue'
     import moment from "moment";
+    import {VBPopover, BButton} from 'bootstrap-vue'
     import Ripple from 'vue-ripple-directive'
-
+    import generalData from "@fakedata";
 
     Vue.use(BootstrapVue);
     
@@ -29,6 +30,7 @@
                 parse_header: [],
                 parse_csv: [],
                 sortOrders: {},
+                tipos_doc: generalData.compra.documentos,
                 alertMsg: [],
                 prepareForImport: false,
                 paramsGrid: {
@@ -37,23 +39,22 @@
                         selectMode: "single",
                     },
                     fields: [
-                        { key: "row", label: "", sortable: false },
-                        { key: "cut", label: "Cut", sortable: true },
-                        { key: "ca_created_at", label: "Fecha", sortable: true },
-                        { key: "ca_serie", label: "Serie", sortable: true },
-                        { key: "ca_correlativo", label: "Nro", sortable: true },
-                        { key: "ca_doi", label: "RUC", sortable: true },
-                        { key: "ca_razon_social", label: "Razon Social", sortable: true },
-                        { key: "monto_total", label: "Importe", sortable: true },
+                        { key: "row", label: "", sortable: false,imput:false  },
+                        { key: "serie", label: "serie", sortable: true,imput:true  },
+                        { key: "correlativo", label: "correlativo", sortable: true,imput:true  },
+                        { key: "cliente.nombre", label: "Cliente", sortable: true,imput:true  },
+                        { key: "created_at", label: "Fecha de Emision", sortable: false,imput:false  },
+                        { key: "total", label: "Importe", sortable: false },
                         {
                             key: "actions",
                             label: "Acciones",
                             tdClass: "text-center",
                             thClass: "text-center",
                             sortable: false,
+                            imput:false 
                         },
                     ],
-                    urlBack: "/api/venta/1/1",
+                    urlBack: "/api/venta",
                     items: [
                         {
                             isActive: true,
@@ -81,7 +82,9 @@
                         },
                     ],
                     filters: {
-                        ca_correlativo: "",
+                        serie: "",
+                        correlativo: "",
+                        proveedor: "",                        
                     },
                     edit: {
                         available: true,
@@ -97,36 +100,7 @@
                         primaryKey: "id",
                     },
                     pagination: true,
-                },
-                paramsGridPlantilla: {
-                    selectOptions: {
-                        allowSelect: true,
-                        selectMode: "single",
-                    },
-                    fields: [
-                        { key: "pl_nombre", label: "Nombre", sortable: true },
-                        { key: "actions", label: "Acciones", tdClass: "text-center", thClass: "text-center", sortable: false },
-                    ],
-                    filters: {
-                        pl_nombre: "",
-                        pl_glosa: "",
-                    },
-                    urlBack: "/api/plantilla/1/MV",
-                    edit: {
-                        available: true,
-                        redirect: true,
-                        ruta: "/compras/plantillas/editar",
-                    },
-                    delete: {
-                        available: true,
-                        ruta: "/api/plantilla",
-                    },
-                    options: {
-                        responsive: true,
-                        primaryKey: "id",
-                    },
-                    pagination: true,
-                },
+                },                
                 selected: [],
                 currentPage: 1,
                 rows: 0,
@@ -138,39 +112,22 @@
                 dataSource2: [],
                 optionFilter: {
                     column: null,
-                },
-                filters: {
-                    id: "",
-                    tienda: "",
-                    marca: "",
-                    perfil: "",
-                    fechaCreacion: "",
-                    fechaEdit: "",
-                },
-                datosPlantilla: {
-                    emp_id: 1,
-                    pl_nombre: "",
-                    pl_glosa: "",
-                    pl_modulo: "MV",
-                    detalle_plantilla: [],
-                },
+                },                
                 paramsGridAsientosContables: {
                     selectOptions: {
                         allowSelect: true,
                         selectMode: "single",
                     },
                     fields: [
-                        { key: "cut", label: "Cut", sortable: false },
-                        { key: "ca_created_at", label: "Fecha", sortable: false },
-                        { key: "libd_nro_cta", label: "CTA", sortable: false },
-                        { key: "libd_descripcion", label: "Descripcion", sortable: false },
-                        { key: "libd_debe", label: "DEBE MO", sortable: false },
-                        { key: "libd_haber", label: "HABER MO", sortable: false },
-                        { key: "ca_tipo_cambio", label: "TC", sortable: false },
-                        { key: "libd_debe_cambio", label: "DEBE MN", sortable: false },
-                        { key: "libd_haber_cambio", label: "HABER MN", sortable: false },
+                        { key: "serie", label: "Serie", sortable: false },
+                        { key: "correlativo", label: "Correlativo", sortable: false },
+                        { key: "created_at", label: "Fecha de Emision", sortable: false },
+                        { key: "tipodoc", label: "DescDocumento", sortable: false },
+                        { key: "tipo_cambio", label: "TC", sortable: false },
+                        { key: "producto", label: "producto", sortable: false },
+                        { key: "monedaO", label: "MO", sortable: false },
+                        { key: "monedaN", label: "MN", sortable: false },
                     ],
-                    urlBack: "/api/venta/detalleLibro/1/1",
                     items: [
                         {
                             isActive: true,
@@ -197,31 +154,15 @@
                             last_name: "Carney",
                         },
                     ],
-                    filters: {
-                        ca_correlativo: "",
-                    },
-                    edit: {
-                        available: true,
-                        redirect: true,
-                        ruta: "/ventas/editar",
-                    },
-                    delete: {
-                        available: true,
-                        ruta: "/api/compra",
-                    },
-                    options: {
-                        responsive: true,
-                        primaryKey: "id",
-                    },
                     pagination: true,
-                },
+                },            
             };
         },
         mounted() {
             this.loadDataSource2();
         },
         methods: {
-            rowClass(item) {
+            rowClass(item){
                 try{
                     const colorClass = 'table-primary'
                     /* eslint-disable-next-line consistent-return */
@@ -231,21 +172,21 @@
                 }
             },
 
-            importarCsv() {
+            importarCsv(){
             },
 
-            importar() {
+            importar(){
                 this.alertMsg = [];
                 this.prepareForImport = false;
                 this.$refs["modal-import"].show();
             },
 
-            validarCsv() {
+            validarCsv(){
                 let msgError = [];
                 return msgError;
             },
 
-            csvJSON(csv) {
+            csvJSON(csv){
                 var lines = csv.split("\n");
                 var result = [];
                 var headers = lines[0].split(",");
@@ -269,12 +210,11 @@
                     });
                     result.push(obj);
                 });
-                result.pop();
-                console.log("result", result);
+                result.pop();          
                 return result;
             },
 
-            loadCSV(e) {
+            loadCSV(e){
                 if (window.FileReader) {
                     var reader = new FileReader();
                     reader.readAsText(e.target.files[0]);
@@ -302,12 +242,11 @@
                 }
             },
 
-            agregarCuenta() {
-                this.loadDataSource();           
-                this.$refs["modal-plantilla"].show();
+            agregarCuenta(){
+                this.$router.push({ name: "ventas-agregar-index" });
             },
 
-            limpiarOtrosFiltros(exceptKey) {
+            limpiarOtrosFiltros(exceptKey){
                 for (let i = 0; i < this.paramsGrid.fields.length; i++) {
                     if (this.paramsGrid.fields[i].key != exceptKey) {
                         this.paramsGrid.filters[this.paramsGrid.fields[i].key] = "";
@@ -315,35 +254,21 @@
                 }
             },
 
-            cambioPagina(e) {
+            cambioPagina(e){
                 this.currentPage = e;
                 this.loadDataSource();
             },
 
-            changeSizePage() {
+            changeSizePage(){
                 this.loadDataSource();
             },
 
-            filterColumn(field) {
-                if (this.paramsGridPlantilla.filters[field.key].trim() != "") {
-                    this.optionFilter.column = field.key;
-                    this.limpiarOtrosFiltros(field.key);
-                } else {
-                    this.optionFilter.column = null;
-                }
-                this.loadDataSource();
-            },
-
-            onRowSelected(items) {
+            onRowSelected(items){
                 this.selected = items;
-            },
+            },           
 
-            async loadDataSource() {
-                var url = this.paramsGridPlantilla.urlBack;
-                url += "?limit=" + this.showEntrie + "&page=" + this.currentPage;
-                if (this.optionFilter.column) {
-                    url += "&contains=" + this.optionFilter.column + "&value=" + this.paramsGridPlantilla.filters[this.optionFilter.column];
-                }
+            async loadDataSource2(){
+                var url = "/api/venta/detalle";               
                 let request = {
                     url: url,
                     method: "GET",
@@ -352,55 +277,47 @@
                     },
                 };
                 var respRoles = await store.dispatch("back/EXECUTE", request);
-                this.dataSource = [{"id": 0, "pl_glosa": "Nota de crédito", "pl_nombre": "Nota de crédito"}].concat(respRoles.rows);
-                this.dataSource=[{"id": null, "pl_glosa": "Sin plantilla", "pl_nombre": "Sin plantilla"}].concat(this.dataSource);
-                console.log("dataSource", this.dataSource);
-                this.totalElements = respRoles.responseFilter.total_rows;
-                this.rows = respRoles.responseFilter.total_rows;
-                this.showEntrie = respRoles.responseFilter.limit;
-            },
-
-            async loadDataSource2() {
-                var url = this.paramsGridAsientosContables.urlBack;
-                url += "?limit=" + this.showEntrie2 + "&page=" + this.currentPage;
-                if (this.optionFilter.column) {
-                    url += "&contains=" + this.optionFilter.column + "&value=" + this.paramsGridAsientosContables.filters[this.optionFilter.column];
+                var totalO=0.00,totalN=0.00;
+                for(let i=0;i<respRoles.length;i++){
+                    for(let j=0;j<respRoles[i].detalle_producto.length;j++){
+                        this.dataSource2.push({
+                            serie: respRoles[i].serie,
+                            correlativo: respRoles[i].correlativo,
+                            created_at: respRoles[i].created_at,
+                            tipodoc:  this.tipos_doc.find((doc) => doc.value == respRoles[i].tipodoc).text,
+                            tipo_cambio: parseFloat(respRoles[i].tipo_cambio).toFixed(2),
+                            producto:respRoles[i].detalle_producto[j].producto.nombre,
+                            monedaO:parseFloat(parseInt(respRoles[i].detalle_producto[j].cantidad)*
+                                    parseFloat(respRoles[i].detalle_producto[j].precio)).toFixed(2),
+                            monedaN:parseFloat(parseInt(respRoles[i].detalle_producto[j].cantidad)*
+                                    parseFloat(respRoles[i].detalle_producto[j].precio)*parseFloat(respRoles[i].tipo_cambio)).toFixed(2),            
+                        });
+                        totalO+=parseFloat(parseInt(respRoles[i].detalle_producto[j].cantidad)*
+                                    parseFloat(respRoles[i].detalle_producto[j].precio));
+                        totalN+=parseFloat(parseInt(respRoles[i].detalle_producto[j].cantidad)*
+                                    parseFloat(respRoles[i].detalle_producto[j].precio)*parseFloat(respRoles[i].tipo_cambio))
+                    }
                 }
-                let request = {
-                    url: url,
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    },
-                };
-                var respRoles = await store.dispatch("back/EXECUTE", request);
-
-                respRoles.rows.forEach(detalle => {
-                    detalle.libd_debe_cambio=(detalle.libd_debe_cambio).toFixed(2);
-                    detalle.libd_haber_cambio=(detalle.libd_haber_cambio).toFixed(2);
-                    detalle.libd_debe=(detalle.libd_debe).toFixed(2);
-                    detalle.libd_haber=(detalle.libd_haber).toFixed(2);
-                    detalle.ca_tipo_cambio=(detalle.ca_tipo_cambio).toFixed(2);
-                    detalle.ca_created_at=moment(detalle.ca_created_at).format("DD/MM/YYYY");
+                this.dataSource2.push({
+                    serie: "",
+                    correlativo: "",
+                    created_at: "",
+                    tipodoc:  "",
+                    tipo_cambio: "",
+                    producto:"",
+                    monedaO:parseFloat(totalO).toFixed(2),
+                    monedaN:parseFloat(totalN).toFixed(2),            
                 });
-                
-                if(respRoles.totales[0].totalDebe!=null && respRoles.totales[0].totalHaber!=null){
-                    this.dataSource2 = respRoles.rows.concat( [{"cut": "TOTAL", "ca_created_at": "", "libd_nro_cta": ""
-                    , "libd_descripcion": "", "libd_debe": "", "libd_haber": "", "ca_tipo_cambio": ""
-                    , "libd_debe_cambio": respRoles.totales[0].totalDebe.toFixed(2), "libd_haber_cambio": respRoles.totales[0].totalHaber.toFixed(2), "status": "awesome"
-                    }]);
-                    this.showEntrie2 = respRoles.responseFilter.limit;
-                };
             },
 
             verElement(item){
-                localStorage.setItem("idPlantillaVenta", item.id);
+                localStorage.setItem("idPlantillaCompra", item.id);
                 if(item.id==0){
-                    this.$router.push({ name: "nota-credito-venta-agregar-index" });
+                    this.$router.push({ name: "nota-credito-agregar-index" });
                 }else{
-                    this.$router.push({ name: "ventas-agregar-index" });
+                    this.$router.push({ name: "compras-agregar-index" });
                 }
-            },
+            },       
         },
     };
 </script>
@@ -449,7 +366,7 @@
         </b-modal>
         <b-card>
             <b-tabs>
-                <b-tab active title="Registro General">
+                <b-tab active title="Registro General">                   
                     <b-row>
                         <b-col md="6" class="">
                             <b-button variant="success"> Exportar </b-button>
@@ -485,7 +402,7 @@
                                     </div>
                                 </template>
                                 <div style="text-align: justify;">
-                                    Las ventas con <b>ACCIONES</b> de color <b style="color:rgb(254, 107, 123);">rojo</b> no se pueden <b style="color:rgb(254, 107, 123);"><feather-icon icon="PenToolIcon" /> (editar)</b> ni <b style="color:rgb(254, 107, 123);"><feather-icon icon="Trash2Icon" /> (eliminar)</b> 
+                                    Las compras con <b>ACCIONES</b> de color <b style="color:rgb(254, 107, 123);">rojo</b> no se pueden <b style="color:rgb(254, 107, 123);"><feather-icon icon="PenToolIcon" /> (editar)</b> ni <b style="color:rgb(254, 107, 123);"><feather-icon icon="Trash2Icon" /> (eliminar)</b> 
                                     ya que poseen una nota de crédito asociada.
                                 </div>
                             </b-popover>
@@ -493,7 +410,7 @@
                     </b-row>
                     <generalTable @deletedCompra="loadDataSource2()" :paramsGrid="paramsGrid"> </generalTable>
                 </b-tab>
-                <b-tab title="Diario / Asientos Contables">
+                <b-tab title="Detalle de Productos">
                     <div>
                         <b-row class="mb-1">
                             <b-col sm="9"> </b-col>
@@ -529,87 +446,7 @@
                     </div>
                 </b-tab>
             </b-tabs>
-        </b-card>
-        <b-modal
-            id="modal-plantilla"
-            ref="modal-plantilla"
-            centered
-            title="Lista de Plantillas"
-            ok-only
-            hide-footer
-            size="md"
-        >
-            <b-card-text>
-                <div>
-                    <b-row class="mb-1">
-                        <b-col sm="9"> </b-col>
-                    </b-row>
-                    <b-row>
-                        <b-col cols="12">
-                            <b-table
-                                show-empty
-                                selectable
-                                :select-mode="'single'"
-                                responsive
-                                empty-text="No matching records found"
-                                :items="dataSource"
-                                :fields="paramsGridPlantilla.fields"
-                                v-on:row-selected="onRowSelected"
-                            >
-                                <template slot="top-row">
-                                    <td v-for="field in paramsGridPlantilla.fields" :key="field.key">
-                                        <input
-                                            v-if="!field.key.includes('actions') && !field.key.includes('row')"
-                                            class="form-control form-control-sm"
-                                            v-model="paramsGridPlantilla.filters[field.key]"
-                                            @change="filterColumn(field)"
-                                            :placeholder="field.label"
-                                        />
-                                    </td>
-                                </template>
-                                <template #cell(row)="data">
-                                    <div style="width: 0px !important">
-                                        <b-form-checkbox
-                                            :checked="selected.includes(data.item)"
-                                        ></b-form-checkbox>
-                                    </div>
-                                </template>
-                                <template #cell(actions)="data">
-                                    <div class="text-nowrap">
-                                        <feather-icon
-                                            v-if="paramsGridPlantilla.edit.available"
-                                            :id="`invoice-row-${data.item.id}-preview-icon`"
-                                            icon="ArrowRightCircleIcon"
-                                            size="16"
-                                            class="mx-1"
-                                            @click="verElement(data.item)"
-                                        />
-                                        <b-tooltip
-                                            title="Seleccionar"
-                                            :target="`invoice-row-${data.item.id}-preview-icon`"
-                                        />                                        
-                                    </div>
-                                </template>
-                                <template #cell()="data">
-                                    <span class="text-nowrap">{{ data.value }}</span>
-                                </template>
-                            </b-table>
-                        </b-col>
-                    </b-row>
-                    <b-row v-if="paramsGridPlantilla.pagination">
-                        <b-col sm="12">
-                            <b-pagination
-                                v-model="currentPage"
-                                :per-page="showEntrie"
-                                v-on:change="cambioPagina"
-                                :total-rows="20"
-                                :align="'center'"
-                            />
-                        </b-col>
-                    </b-row>
-                </div>                           
-            </b-card-text>      
-        </b-modal>
+        </b-card>       
     </div>
 </template>
 <style lang="scss">

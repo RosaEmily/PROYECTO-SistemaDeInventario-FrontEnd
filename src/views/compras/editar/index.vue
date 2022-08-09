@@ -640,7 +640,7 @@
                                     size="21"
                                     @input="changeCantidadPrecio()"
                                     @keypress="onlyNumbers($event,item)"
-                                    @keyup="validatStock($event,item),CalcularSubtotal(item)"
+                                    @keyup="CalcularSubtotal(item)"
                                 />
                             </template>
                             <template v-slot:cell(precio)="{ item, field: { key } }">
