@@ -181,7 +181,7 @@ export default {
             };            
             var respRoles = await store.dispatch("back/EXECUTE", request);
 
-            console.log("respuesta", respRoles);
+            //console.log("respuesta", respRoles);
 
             respRoles.rows.forEach(respuesta => {
                 Object.values(respuesta).forEach((elemento, index) => {
@@ -248,6 +248,12 @@ export default {
                                 :text-field=field.text
                                 :options="field.datoCombox"
                                 @change="filterColumn(field)"
+                            />
+                            <b-form-datepicker
+                                v-if="field.fecha"
+                                v-model="paramsGrid.filters[field.key]"
+                                :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+                                locale="es"
                             />
                         </td>
                     </template>

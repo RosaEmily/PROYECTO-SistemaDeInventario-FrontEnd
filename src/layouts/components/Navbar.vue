@@ -35,21 +35,24 @@
         <template #button-content>
           <div class="d-sm-flex d-none user-nav">
             <p class="user-name font-weight-bolder mb-0">
-              {{ userData.nombre }}
+              {{ userDataNombres }}
             </p>
-            <span class="user-status">Admin</span>
+            <span class="user-status">{{ UserDataRol }}</span>
           </div>
           <b-avatar
             size="40"
             variant="light-primary"
             badge
-            :src="require('@/assets/images/avatars/13-small.png')"
+            :src="userDataFoto"
             class="badge-minimal"
             badge-variant="success"
           />
         </template>
 
-        <b-dropdown-item link-class="d-flex align-items-center">
+        <b-dropdown-item
+          link-class="d-flex align-items-center"
+          @click="perfil"
+        >
           <feather-icon
             size="16"
             icon="UserIcon"
@@ -121,6 +124,9 @@ export default {
         { value: '12', text: '202112' },
       ],
       userData: localStorage.getItem('userData'),
+      userDataNombres: localStorage.getItem('UserDataNombres'),
+      UserDataRol: localStorage.getItem('UserDataRol'),
+      userDataFoto: localStorage.getItem('userDataFoto'),
     }
   },
   created() {
@@ -136,6 +142,9 @@ export default {
       localStorage.removeItem('userData')
       // Redirect to login page
       this.$router.push({ name: 'login' })
+    },
+    perfil() {
+      this.$router.push({ name: 'usuario-perfil' })
     },
     currentDate() {
       const current = new Date()

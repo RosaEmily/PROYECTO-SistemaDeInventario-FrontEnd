@@ -195,7 +195,7 @@
                                     <b-input-group>
                                         <b-form-datepicker
                                             id="datepicker-dateformat1"
-                                            v-model="data.create_at"
+                                            v-model="data.created_at"
                                             :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
                                             locale="es"
                                         />
@@ -738,8 +738,9 @@
                     tipo_cambio: 1,
                     serie: "F001",
                     correlativo: "123",
-                    create_at: moment().format("yyyy-MM-DD"),                    
-                    descripcion: "",                  
+                    created_at: moment().format("yyyy-MM-DD"),                    
+                    descripcion: "", 
+                    tipodoc:"",                
                 },
                 entidad_razon_social: "",      
                 fieldsMovimientoKardex:[
@@ -778,7 +779,7 @@
                 this.$refs["modalAgregarProducto"].show(); 
             },
             Guardar(){
-                console.log(this.data);
+                //console.log(this.data);
                 this.saveCompra();                
             },
             Cancelar(){
@@ -819,14 +820,14 @@
                 this.st_nota_credito = false;
                 if (e != null) {
                     this.tipo.desc = e.text;
-                    this.data.tipo_doc = e.value;
+                    this.data.tipodoc = e.value;
                     this.maxLenghtCorr=e.maxLengthCorr;
                     if (e.value== "07"){
                         this.st_nota_credito = true;
                     }
                 } else {
                     this.tipo.desc = "";
-                    this.data.tipo_doc = "";
+                    this.data.tipodoc = "";
                     this.maxLenghtCorr=8;
                 }
                 this.data.correlativo=this.data.correlativo.substring(0,this.maxLenghtCorr);
@@ -921,10 +922,10 @@
             CalcularSubtotal(item){
                 var cantidad =item.cantidad;
                 var precio =item.precio;
-                if(item.cantidad.toString()==''){
+                if(item.cantidad===undefined){
                     cantidad=0;
                 }
-                if(item.precio.toString()==''){
+                if(item.precio===undefined){
                     precio=0.00;
                 }               
                 item.subtotal=parseFloat(parseInt(cantidad)*parseFloat(precio)).toFixed(2);
@@ -968,7 +969,7 @@
             },
             changeItemsProductos(e){                
                 this.data.detalle_producto=[],
-                console.log(e);
+                //onsole.log(" e ->>>> ",e);
                 
                 e.forEach(element => {
                     var codigo=element.codigo,unidad=element.unidad;
@@ -1024,11 +1025,11 @@
                 this.data.detalle_producto.forEach(element => {
                     var cantidad =element.cantidad;
                     var precio =element.precio;
-                    if(element.cantidad.toString()==''){
+                    if(element.cantidad===undefined){
                         cantidad=0;
                     }
 
-                    if(element.precio.toString()==''){
+                    if(element.precio===undefined){
                         precio=0.00;
                     }
                     totalItem+=parseInt(cantidad)*parseFloat(precio);
@@ -1048,7 +1049,7 @@
                         producto:this.productos.find((prod) => prod.id == detalle_producto[i].id)
                     });
                 }
-                console.log(this.data.detalle_producto);
+                //console.log(this.data.detalle_producto);
                 let request= {
                     url:"/api/compra",
                     method:"POST",
@@ -1085,7 +1086,7 @@
                 };
                 try {
                     var respRoles = await store.dispatch("back/EXECUTE", request);
-                    console.log("respuesta", respRoles);
+                    //console.log("respuesta", respRoles);
                     if (respRoles == 201) {
                         this.sendMessage(
                             "Producto registrado satisfactoriamente",

@@ -72,7 +72,7 @@
       @ps-scroll-y="evt => { shallShadowBottom = evt.srcElement.scrollTop > 0 }"
     >
       <vertical-nav-menu-items
-        :items="navMenuItems"
+        :items="navItemsFilter"
         class="navigation navigation-main"
       />
     </vue-perfect-scrollbar>
@@ -107,6 +107,45 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      navItemsFilter: [],
+      pasar: false,
+    }
+  },
+  mounted() {
+    for (let i = 0; i < navMenuItems.length; i += 1) {
+      if (localStorage.getItem('UserDataRol') === 'ADMINISTRADOR') {
+        if (navMenuItems[i].header === 'Módulo Inventario' || navMenuItems[i].header === 'Módulo De Seguridad') {
+          this.navItemsFilter.push(navMenuItems[i])
+          this.pasar = true
+        }
+        if (navMenuItems[i].header === undefined && this.pasar) {
+          this.navItemsFilter.push(navMenuItems[i])
+        }
+        if (navMenuItems[i].header !== undefined && (navMenuItems[i].header !== 'Módulo Inventario'
+                                                    && navMenuItems[i].header !== 'Módulo De Seguridad')) {
+          this.pasar = false
+        }
+        // console.log(this.pasar)
+      }
+      if (localStorage.getItem('UserDataRol') === 'VENDEDOR') {
+        if (navMenuItems[i].header === 'Módulo Ventas' || navMenuItems[i].header === 'Módulo Compras') {
+          this.navItemsFilter.push(navMenuItems[i])
+          this.pasar = true
+        }
+        if (navMenuItems[i].header === undefined && this.pasar) {
+          this.navItemsFilter.push(navMenuItems[i])
+        }
+        if (navMenuItems[i].header !== undefined && (navMenuItems[i].header !== 'Módulo Ventas'
+                                                    && navMenuItems[i].header !== 'Módulo Compras')) {
+          this.pasar = false
+        }
+        // console.log(this.pasar)
+      }
+    }
+    // console.log(this.navItemsFilter)
+  },
   setup(props) {
     const {
       isMouseHovered,
@@ -132,7 +171,6 @@ export default {
 
     // App Name
     const { appName, appLogoImage } = $themeConfig.app
-
     return {
       navMenuItems,
       perfectScrollbarSettings,

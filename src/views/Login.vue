@@ -8,7 +8,7 @@
             <b-card class="mb-0">
                 <b-link class="brand-logo">
                     <!-- <vuexy-logo /> -->
-                    <img src="@/assets/images/pages/logo.png" height="100" />
+                    <img src="@/assets/images/pages/logomatizados.png" height="150" />
 
                     <!-- <h2 class="brand-text text-primary ml-1">
             Vuexy
@@ -16,7 +16,7 @@
                 </b-link>
 
                 <b-card-text class="text-center mb-2">
-                    Bienvenid@ a WS CONTABILIDAD, por favor ingresa con tus
+                    Bienvenid@ a Ferretería y Matizados Tonny 's, por favor ingresa con tus
                     credenciales
                 </b-card-text>
 
@@ -200,9 +200,13 @@ export default {
                             },
                         };
                         var repCorreo = await store.dispatch("back/EXECUTE",requestCorreo);
+                        localStorage.setItem("UserDataNombres", repCorreo.nombre+" "+repCorreo.apellido);
+                        localStorage.setItem("UserDataRol", repCorreo.rol.rol);
+                        localStorage.setItem("userDataEmail", repCorreo.email);
+                        localStorage.setItem("userDataFoto", repCorreo.foto);
                         localStorage.setItem("userData", repCorreo);
                         localStorage.setItem("accessToken","token")
-                        console.log(" USERDATRA ->> ",localStorage.getItem("userData"))
+                     
                         this.$toast({
                             component: ToastificationContent,
                             props: {
@@ -226,6 +230,15 @@ export default {
                             component: ToastificationContent,
                             props: {
                                 title: "Credenciales incorrectas",
+                                icon: "AlertTriangleIcon",
+                                variant: "danger",
+                            },
+                        });
+                    } else if (respRoles == 402)  {
+                        this.$toast({
+                            component: ToastificationContent,
+                            props: {
+                                title: "El usuario no existe",
                                 icon: "AlertTriangleIcon",
                                 variant: "danger",
                             },

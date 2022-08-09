@@ -180,7 +180,6 @@ export default {
             this.roles = repRol;            
         },
         async Guardar() {
-            console.log(this.usuarioData);        
             let request = {
                 url: "/api/auth",
                 method: "POST",

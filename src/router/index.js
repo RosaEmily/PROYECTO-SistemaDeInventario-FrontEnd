@@ -847,7 +847,22 @@ const router = new VueRouter({
                     },
                 ],
             },
-        },        
+        },
+        {
+            path: "/usuario-perfil",
+            name: "usuario-perfil",
+            component: () => import("@/views/seguridad/perfil/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Perfil de Usuario",
+                breadcrumb: [
+                    {
+                        text: "Pefil",
+                        active: true,
+                    },
+                ],
+            },
+        },     
         {
             path: "/login",
             name: "login",

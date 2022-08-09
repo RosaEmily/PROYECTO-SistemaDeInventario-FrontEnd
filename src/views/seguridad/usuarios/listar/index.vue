@@ -39,7 +39,7 @@ export default {
                         key: "rol.rol",
                         label: "Rol",
                         sortable: true,
-                        combox:false,imput:false
+                        combox:false,imput:true
                     },
                     {
                         key: "actions",

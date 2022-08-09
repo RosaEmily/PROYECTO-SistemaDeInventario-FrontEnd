@@ -5,8 +5,7 @@
     import Vue from "vue";
     import { BootstrapVue } from "bootstrap-vue";
     import generalTable from "@/components/generalTable.vue";
-    import * as XLSX from 'xlsx/xlsx.mjs';
-import store from '@/store';
+    import store from '@/store';
 
     Vue.use(BootstrapVue);
 
@@ -107,7 +106,7 @@ import store from '@/store';
             },
 
             async exportar(){
-                let request = {
+                /*let request = {
                     url: this.paramsGrid.urlBack+"/all",
                     method: "GET",
                     headers: {
@@ -119,7 +118,7 @@ import store from '@/store';
                 const workbook = XLSX.utils.book_new()
                 const filename = 'Proveedores'+this.getDateNow()
                 XLSX.utils.book_append_sheet(workbook, data, filename)
-                XLSX.writeFile(workbook, `${filename}.xlsx`)
+                XLSX.writeFile(workbook, `${filename}.xlsx`)*/
             },
 
             importarCsv() {

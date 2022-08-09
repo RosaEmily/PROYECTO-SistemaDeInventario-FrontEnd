@@ -84,10 +84,7 @@ export default {
                 pagination: true,
             },
         };
-    },
-    mounted() {
-        this.listaCategoria();
-    },
+    },    
     methods: {        
         async importarCsv() {
             let request = {

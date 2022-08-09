@@ -41,7 +41,7 @@
                         { key: "serie", label: "serie", sortable: true,imput:true  },
                         { key: "correlativo", label: "correlativo", sortable: true,imput:true  },
                         { key: "proveedor.nombre", label: "Proveedor", sortable: true,imput:true  },
-                        { key: "create_at", label: "Fecha de Emision", sortable: false,imput:false  },
+                        { key: "created_at", label: "Fecha de Emision", sortable: false,imput:false  },
                         { key: "total", label: "Importe", sortable: false },
                         {
                             key: "actions",
@@ -372,7 +372,7 @@
                         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                     },
                 };
-                var respRoles = await store.dispatch("back/EXECUTE", request);
+                /*var respRoles = await store.dispatch("back/EXECUTE", request);
 
                 respRoles.rows.forEach(detalle => {
                     detalle.libd_debe_cambio=(detalle.libd_debe_cambio).toFixed(2);
@@ -389,7 +389,7 @@
                     , "libd_debe_cambio": respRoles.totales[0].totalDebe.toFixed(2), "libd_haber_cambio": respRoles.totales[0].totalHaber.toFixed(2), "status": "awesome"
                     }]);
                     this.showEntrie2 = respRoles.responseFilter.limit;
-                };
+                };*/
             },
 
             verElement(item){
