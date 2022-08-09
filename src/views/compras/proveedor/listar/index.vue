@@ -5,8 +5,9 @@
     import Vue from "vue";
     import { BootstrapVue } from "bootstrap-vue";
     import generalTable from "@/components/generalTable.vue";
+    import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
     import * as XLSX from 'xlsx/xlsx.mjs';
-import store from '@/store';
+    import store from '@/store';
 
     Vue.use(BootstrapVue);
 
