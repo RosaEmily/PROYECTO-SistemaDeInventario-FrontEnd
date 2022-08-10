@@ -862,7 +862,37 @@ const router = new VueRouter({
                     },
                 ],
             },
-        },     
+        },
+        {
+            path: "/reporte1",
+            name: "producto-reporte",
+            component: () => import("@/views/reportes/reporte1/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Reporte1",
+                breadcrumb: [
+                    {
+                        text: "Reporte1",
+                        active: true,
+                    },
+                ],
+            },
+        },
+        {
+            path: "/reporte2",
+            name: "producto-reporte2",
+            component: () => import("@/views/reportes/reporte2/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Reporte2",
+                breadcrumb: [
+                    {
+                        text: "Reporte2",
+                        active: true,
+                    },
+                ],
+            },
+        },      
         {
             path: "/login",
             name: "login",

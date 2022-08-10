@@ -147,5 +147,22 @@ export default [
     {
       name: 'rol-lista-index',
     },
+  },
+  {
+    header: 'Módulo De Reporte',
+  },
+  {
+    title: 'Reporte 1',
+    route:
+    {
+      name: 'producto-reporte',
+    },
+  },
+  {
+    title: 'Reporte 2',
+    route:
+    {
+      name: 'producto-reporte2',
+    },
   } 
 ]

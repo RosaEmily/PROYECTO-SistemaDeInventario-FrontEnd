@@ -143,6 +143,19 @@ export default {
         }
         // console.log(this.pasar)
       }
+      if (localStorage.getItem('UserDataRol') === 'GERENTE') {
+        if (navMenuItems[i].header === 'Módulo De Reporte') {
+          this.navItemsFilter.push(navMenuItems[i])
+          this.pasar = true
+        }
+        if (navMenuItems[i].header === undefined && this.pasar) {
+          this.navItemsFilter.push(navMenuItems[i])
+        }
+        if (navMenuItems[i].header !== undefined && (navMenuItems[i].header !== 'Módulo De Reporte')) {
+          this.pasar = false
+        }
+        // console.log(this.pasar)
+      }
     }
     // console.log(this.navItemsFilter)
   },
