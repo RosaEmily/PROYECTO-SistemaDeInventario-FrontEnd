@@ -50,8 +50,19 @@
                 <canvas id="myChart" width="400" height="400"></canvas>
             </b-col>
             <b-col sm="6"  align="center">
-                <label>CANTIDAD DE PRODUCTOS VENDIDOS POR MES</label>
+                <label>CANTIDAD DE PRODUCTOS VENDIDOS</label>
                 <canvas id="myLine" width="400" height="400"></canvas>
+            </b-col>
+       </b-row>
+       <br>
+       <b-row>
+            <b-col sm="6" align="center">
+                <label>TOP 10 DE LOS PROVEEDORES MAS FRECUENTES</label>
+                <canvas id="myPie" width="400" height="400"></canvas>
+            </b-col>
+            <b-col sm="6"  align="center">
+                <label>TOP 10 DE LOS CLIENTES MAS FRECUENTES</label>
+                <canvas id="myPolar" width="400" height="400"></canvas>
             </b-col>
        </b-row>
     </div>
@@ -83,6 +94,8 @@
                 cantidad: [],
                 graficoChar: null,
                 graficoLine: null,
+                graficoPie: null,
+                graficoPolar: null,
                 anios: [],
                 anio: {
                     value: "",
@@ -173,6 +186,39 @@
                     var cantidad = await store.dispatch("back/EXECUTE", cat);
                     var nombres = await store.dispatch("back/EXECUTE", nom);
                     this.functionChart(nombres,cantidad);
+
+                     /* Grafico PIE */
+                    let P = {
+                        url: "/api/venta/Top10ProveedorAnio/"+this.anio.value,
+                        method: "GET",
+                    };
+                    var PR = await store.dispatch("back/EXECUTE", P);
+                    var arrayDoi=[];
+                    var arrayCantidad=[];
+                    for(let i = 0; i < PR.length; i++){
+                        let arr =  PR[i].split(',');
+                        arrayDoi.push(arr[0]);
+                        arrayCantidad.push(arr[1]);
+                    }
+                    this.functionPie(arrayDoi,arrayCantidad);
+
+                    /* Grafico POLAR */
+                    let C = {
+                        url: "/api/venta/Top10ClienteAnio/"+this.anio.value,
+                        method: "GET",
+                    };
+                    var CL = await store.dispatch("back/EXECUTE", C);
+                    var arrayDoiC=[];
+                    var arrayCantidadC=[];
+                    for(let i = 0; i < CL.length; i++){
+                        let arr =  CL[i].split(',');
+                        arrayDoiC.push(arr[0]);
+                        arrayCantidadC.push(arr[1]);
+                    }
+                    this.functionPolar(arrayDoiC,arrayCantidadC);
+
+
+
                 }else{
                     this.functionMes();
                     this.functionGrafico();
@@ -249,7 +295,36 @@
                 };
                 var cantidadMes = await store.dispatch("back/EXECUTE", catM);
                 var nombresMes = await store.dispatch("back/EXECUTE", nomM);
-                this.functionLine(nombresMes,cantidadMes);
+                this.functionLine(nombresMes,cantidadMes);            
+                /* Grafico PIE */
+                let P = {
+                    url: "/api/venta/Top10Proveedor",
+                    method: "GET",
+                };
+                var PR = await store.dispatch("back/EXECUTE", P);
+                var arrayDoi=[];
+                var arrayCantidad=[];
+                for(let i = 0; i < PR.length; i++){
+                    let arr =  PR[i].split(',');
+                    arrayDoi.push(arr[0]);
+                    arrayCantidad.push(arr[1]);
+                }
+                this.functionPie(arrayDoi,arrayCantidad);
+
+                /* Grafico POLAR */
+                let C = {
+                    url: "/api/venta/Top10Cliente",
+                    method: "GET",
+                };
+                var CL = await store.dispatch("back/EXECUTE", C);
+                var arrayDoiC=[];
+                var arrayCantidadC=[];
+                for(let i = 0; i < CL.length; i++){
+                    let arr =  CL[i].split(',');
+                    arrayDoiC.push(arr[0]);
+                    arrayCantidadC.push(arr[1]);
+                }
+                this.functionPolar(arrayDoiC,arrayCantidadC);
             },
             async functionGraficoParametroMes(){
                 if(this.anio.value!="TODOS" && this.mes.value!="TODOS"){
@@ -278,6 +353,35 @@
                     var cantidad = await store.dispatch("back/EXECUTE", cat);
                     var nombres = await store.dispatch("back/EXECUTE", nom);
                     this.functionChart(nombres,cantidad);
+                    /* Grafico PIE */
+                    let P = {
+                        url: "/api/venta/Top10ProveedorMesAnio/"+this.anio.value+"/"+this.mes.value,
+                        method: "GET",
+                    };
+                    var PR = await store.dispatch("back/EXECUTE", P);
+                    var arrayDoi=[];
+                    var arrayCantidad=[];
+                    for(let i = 0; i < PR.length; i++){
+                        let arr =  PR[i].split(',');
+                        arrayDoi.push(arr[0]);
+                        arrayCantidad.push(arr[1]);
+                    }
+                    this.functionPie(arrayDoi,arrayCantidad);
+
+                    /* Grafico POLAR */
+                    let C = {
+                        url: "/api/venta/Top10ClienteMesAnio/"+this.anio.value+"/"+this.mes.value,
+                        method: "GET",
+                    };
+                    var CL = await store.dispatch("back/EXECUTE", C);
+                    var arrayDoiC=[];
+                    var arrayCantidadC=[];
+                    for(let i = 0; i < CL.length; i++){
+                        let arr =  CL[i].split(',');
+                        arrayDoiC.push(arr[0]);
+                        arrayCantidadC.push(arr[1]);
+                    }
+                    this.functionPolar(arrayDoiC,arrayCantidadC);
                 }else{
                     if(this.mes.value!="TODOS" && this.anio.value==="TODOS"){
                         /* LINE CHART */
@@ -305,6 +409,35 @@
                         var cantidad = await store.dispatch("back/EXECUTE", cat);
                         var nombres = await store.dispatch("back/EXECUTE", nom);
                         this.functionChart(nombres,cantidad);
+                        /* Grafico PIE */
+                        let P = {
+                            url: "/api/venta/Top10ProveedorMes/"+this.mes.value,
+                            method: "GET",
+                        };
+                        var PR = await store.dispatch("back/EXECUTE", P);
+                        var arrayDoi=[];
+                        var arrayCantidad=[];
+                        for(let i = 0; i < PR.length; i++){
+                            let arr =  PR[i].split(',');
+                            arrayDoi.push(arr[0]);
+                            arrayCantidad.push(arr[1]);
+                        }
+                        this.functionPie(arrayDoi,arrayCantidad);
+
+                        /* Grafico POLAR */
+                        let C = {
+                            url: "/api/venta/Top10ClienteMes/"+this.mes.value,
+                            method: "GET",
+                        };
+                        var CL = await store.dispatch("back/EXECUTE", C);
+                        var arrayDoiC=[];
+                        var arrayCantidadC=[];
+                        for(let i = 0; i < CL.length; i++){
+                            let arr =  CL[i].split(',');
+                            arrayDoiC.push(arr[0]);
+                            arrayCantidadC.push(arr[1]);
+                        }
+                        this.functionPolar(arrayDoiC,arrayCantidadC);
                     }else{
                         if(this.mes.value==="TODOS" && this.anio.value!="TODOS"){
                             /** LINE CHART */
@@ -332,6 +465,36 @@
                             var cantidad = await store.dispatch("back/EXECUTE", cat);
                             var nombres = await store.dispatch("back/EXECUTE", nom);
                             this.functionChart(nombres,cantidad);
+
+                             /* Grafico PIE */
+                            let P = {
+                                url: "/api/venta/Top10ProveedorAnio/"+this.anio.value,
+                                method: "GET",
+                            };
+                            var PR = await store.dispatch("back/EXECUTE", P);
+                            var arrayDoi=[];
+                            var arrayCantidad=[];
+                            for(let i = 0; i < PR.length; i++){
+                                let arr =  PR[i].split(',');
+                                arrayDoi.push(arr[0]);
+                                arrayCantidad.push(arr[1]);
+                            }
+                            this.functionPie(arrayDoi,arrayCantidad);
+
+                            /* Grafico POLAR */
+                            let C = {
+                                url: "/api/venta/Top10ClienteAnio/"+this.anio.value,
+                                method: "GET",
+                            };
+                            var CL = await store.dispatch("back/EXECUTE", C);
+                            var arrayDoiC=[];
+                            var arrayCantidadC=[];
+                            for(let i = 0; i < CL.length; i++){
+                                let arr =  CL[i].split(',');
+                                arrayDoiC.push(arr[0]);
+                                arrayCantidadC.push(arr[1]);
+                            }
+                            this.functionPolar(arrayDoiC,arrayCantidadC);
                         }else{
                             this.functionGrafico();          
                         }                      
@@ -395,7 +558,73 @@
                         }
                     }
                 });
-            }         
+            },
+            functionPie(nombres,cantidad){
+               var backgroundColor= [],borderColor=[];
+                if(this.graficoPie!=null){
+                    this.graficoPie.destroy();
+                }
+                for(let i = 0; i < nombres.length; i++){
+                    backgroundColor.push(this.backgroundColor[i]);
+                    borderColor.push(this.borderColor[i]);
+                }
+                this.graficoPie=new Chart(document.getElementById('myPie').getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: nombres,
+                        datasets: [{
+                            label: 'Cantidad',
+                            data: cantidad,
+                            backgroundColor:backgroundColor,
+                            borderColor:borderColor,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                stacked: true
+                            }],
+                            yAxes: [{
+                                stacked: true
+                            }]
+                        }
+                    }
+                });
+            },
+            functionPolar(nombres,cantidad){
+                var backgroundColor= [],borderColor=[];
+                if(this.graficoPolar!=null){
+                    this.graficoPolar.destroy();
+                }
+                for(let i = 0; i < nombres.length; i++){
+                    backgroundColor.push(this.backgroundColor[i]);
+                    borderColor.push(this.borderColor[i]);
+                }
+                this.graficoPolar=new Chart(document.getElementById('myPolar').getContext('2d'), {
+                    type: 'polarArea',
+                    data: {
+                        labels: nombres,
+                        datasets: [{
+                            label: 'Cantidad',
+                            data: cantidad,
+                            backgroundColor:backgroundColor,
+                            borderColor:borderColor,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                stacked: true
+                            }],
+                            yAxes: [{
+                                stacked: true
+                            }]
+                        }
+                    }
+                });
+            }      
         }
     }
 </script>
