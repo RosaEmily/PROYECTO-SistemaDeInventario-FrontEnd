@@ -152,17 +152,17 @@ export default [
     header: 'Módulo De Reporte',
   },
   {
-    title: 'Reporte 1',
+    title: 'Gráficos',
     route:
     {
       name: 'producto-reporte',
     },
   },
-  {
+  /*{
     title: 'Reporte 2',
     route:
     {
       name: 'producto-reporte2',
     },
-  } 
+  } */
 ]

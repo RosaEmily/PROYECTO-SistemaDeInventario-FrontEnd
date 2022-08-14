@@ -864,15 +864,15 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/reporte1",
+            path: "/Graficos",
             name: "producto-reporte",
             component: () => import("@/views/reportes/reporte1/index.vue"),
             meta: {
                 middleware: auth,
-                pageTitle: "Reporte1",
+                pageTitle: "Gráficos",
                 breadcrumb: [
                     {
-                        text: "Reporte1",
+                        text: "Gráficos",
                         active: true,
                     },
                 ],

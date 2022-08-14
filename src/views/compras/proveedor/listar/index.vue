@@ -143,7 +143,6 @@
                 });
                 this.$refs["modal-import"].hide();
                 this.proveedor = [];
-                this.$refs.generalTable.loadDataSource();
             },
 
             async saveImport(proveedor) {
@@ -164,6 +163,7 @@
                 } catch (e) {
                     console.log(e.message);
                 }
+                this.$refs.generalTable.loadDataSource();
             },
 
             sendMessage(title, icon, variant) {
