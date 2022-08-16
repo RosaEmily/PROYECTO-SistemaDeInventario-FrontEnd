@@ -27,8 +27,8 @@ export default {
             ],
             resumen: [
                 { key: "zona", label: "Zona", sortable: false },
-                { key: "elementos", label: "Nro Elementos", sortable: false },
-                { key: "porcentaje_articulos", label: "% Articulos", sortable: false },
+                { key: "elementos", label: "Nro Productos", sortable: false },
+                { key: "porcentaje_articulos", label: "% Productos", sortable: false },
                 { key: "porcentaje_acumulado", label: "% Acumulado", sortable: false },
                 { key: "porcentaje_inversion", label: "% Inversion", sortable: false },
                 { key: "porcentaje_inversion_acumulado", label: "% Inversion Acumulada", sortable: false },
