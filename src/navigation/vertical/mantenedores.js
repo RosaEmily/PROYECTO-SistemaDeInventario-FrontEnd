@@ -171,5 +171,12 @@ export default [
     {
       name: 'producto-reporte3',
     },
+  },
+  {
+    title: 'Análisis ABC',
+    route:
+    {
+      name: 'producto-reporte4',
+    },
   }
 ]

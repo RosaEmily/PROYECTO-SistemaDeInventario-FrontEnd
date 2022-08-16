@@ -907,7 +907,22 @@ const router = new VueRouter({
                     },
                 ],
             },
-        },     
+        },
+        {
+            path: "/reporte4",
+            name: "producto-reporte4",
+            component: () => import("@/views/reportes/reporte4/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Productos",
+                breadcrumb: [
+                    {
+                        text: "Análisis ABC",
+                        active: true,
+                    },
+                ],
+            },
+        },        
         {
             path: "/login",
             name: "login",
