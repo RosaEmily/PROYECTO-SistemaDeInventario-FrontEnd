@@ -6,11 +6,11 @@
         class="ml-25"
         href="https://wssac.com"
         target="_blank"
-      >World System</b-link>
+      >F. M. Tonny's </b-link>
       <span class="d-none d-sm-inline-block">, All rights Reserved</span>
     </span>
 
-    <span class="float-md-right d-none d-md-block">2021
+    <span class="float-md-right d-none d-md-block">{{ new Date().getFullYear() }}
     </span>
   </p>
 </template>

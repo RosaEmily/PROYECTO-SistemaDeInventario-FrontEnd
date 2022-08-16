@@ -46,12 +46,12 @@
        <br>
        <b-row>
             <b-col sm="6" align="center">
-                <label>TOP 10 DE LOS PRODUCTOS MAS VENDIDOS</label>
-                <canvas id="myChart" width="400" height="400"></canvas>
+                <label>CANTIDAD DE PRODUCTOS VENDIDOS</label>
+                <canvas id="myLine" width="400" height="400"></canvas>               
             </b-col>
             <b-col sm="6"  align="center">
-                <label>CANTIDAD DE PRODUCTOS VENDIDOS</label>
-                <canvas id="myLine" width="400" height="400"></canvas>
+                <label>TOP 10 DE LOS PRODUCTOS MAS VENDIDOS</label>
+                <canvas id="myChart" width="400" height="400"></canvas>
             </b-col>
        </b-row>
        <br>

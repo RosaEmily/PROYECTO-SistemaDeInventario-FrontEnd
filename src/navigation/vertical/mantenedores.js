@@ -158,11 +158,18 @@ export default [
       name: 'producto-reporte',
     },
   },
-  /*{
-    title: 'Reporte 2',
+  {
+    title: 'Dashboard',
     route:
     {
       name: 'producto-reporte2',
     },
-  } */
+  },
+  {
+    title: 'P. Reposición',
+    route:
+    {
+      name: 'producto-reporte3',
+    },
+  }
 ]
