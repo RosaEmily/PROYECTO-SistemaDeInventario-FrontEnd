@@ -7,6 +7,8 @@
     import generalTable from "@/components/generalTable.vue";
     import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
     import * as XLSX from 'xlsx/xlsx.mjs';
+    import { jsPDF } from "jspdf";
+    import VueHtml2pdf from 'vue-html2pdf';
     import store from '@/store';
 
     Vue.use(BootstrapVue);
@@ -135,6 +137,12 @@
                 const filename = 'Proveedores' + this.getDateNow()
                 XLSX.utils.book_append_sheet(workbook, data, filename)
                 XLSX.writeFile(workbook, `${filename}.xlsx`)
+            },
+
+            async exportarPDF(){
+                const doc = new jsPDF();
+                doc.text("Hello world!", 10, 10);
+                doc.save("a4.pdf");
             },
 
             addImport(){
@@ -314,10 +322,9 @@
         <b-card>
             <b-row>
                 <b-col md="6" class="">
-                    <b-button variant="success" @click="exportar"> Exportar </b-button>
-                    <b-button class="ml-25" variant="light" @click="importar">
-                        Importar
-                    </b-button>
+                    <b-button variant="light" @click="importar"> Importar Csv </b-button>
+                    <b-button variant="success" class="ml-25" @click="exportar"> Exportar Excel </b-button>
+                    <b-button variant="danger" class="ml-25" @click="exportarPDF"> Exportar Pdf </b-button>
                 </b-col>
                 <b-col md="6" class="text-right">
                     <b-button variant="primary" @click="agregarCuenta">
