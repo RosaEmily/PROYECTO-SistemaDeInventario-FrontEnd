@@ -20,7 +20,7 @@ export default {
                 { key: "nombre", label: "Nombre", sortable: false },
                 { key: "cantidad", label: "Cantidad", sortable: false },
                 { key: "precio", label: "Precio", sortable: false },
-                { key: "inversion", label: "Inversion", sortable: false },
+                { key: "inversion", label: "Ganacia", sortable: false },
                 { key: "acumulado", label: "Acumulado", sortable: false },
                 { key: "porcentaje", label: "Porcentaje", sortable: false },
                 { key: "zona", label: "Zona", sortable: false },
@@ -30,8 +30,8 @@ export default {
                 { key: "elementos", label: "Nro Productos", sortable: false },
                 { key: "porcentaje_articulos", label: "% Productos", sortable: false },
                 { key: "porcentaje_acumulado", label: "% Acumulado", sortable: false },
-                { key: "porcentaje_inversion", label: "% Inversion", sortable: false },
-                { key: "porcentaje_inversion_acumulado", label: "% Inversion Acumulada", sortable: false },
+                { key: "porcentaje_inversion", label: "% Ganacia", sortable: false },
+                { key: "porcentaje_inversion_acumulado", label: "% Ganacia Acumulada", sortable: false },
             ],
             stickyHeader: true,
             selected: [],
@@ -149,7 +149,7 @@ export default {
                 type: 'bar',
                 data: {
                     datasets: [{
-                        label: '% INVERSION ',
+                        label: '% GANACIA ',
                         data: [parseFloat(this.dataResumen[0].porcentaje_inversion),parseFloat(this.dataResumen[1].porcentaje_inversion),
                         parseFloat(this.dataResumen[2].porcentaje_inversion)],
                         backgroundColor:[
@@ -164,7 +164,7 @@ export default {
                         ],
                     }, 
                     {
-                        label: '% INVERSION ACUMULADO',
+                        label: '% GANACIA ACUMULADO',
                         data: [parseFloat(this.dataResumen[0].porcentaje_inversion_acumulado), parseFloat(this.dataResumen[1].porcentaje_inversion_acumulado),
                         parseFloat(this.dataResumen[2].porcentaje_inversion_acumulado)],
                         borderColor: 'rgba(75, 192, 192, 1)',

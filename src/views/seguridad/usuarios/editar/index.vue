@@ -6,7 +6,33 @@
         <b-card>
             <validation-observer ref="simpleRules">
                     <b-form class="ml-1 mr-1 mt-1">
-                        <b-row>                            
+                        <b-row>
+                            <b-col sm="12">
+                                <b-form-group label="Username: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="Username"
+                                        rules="required"
+                                    >
+                                        <b-input-group>
+                                            <b-form-input
+                                                v-model="usuarioData.username"
+                                                type="text"
+                                                :state="
+                                                    errors.length > 0
+                                                        ? false
+                                                        : null
+                                                "
+                                                :readonly="true"
+                                                placeholder="Ingrese username"
+                                            />
+                                        </b-input-group>
+                                        <small class="text-danger">{{
+                                            errors[0]
+                                        }}</small>
+                                    </validation-provider>
+                                </b-form-group>
+                            </b-col>                         
                             <b-col sm="12">
                                 <b-form-group label="Nombre: ">
                                     <validation-provider
@@ -83,11 +109,12 @@
                                         rules="required"
                                     >
                                         <v-select
-                                            v-model="usuarioData.rol"
+                                            v-model="usuarioData.roles"
                                             :dir="'ltr'"
-                                            label="rol"
+                                            label="name"
                                             :value.sync="roles.id"
                                             :options="roles"
+                                            multiple
                                             placeholder="Ingrese rol"
                                         />
                                     <small class="text-danger">{{
@@ -173,12 +200,12 @@ export default {
     data() {
         return {
             usuarioData: {
+                username:"",
                 nombre: "",
                 apellido: "",
                 email: "",
-                rol: null,
-                restablecer:false,
-            },    
+                roles: null,
+            },
             roles: [],
             unidades: generalData.inventario.unidades            
         };
@@ -189,7 +216,6 @@ export default {
     },
     methods: {
         Functionrestablecer(){
-            console.log(this.usuarioData.restablecer);
             if(this.usuarioData.restablecer){
                 this.$swal({
                     title: "¿Está seguro que quieres restablacer contraseña?",
@@ -218,8 +244,16 @@ export default {
                 url: "/api/auth/" + this.$route.params.id,
                 method: "GET",
             };
-            var respRoles = await store.dispatch("back/EXECUTE", request);
+            var respRoles = await store.dispatch("back/EXECUTE", request);            
             this.usuarioData= respRoles;
+            let arregloUnico=[],rolesUnicos=[];
+            for(let i=0; i<respRoles.roles.length;i++){
+                if(!arregloUnico.includes(respRoles.roles[i].id)){
+                    arregloUnico.push(respRoles.roles[i].id)
+                    rolesUnicos.push(respRoles.roles[i])
+                }
+            }
+            this.usuarioData.roles=rolesUnicos;
         }, 
         async getConfiguraciones() {         
             let rol = {
@@ -239,7 +273,7 @@ export default {
             };
             try {
                 var respRoles = await store.dispatch("back/EXECUTE", request);
-                console.log("respuesta", respRoles);
+                console.log("respuesta", this.usuarioData);
                 if (respRoles == 201) {
                     this.sendMessage(
                         "Usuario editado satisfactoriamente",

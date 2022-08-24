@@ -122,6 +122,7 @@
                                                     : null
                                             "
                                             placeholder="Ingrese stock"
+                                            @keypress="onlyNumbers($event)"
                                         />
                                     </b-input-group>
                                     <small class="text-danger">{{
@@ -147,6 +148,7 @@
                                                     : null
                                             "
                                             placeholder="Ingrese Precio"
+                                            @keypress="onlyDecimalNumbers($event)"
                                         />
                                     </b-input-group>
                                     <small class="text-danger">{{
@@ -174,7 +176,7 @@
                         v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                         variant="primary"
                         class="mr-1"
-                        @click="Guardar"
+                        @click="validationForm"
                     >
                         Guardar
                     </b-button>
@@ -260,7 +262,6 @@ export default {
             this.productData= respRoles;         
         },
         async Guardar() {
-            console.log(this.productData);        
             let request = {
                 url: "/api/producto/"+ this.$route.params.id,
                 method: "PUT",
@@ -269,10 +270,9 @@ export default {
             };
             try {
                 var respRoles = await store.dispatch("back/EXECUTE", request);
-                console.log("respuesta", respRoles);
                 if (respRoles == 201) {
                     this.sendMessage(
-                        "Producto registrado satisfactoriamente",
+                        "Producto editado satisfactoriamente",
                         "EditIcon",
                         "success"
                     );
@@ -288,8 +288,14 @@ export default {
         },
         validationForm() {
             this.$refs.simpleRules.validate().then((success) => {
-                if (success) {
-                    this.Guardar();
+                if (success) { 
+                    if(this.productData.stock<=0){
+                        this.sendMessage("El STOCK debe ser MAYOR a 0","AlertTriangleIcon","danger");
+                    }else if(this.productData.precio<=0){
+                        this.sendMessage("El PRECIO debe ser MAYOR a 0","AlertTriangleIcon","danger");
+                    }else{
+                        this.Guardar();
+                    }
                 }
             });
         },
@@ -305,6 +311,18 @@ export default {
                     variant: variant,
                 },
             });
+        },
+        onlyDecimalNumbers(e){
+            if ((e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode == 46) {
+                return true;
+            } else {
+                e.preventDefault();
+            }
+        },
+        onlyNumbers(e){
+            if (e.keyCode < 48 || e.keyCode > 57) {
+                e.preventDefault();
+            }                
         },
     },
 };

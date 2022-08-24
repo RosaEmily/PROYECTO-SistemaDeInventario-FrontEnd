@@ -143,7 +143,7 @@ const router = new VueRouter({
                         to: { name: "nota-credito-compra-lista-index" },
                         active: false,
                     },
-                    {
+                    { 
                         text: "Agregar",
                         active: true,
                     },

@@ -27,6 +27,7 @@ export default {
                 },
                 fields: [
                     { key: "row", label: "", sortable: true,combox:false,imput:false },
+                    { key: "username", label: "Username", sortable: true,combox:false,imput:true },
                     { key: "nombre", label: "Nombre", sortable: true,combox:false,imput:true },
                     { key: "apellido", label: "Apellido", sortable: true,combox:false,imput:true },                  
                     {
@@ -35,12 +36,12 @@ export default {
                         sortable: true,
                         combox:false,imput:false
                     },
-                     {
-                        key: "rol.rol",
+                    /*{
+                        key: "roles.name",
                         label: "Rol",
                         sortable: true,
-                        combox:false,imput:true
-                    },
+                        combox:false,imput:false
+                    },*/
                     {
                         key: "actions",
                         label: "Acciones",
@@ -51,6 +52,7 @@ export default {
                     },
                 ],
                 filters: {
+                    username:"",
                     nombre: "",
                     apellido: "",
                     rol:"",

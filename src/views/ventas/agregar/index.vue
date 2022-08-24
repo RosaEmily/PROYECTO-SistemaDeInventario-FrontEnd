@@ -769,10 +769,22 @@
         },
         methods: {           
             validationFormCompra(){
-                this.$refs.agregarCompraRules.validate().then(success => {              
-
-                     this.Guardar();
-                    
+                this.$refs.agregarCompraRules.validate().then(success => {
+                    if(success){          
+                        for(let i=0;i<this.data.detalle_producto.length;i++){
+                            if(this.data.detalle_producto[i].cantidad<=0){
+                                this.sendMessage("Existe PRODUCTOS con CANTIDAD MENOR O IGUAL a 0",
+                                "AlertTriangleIcon","danger");
+                                return false;
+                            }
+                            if(this.data.detalle_producto[i].precio<=0){
+                                this.sendMessage("Existe PRODUCTOS con PRECIO MENOR O IGUAL a 0",
+                                "AlertTriangleIcon","danger");
+                                return false;
+                            }
+                        }
+                        this.Guardar();
+                    }                 
                 })
             },
             showModalProductoAgregar(){
@@ -1014,7 +1026,7 @@
                             stock: element.stock,
                             subtotal: (parseInt(0)*parseFloat(0)).toFixed(2),
                             precio:0.00,
-                            cantidad:0.00                      
+                            cantidad:0                    
                         });
                     }
                 });

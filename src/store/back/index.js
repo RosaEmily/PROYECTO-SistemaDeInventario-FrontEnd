@@ -12,6 +12,7 @@ export default {
   actions: {
     async EXECUTE({commit},requestOption){
       requestOption.url = "http://localhost:4001"+requestOption.url
+      //requestOption.url = "http://44.192.43.78:4001"+requestOption.url
       var respdata= await axios(requestOption).then((res)=>{
           return res.data
       }).catch(e=>{

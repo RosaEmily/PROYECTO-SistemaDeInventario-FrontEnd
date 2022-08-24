@@ -40,6 +40,7 @@
                     },
                     fields: [
                         { key: "row", label: "", sortable: false,imput:false  },
+                        { key: "desctipo", label: "Documento", sortable: false },
                         { key: "serie", label: "serie", sortable: true,imput:true  },
                         { key: "correlativo", label: "correlativo", sortable: true,imput:true  },
                         { key: "proveedor.nombre", label: "Proveedor", sortable: true,imput:true  },
@@ -84,7 +85,8 @@
                     filters: {
                         serie: "",
                         correlativo: "",
-                        proveedor: "",                        
+                        desctipo: "",
+                        proveedor: "",                       
                     },
                     edit: {
                         available: true,

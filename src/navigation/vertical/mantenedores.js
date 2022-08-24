@@ -33,29 +33,6 @@ export default [
 
   {
     header: 'Módulo Compras',
-    children: [
-      {
-        title: 'Plan de Cuentas',
-        route:
-          {
-            name: 'contabilidad-configuracion-plan-cuenta',
-          },
-      },
-      {
-        title: 'Tributos',
-        route:
-          {
-            name: 'contabilidad-configuracion-tributo',
-          },
-      },
-      {
-        title: 'Proyectos',
-        route:
-          {
-            name: 'contabilidad-configuracion-proyecto',
-          },
-      },
-    ],
   },
   {
     title: 'Listar Compras',

@@ -158,8 +158,8 @@
                                         <b-form-input
                                             v-model="data.serie"
                                             :maxlength="4"
-                                            placeholder="Ingrese serie"
                                             @keypress="onlyNumbersAndLetters($event)"
+                                            :readonly="true"
                                         />
                                     </b-input-group>
                                     <small class="text-danger">{{ errors[0] }}</small>
@@ -177,8 +177,8 @@
                                         <b-form-input
                                             v-model="data.correlativo"
                                             :maxlength="maxLenghtCorr"
-                                            placeholder="Ingrese número"
                                             @keypress="onlyNumbers($event)"
+                                            :readonly="true"
                                         />
                                     </b-input-group>
                                     <small class="text-danger">{{ errors[0] }}</small>
@@ -736,11 +736,12 @@
                     entidad_direccion:"",                  
                     moneda: generalData.contabilidad.monedas[0].value,
                     tipo_cambio: 1,
-                    serie: "F001",
-                    correlativo: "123",
+                    serie: "",
+                    correlativo: "",
                     created_at: moment().format("yyyy-MM-DD"),                    
                     descripcion: "", 
-                    tipodoc:"",                
+                    tipodoc:"", 
+                    desctipo:"",               
                 },
                 entidad_razon_social: "",      
                 fieldsMovimientoKardex:[
@@ -770,10 +771,58 @@
         methods: {           
             validationFormCompra(){
                 this.$refs.agregarCompraRules.validate().then(success => {              
-
-                     this.Guardar();
-                    
+                    if(success){
+                        for(let i=0;i<this.data.detalle_producto.length;i++){
+                            if(this.data.detalle_producto[i].cantidad<=0){
+                                this.sendMessage("Existe PRODUCTOS con CANTIDAD MENOR O IGUAL a 0",
+                                "AlertTriangleIcon","danger");
+                                return false;
+                            }
+                            if(this.data.detalle_producto[i].precio<=0){
+                                this.sendMessage("Existe PRODUCTOS con PRECIO MENOR O IGUAL a 0",
+                                "AlertTriangleIcon","danger");
+                                return false;
+                            }
+                        }
+                        this.Guardar();
+                    }                    
                 })
+            },
+            async getSerieNumero(){
+                let cat = {
+                    url: "/api/compra/list/"+this.data.tipodoc,
+                    method: "GET",
+                };
+                var respCat = await store.dispatch("back/EXECUTE", cat);
+                //65-90
+                //String a ASCCI String.fromCharCode(serie.substring(0,1).charCodeAt(0))
+                //ASCCI a String .charCodeAt(0)
+                var compra=respCat.split(','); 
+                var serieA = compra[0],serie="",letra="",numSerie=1;
+                var correlativoA = compra[1],correlativo="",auxcorrelativo=1;
+                if(respCat===""){
+                    serie="A001";
+                    correlativo="00000001";
+                }else{
+                      if((parseInt(correlativoA)+1)>99999999){
+                        auxcorrelativo=1;
+                        if(parseInt(serieA.substring(1,4))+1>999){
+                            numSerie=1;
+                            letra=String.fromCharCode(serieA.substring(0,1).charCodeAt(0)+1);
+                        }else{
+                            numSerie=parseInt(serieA.substring(1,4))+1;
+                            letra=serieA.substring(0,1);
+                        }
+                        serie=letra+"0".repeat(3-(numSerie).toString().length)
+                            +(numSerie).toString();
+                    }else{
+                        auxcorrelativo=parseInt(correlativoA)+1;
+                        serie=serieA;
+                    }
+                    correlativo="0".repeat(8-(parseInt(auxcorrelativo).toString().length))+parseInt(auxcorrelativo).toString();
+                }              
+                this.data.serie=serie;
+                this.data.correlativo=correlativo;
             },
             showModalProductoAgregar(){
                 this.$refs["modalAgregarProducto"].show(); 
@@ -820,6 +869,7 @@
                 this.st_nota_credito = false;
                 if (e != null) {
                     this.tipo.desc = e.text;
+                    this.data.desctipo=e.text;
                     this.data.tipodoc = e.value;
                     this.maxLenghtCorr=e.maxLengthCorr;
                     if (e.value== "07"){
@@ -828,9 +878,11 @@
                 } else {
                     this.tipo.desc = "";
                     this.data.tipodoc = "";
+                    this.data.desctipo = "";
                     this.maxLenghtCorr=8;
                 }
                 this.data.correlativo=this.data.correlativo.substring(0,this.maxLenghtCorr);
+                this.getSerieNumero();
             },          
             async getConfiguraciones(){                
                 let cat = {
@@ -918,7 +970,6 @@
                     item.cantidad=parseInt(item.stock);
                 }
             },
-
             CalcularSubtotal(item){
                 var cantidad =item.cantidad;
                 var precio =item.precio;
@@ -1013,7 +1064,7 @@
                             stock: element.stock,
                             subtotal: (parseInt(0)*parseFloat(0)).toFixed(2),
                             precio:0.00,
-                            cantidad:0.00                      
+                            cantidad:0           
                         });
                     }
                 });

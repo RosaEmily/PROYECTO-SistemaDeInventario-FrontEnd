@@ -182,7 +182,7 @@ export default {
             };            
             var respRoles = await store.dispatch("back/EXECUTE", request);
 
-            //console.log("respuesta", respRoles);
+            console.log("respuesta", respRoles);
 
             respRoles.rows.forEach(respuesta => {
                 Object.values(respuesta).forEach((elemento, index) => {
@@ -264,82 +264,8 @@ export default {
                             ></b-form-checkbox>
                         </div>
                     </template>
-                    <template #cell(actions)="data">
-                        <div class="text-nowrap" v-if="data.item.nota_credito">
-                            <div class="text-nowrap" v-if="data.item.nota_credito.length==0">
-                                <feather-icon
-                                    v-if="paramsGrid.edit.available"
-                                    :id="`invoice-row-${data.item.id}-preview-icon`"
-                                    icon="PenToolIcon"
-                                    size="16"
-                                    class="mx-1"
-                                    @click="editElement(data.item)"
-                                />
-                                <b-tooltip
-                                    title="Editar"
-                                    :target="`invoice-row-${data.item.id}-preview-icon`"
-                                />
-                                <feather-icon
-                                    v-if="paramsGrid.delete.available"
-                                    :id="`invoice-row-${data.item.id}-delete-icon`"
-                                    icon="Trash2Icon"
-                                    size="16"
-                                    @click="deleteItem(data.item)"
-                                    class="mx-1"
-                                />
-                                <b-tooltip
-                                    title="Eliminar"
-                                    :target="`invoice-row-${data.item.id}-delete-icon`"
-                                />
-                            </div>
-                            <div class="text-nowrap" v-else>
-                                <div class="text-nowrap" v-if="data.item.nota_credito[data.item.nota_credito.length-1].nc_estado=='1'">
-                                    <feather-icon
-                                        v-if="paramsGrid.edit.available"
-                                        :id="`invoice-row-${data.item.id}-preview-icon`"
-                                        icon="PenToolIcon"
-                                        size="16"
-                                        class="mx-1"
-                                        style="color:#Fe6b7b"
-                                    />
-                                    <feather-icon
-                                        v-if="paramsGrid.delete.available"
-                                        :id="`invoice-row-${data.item.id}-delete-icon`"
-                                        icon="Trash2Icon"
-                                        size="16"
-                                        class="mx-1"
-                                        style="color:#Fe6b7b"
-                                    />
-                                </div>
-                                <div class="text-nowrap" v-if="data.item.nota_credito[data.item.nota_credito.length-1].nc_estado=='0'">
-                                    <feather-icon
-                                        v-if="paramsGrid.edit.available"
-                                        :id="`invoice-row-${data.item.id}-preview-icon`"
-                                        icon="PenToolIcon"
-                                        size="16"
-                                        class="mx-1"
-                                        @click="editElement(data.item)"
-                                    />
-                                    <b-tooltip
-                                        title="Editar"
-                                        :target="`invoice-row-${data.item.id}-preview-icon`"
-                                    />
-                                    <feather-icon
-                                        v-if="paramsGrid.delete.available"
-                                        :id="`invoice-row-${data.item.id}-delete-icon`"
-                                        icon="Trash2Icon"
-                                        size="16"
-                                        @click="deleteItem(data.item)"
-                                        class="mx-1"
-                                    />
-                                    <b-tooltip
-                                        title="Eliminar"
-                                        :target="`invoice-row-${data.item.id}-delete-icon`"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-nowrap" v-else>
+                    <template #cell(actions)="data">                       
+                        <div class="text-nowrap">
                             <feather-icon
                                 v-if="paramsGrid.edit.available"
                                 :id="`invoice-row-${data.item.id}-preview-icon`"

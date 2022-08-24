@@ -16,7 +16,7 @@
                                     >
                                         <b-input-group>
                                             <b-form-input
-                                                v-model="rol.rol"
+                                                v-model="rol.name"
                                                 type="text"
                                                 :state="
                                                     errors.length > 0
@@ -31,7 +31,29 @@
                                         }}</small>
                                     </validation-provider>
                                 </b-form-group>
-                            </b-col>                         
+                            </b-col>
+                            <b-col sm="12">
+                                <b-form-group label="Permiso: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="Permiso"
+                                        rules="required"
+                                    >
+                                        <v-select
+                                            v-model="rol.permisos"
+                                            :dir="'ltr'"
+                                            label="permiso"
+                                            :value.sync="permisos.id"
+                                            :options="permisos"
+                                            multiple
+                                            placeholder="Ingrese Permisos"
+                                        />
+                                    <small class="text-danger">{{
+                                        errors[0]
+                                    }}</small>
+                                </validation-provider>
+                                </b-form-group>
+                            </b-col>                                       
                         </b-row>
                     </b-form>
             </validation-observer>
@@ -93,9 +115,11 @@ export default {
     },
     data() {
         return {
+            permisos:[],
             rol: {
-                rol:"",               
-            },            
+                name:"",
+                permisos:[],            
+            },           
         };
     },
     mounted() {
@@ -103,12 +127,19 @@ export default {
     },
     methods: {
         async getInfoByID() {
+            let permiso = {
+                url: "/api/permiso",
+                method: "GET",
+            };
+            var respPer = await store.dispatch("back/EXECUTE", permiso);
+            this.permisos = respPer;
             let request = {
-                url: "/api/compra/" + this.$route.params.id,
+                url: "/api/rol/" + this.$route.params.id,
                 method: "GET",
             };
             var respRoles = await store.dispatch("back/EXECUTE", request);
             this.rol= respRoles;
+        
         },        
         async Guardar() {
             console.log(this.rol);        

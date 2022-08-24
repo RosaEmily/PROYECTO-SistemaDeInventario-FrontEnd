@@ -35,15 +35,15 @@
         <template #button-content>
           <div class="d-sm-flex d-none user-nav">
             <p class="user-name font-weight-bolder mb-0">
-              {{ userDataNombres }}
+              {{ user.nombre +' '+user.apellido }}
             </p>
-            <span class="user-status">{{ UserDataRol }}</span>
+            <span class="user-status">{{ user.email }}</span>
           </div>
           <b-avatar
             size="40"
             variant="light-primary"
             badge
-            :src="userDataFoto"
+            :src="user.foto"
             class="badge-minimal"
             badge-variant="success"
           />
@@ -123,10 +123,7 @@ export default {
         { value: '11', text: '202111' },
         { value: '12', text: '202112' },
       ],
-      userData: localStorage.getItem('userData'),
-      userDataNombres: localStorage.getItem('UserDataNombres'),
-      UserDataRol: localStorage.getItem('UserDataRol'),
-      userDataFoto: localStorage.getItem('userDataFoto'),
+      user: JSON.parse(localStorage.getItem('userData')),
     }
   },
   created() {
@@ -141,7 +138,7 @@ export default {
       // Remove userData from localStorage
       localStorage.removeItem('userData')
       // Redirect to login page
-      this.$router.push({ name: 'login' })
+      this.$router.go({ name: 'login' })
     },
     perfil() {
       this.$router.push({ name: 'usuario-perfil' })

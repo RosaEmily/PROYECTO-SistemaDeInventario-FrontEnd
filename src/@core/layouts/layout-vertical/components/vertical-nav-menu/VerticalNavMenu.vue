@@ -81,12 +81,14 @@
 </template>
 
 <script>
+import store from '@/store/index'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { BLink, BImg } from 'bootstrap-vue'
 import { provide, computed, ref } from '@vue/composition-api'
 import useAppConfig from '@core/app-config/useAppConfig'
 import { $themeConfig } from '@themeConfig'
 import navMenuItems from '@/navigation/vertical'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import VerticalNavMenuItems from './components/vertical-nav-menu-items/VerticalNavMenuItems.vue'
 import useVerticalNavMenu from './useVerticalNavMenu'
 
@@ -111,53 +113,52 @@ export default {
     return {
       navItemsFilter: [],
       pasar: false,
+      permisosA: [],
+      permisosB: [],
     }
   },
   mounted() {
-    for (let i = 0; i < navMenuItems.length; i += 1) {
-      if (localStorage.getItem('UserDataRol') === 'ADMINISTRADOR') {
-        if (navMenuItems[i].header === 'Módulo Inventario' || navMenuItems[i].header === 'Módulo De Seguridad') {
-          this.navItemsFilter.push(navMenuItems[i])
-          this.pasar = true
-        }
-        if (navMenuItems[i].header === undefined && this.pasar) {
-          this.navItemsFilter.push(navMenuItems[i])
-        }
-        if (navMenuItems[i].header !== undefined && (navMenuItems[i].header !== 'Módulo Inventario'
-                                                    && navMenuItems[i].header !== 'Módulo De Seguridad')) {
-          this.pasar = false
-        }
-        // console.log(this.pasar)
+    this.functioasass()
+    setInterval(() => this.function2(), 2000)
+  },
+  methods: {
+    async functioasass() {
+      const permisos = {
+        url: `/api/rol/permisos/${JSON.parse(localStorage.getItem('userData')).id}`,
+        method: 'GET',
       }
-      if (localStorage.getItem('UserDataRol') === 'VENDEDOR') {
-        if (navMenuItems[i].header === 'Módulo Ventas' || navMenuItems[i].header === 'Módulo Compras') {
+      const repermisos = await store.dispatch('back/EXECUTE', permisos)
+      this.permisosA = repermisos
+      for (let i = 0; i < navMenuItems.length; i += 1) {
+        if (navMenuItems[i].header) {
           this.navItemsFilter.push(navMenuItems[i])
-          this.pasar = true
-        }
-        if (navMenuItems[i].header === undefined && this.pasar) {
+        } else if (repermisos.filter(element => element === navMenuItems[i].title).length > 0) {
           this.navItemsFilter.push(navMenuItems[i])
         }
-        if (navMenuItems[i].header !== undefined && (navMenuItems[i].header !== 'Módulo Ventas'
-                                                    && navMenuItems[i].header !== 'Módulo Compras')) {
-          this.pasar = false
-        }
-        // console.log(this.pasar)
       }
-      if (localStorage.getItem('UserDataRol') === 'GERENTE') {
-        if (navMenuItems[i].header === 'Módulo De Reporte') {
-          this.navItemsFilter.push(navMenuItems[i])
-          this.pasar = true
+    },
+    async function2() {
+      if (localStorage.getItem('accessToken')) {
+        const permisos = {
+          url: `/api/rol/permisos/${JSON.parse(localStorage.getItem('userData')).id}`,
+          method: 'GET',
         }
-        if (navMenuItems[i].header === undefined && this.pasar) {
-          this.navItemsFilter.push(navMenuItems[i])
+        this.permisosB = await store.dispatch('back/EXECUTE', permisos)
+        if (JSON.stringify(this.permisosA) !== JSON.stringify(this.permisosB)) {
+          localStorage.removeItem('userData')
+          localStorage.removeItem('accessToken')
+          this.$router.go({ name: 'login' })
+          this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'Sesión expirada',
+              icon: 'AlertTriangleIcon',
+              variant: 'danger',
+            },
+          })
         }
-        if (navMenuItems[i].header !== undefined && (navMenuItems[i].header !== 'Módulo De Reporte')) {
-          this.pasar = false
-        }
-        // console.log(this.pasar)
       }
-    }
-    // console.log(this.navItemsFilter)
+    },
   },
   setup(props) {
     const {

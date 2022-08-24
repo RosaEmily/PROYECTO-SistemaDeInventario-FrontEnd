@@ -101,35 +101,7 @@
                                     <small class="text-danger">{{ errors[0] }}</small>
                                 </validation-provider>
                             </b-form-group>
-                        </b-col>                     
-                        <b-col sm="3">
-                            <b-form-group label="Tipo Doc: ">
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Tipo Doc"
-                                    rules="required"
-                                >
-                                    <b-input-group>
-                                        <v-select
-                                            v-model="tipo.doc"
-                                            label="text"
-                                            style="width: 100%"
-                                            :options="tipos_doc"
-                                            :selectable="tipos_doc => tipos_doc.value !='07'"
-                                            @input="changeValue($event)"
-                                        >
-                                            <template v-slot:selected-option="option">
-                                                {{ option.value }}
-                                            </template>
-                                            <template v-slot:option="option">
-                                                {{ option.value }} - {{ option.text }}
-                                            </template>
-                                        </v-select>
-                                    </b-input-group>
-                                    <small class="text-danger">{{ errors[0] }}</small>
-                                </validation-provider>
-                            </b-form-group>
-                        </b-col>
+                        </b-col>                        
                         <b-col sm="4">
                             <b-form-group label="Descripción Doc: ">
                                 <validation-provider
@@ -159,6 +131,7 @@
                                             v-model="data.serie"
                                             :maxlength="4"
                                             placeholder="Ingrese serie"
+                                            :readonly="true"
                                             @keypress="onlyNumbersAndLetters($event)"
                                         />
                                     </b-input-group>
@@ -178,6 +151,7 @@
                                             v-model="data.correlativo"
                                             :maxlength="maxLenghtCorr"
                                             placeholder="Ingrese número"
+                                            :readonly="true"
                                             @keypress="onlyNumbers($event)"
                                         />
                                     </b-input-group>

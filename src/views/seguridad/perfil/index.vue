@@ -32,6 +32,14 @@
                                     }}</small>
                                 </validation-provider>
                             </b-form-group>
+                            <b-form-group label="Username: " >                               
+                                    <b-form-input
+                                        id="address"
+                                        v-model="usuarioData.username"
+                                        placeholder="username"
+                                        :readonly="true"
+                                    />
+                            </b-form-group>
                              <b-form-group label="Nombre: ">
                                 <validation-provider
                                     #default="{ errors }"
@@ -201,6 +209,7 @@ export default {
                 apellido: "",
                 email: "",
                 password:"",
+                username:"",
                 restablecer:false,
                 foto:"",
             },
@@ -238,7 +247,6 @@ export default {
     methods: {
         Validar(input) {
             var uploadFile = input.target.files[0];
-            console.log(uploadFile.size);
             if (!(/\.(jpg|jpeg|png)$/i).test(uploadFile.name)) {                
                 this.sendMessage(
                     "El archivo a adjuntar no es una imagen de tipo jpg , jpeg o png.",
@@ -267,13 +275,13 @@ export default {
             }     
         },          
         async getInfoByID() {
-            console.log(localStorage.getItem("userDataEmail"));
             let request = {
-                url: "/api/auth/perfil/" + localStorage.getItem("userDataEmail"),
+                url: "/api/auth/perfil/" + JSON.parse(localStorage.getItem('userData')).id,
                 method: "GET",
             };
             var respRoles = await store.dispatch("back/EXECUTE", request);
             this.usuarioData= respRoles;
+            console.log(respRoles);
             this.src=respRoles.foto;          
         },       
         async Guardar() {

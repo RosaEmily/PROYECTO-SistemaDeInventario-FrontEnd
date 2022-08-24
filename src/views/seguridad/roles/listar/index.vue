@@ -27,7 +27,7 @@ export default {
                 fields: [
                     { key: "row", label: "", sortable: true,combox:false,imput:false },
                     { key: "id", label: "Id", sortable: true,combox:false,imput:false },
-                    { key: "rol", label: "Roles", sortable: true,combox:false,imput:true },                 
+                    { key: "name", label: "Roles", sortable: true,combox:false,imput:true },                 
                     {
                         key: "actions",
                         label: "Acciones",
@@ -39,7 +39,7 @@ export default {
                     },
                 ],
                 filters: {
-                    rol: "",                
+                    name: "",                
                 },
                 urlBack: "/api/rol",
                 items: [

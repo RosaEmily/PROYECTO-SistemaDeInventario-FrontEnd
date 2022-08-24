@@ -27,10 +27,10 @@
                 >
                     <b-form class="auth-login-form mt-2" @submit.prevent>
                         <!-- email -->
-                        <b-form-group label-for="email" label="Correo">
+                        <b-form-group label-for="email" label="Username">
                             <validation-provider
                                 #default="{ errors }"
-                                name="Email"
+                                name="username"
                                 rules="required"
                             >
                                 <b-form-input
@@ -38,7 +38,7 @@
                                     v-model="userEmail"
                                     name="login-email"
                                     :state="errors.length > 0 ? false : null"
-                                    placeholder="john@example.com"
+                                    placeholder="username"
                                     autofocus
                                 />
                                 <small class="text-danger">{{
@@ -183,30 +183,17 @@ export default {
             this.$refs.loginValidation.validate().then(async (success) => {
                 if (success) {
                     let request = {
-                        url: "/api/auth/login",
+                        url: "/api/auth/signin",
                         method: "POST",
                         data: {
-                            email: this.userEmail,
+                            username: this.userEmail,
                             password: this.password,
                         },
                     };
                     var respRoles = await store.dispatch("back/EXECUTE",request);
-                    if (respRoles == 200) {                     
-                        let requestCorreo = {
-                            url: "/api/auth/correo",
-                            method: "POST",
-                            data: {
-                                email: this.userEmail,
-                            },
-                        };
-                        var repCorreo = await store.dispatch("back/EXECUTE",requestCorreo);
-                        localStorage.setItem("UserDataNombres", repCorreo.nombre+" "+repCorreo.apellido);
-                        localStorage.setItem("UserDataRol", repCorreo.rol.rol);
-                        localStorage.setItem("userDataEmail", repCorreo.email);
-                        localStorage.setItem("userDataFoto", repCorreo.foto);
-                        localStorage.setItem("userData", repCorreo);
-                        localStorage.setItem("accessToken","token")
-                     
+                    if (respRoles.status == null) {                     
+                        localStorage.setItem('userData', JSON.stringify(respRoles));
+                        localStorage.setItem('accessToken',respRoles.accessToken)               
                         this.$toast({
                             component: ToastificationContent,
                             props: {
@@ -216,7 +203,7 @@ export default {
                             },
                         });
                         router.push({name:"index"})
-                    } else if (respRoles == 403)  {
+                    } else if (respRoles.status == 403)  {
                         this.$toast({
                             component: ToastificationContent,
                             props: {
@@ -225,7 +212,7 @@ export default {
                                 variant: "warning",
                             },
                         });
-                    } else if (respRoles == 401)  {
+                    } else if (respRoles.status == 401)  {
                         this.$toast({
                             component: ToastificationContent,
                             props: {
@@ -234,7 +221,7 @@ export default {
                                 variant: "danger",
                             },
                         });
-                    } else if (respRoles == 402)  {
+                    } else if (respRoles.status == 402)  {
                         this.$toast({
                             component: ToastificationContent,
                             props: {

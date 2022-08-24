@@ -6,7 +6,32 @@
         <b-card>
             <validation-observer ref="simpleRules">
                     <b-form class="ml-1 mr-1 mt-1">
-                        <b-row>                            
+                        <b-row>
+                            <b-col sm="12">
+                                <b-form-group label="Username: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="Username"
+                                        rules="required"
+                                    >
+                                        <b-input-group>
+                                            <b-form-input
+                                                v-model="usuarioData.username"
+                                                type="text"
+                                                :state="
+                                                    errors.length > 0
+                                                        ? false
+                                                        : null
+                                                "
+                                                placeholder="Ingrese username"
+                                            />
+                                        </b-input-group>
+                                        <small class="text-danger">{{
+                                            errors[0]
+                                        }}</small>
+                                    </validation-provider>
+                                </b-form-group>
+                            </b-col>                        
                             <b-col sm="12">
                                 <b-form-group label="Nombre: ">
                                     <validation-provider
@@ -83,11 +108,12 @@
                                         rules="required"
                                     >
                                         <v-select
-                                            v-model="usuarioData.rol"
+                                            v-model="usuarioData.role"
                                             :dir="'ltr'"
-                                            label="rol"
+                                            label="name"
                                             :value.sync="roles.id"
                                             :options="roles"
+                                            multiple
                                             placeholder="Ingrese rol"
                                         />
                                     <small class="text-danger">{{
@@ -158,10 +184,11 @@ export default {
     data() {
         return {
             usuarioData: {
+                username:"",
                 nombre: "",
                 apellido: "",
                 email: "",
-                rol: null,
+                role: null,
             },
             roles: [],
             unidades: generalData.inventario.unidades            
@@ -177,18 +204,17 @@ export default {
                 method: "GET",
             };
             var repRol = await store.dispatch("back/EXECUTE", rol);
-            this.roles = repRol;            
+            this.roles = repRol;
         },
         async Guardar() {
             let request = {
-                url: "/api/auth",
+                url: "/api/auth/signup",
                 method: "POST",
                 // data:this.usuarioData
                 data: this.usuarioData,
             };
             try {
                 var respRoles = await store.dispatch("back/EXECUTE", request);
-                console.log("respuesta", respRoles);
                 if (respRoles == 201) {
                     this.sendMessage(
                         "Usuario registrado satisfactoriamente",
@@ -197,7 +223,9 @@ export default {
                     );
                     this.$router.push({ name: "usuario-lista-index" });
                 } else if (respRoles == 400) {
-                    this.sendMessage("El usuario que quiere registrar ya existe", "AlertTriangleIcon", "danger");
+                    this.sendMessage("El username que quiere registrar ya existe", "AlertTriangleIcon", "danger");
+                } else if (respRoles == 401) {
+                    this.sendMessage("El correo que quiere registrar ya existe", "AlertTriangleIcon", "danger");
                 } else {
                     this.sendMessage("Error de servidor", "AlertTriangleIcon", "danger");
                 }
