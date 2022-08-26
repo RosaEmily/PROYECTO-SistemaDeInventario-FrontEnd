@@ -381,7 +381,7 @@ const router = new VueRouter({
                         active: false,
                     },
                     {
-                        text: "Agregar",
+                        text: "Listar",
                         active: true,
                     },
                 ],

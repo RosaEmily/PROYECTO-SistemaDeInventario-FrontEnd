@@ -101,35 +101,7 @@
                                     <small class="text-danger">{{ errors[0] }}</small>
                                 </validation-provider>
                             </b-form-group>
-                        </b-col>                     
-                        <b-col sm="3">
-                            <b-form-group label="Tipo Doc: ">
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Tipo Doc"
-                                    rules="required"
-                                >
-                                    <b-input-group>
-                                        <v-select
-                                            v-model="tipo.doc"
-                                            label="text"
-                                            style="width: 100%"
-                                            :options="tipos_doc"
-                                            :selectable="tipos_doc => tipos_doc.value !='07'"
-                                            @input="changeValue($event)"
-                                        >
-                                            <template v-slot:selected-option="option">
-                                                {{ option.value }}
-                                            </template>
-                                            <template v-slot:option="option">
-                                                {{ option.value }} - {{ option.text }}
-                                            </template>
-                                        </v-select>
-                                    </b-input-group>
-                                    <small class="text-danger">{{ errors[0] }}</small>
-                                </validation-provider>
-                            </b-form-group>
-                        </b-col>
+                        </b-col>                      
                         <b-col sm="4">
                             <b-form-group label="Descripción Doc: ">
                                 <validation-provider
@@ -158,7 +130,7 @@
                                         <b-form-input
                                             v-model="data.serie"
                                             :maxlength="4"
-                                            placeholder="Ingrese serie"
+                                            :readonly="true"
                                             @keypress="onlyNumbersAndLetters($event)"
                                         />
                                     </b-input-group>
@@ -177,7 +149,7 @@
                                         <b-form-input
                                             v-model="data.correlativo"
                                             :maxlength="maxLenghtCorr"
-                                            placeholder="Ingrese número"
+                                            :readonly="true"
                                             @keypress="onlyNumbers($event)"
                                         />
                                     </b-input-group>
@@ -218,19 +190,12 @@
                     </b-row>                   
                     <b-row>
                         <b-col sm="12">
-                            <b-form-group label="Descripcion: " >
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Descripcion"
-                                    rules="required"
-                                > 
+                            <b-form-group label="Descripcion: " >                                
                                 <b-input-group>
                                     <b-form-input 
                                         v-model= "data.descripcion"
                                     />
-                                </b-input-group>
-                                <small class="text-danger">{{ errors[0] }}</small>
-                                </validation-provider> 
+                                </b-input-group>                             
                             </b-form-group>   
                         </b-col>                        
                     </b-row>
@@ -811,10 +776,27 @@
                 this.data.total=respRoles.total;
             },        
             validationFormCompra(){
-                this.$refs.agregarCompraRules.validate().then(success => {              
-
-                     this.Guardar();
-                    
+                this.$refs.agregarCompraRules.validate().then(success => {
+                    if(success){        
+                        if(this.data.detalle_producto.length<=0){
+                            this.sendMessage("Debe tener registrado por lo menos un PRODUCTO",
+                                "AlertTriangleIcon","danger");
+                            return false;
+                        }        
+                        for(let i=0;i<this.data.detalle_producto.length;i++){
+                            if(this.data.detalle_producto[i].cantidad<=0){
+                                this.sendMessage("Existe PRODUCTOS con CANTIDAD MENOR O IGUAL a 0",
+                                "AlertTriangleIcon","danger");
+                                return false;
+                            }
+                            if(this.data.detalle_producto[i].precio<=0){
+                                this.sendMessage("Existe PRODUCTOS con PRECIO MENOR O IGUAL a 0",
+                                "AlertTriangleIcon","danger");
+                                return false;
+                            }
+                        }
+                        this.Guardar();
+                    }
                 })
             },
             showModalProductoAgregar(){
@@ -1105,7 +1087,9 @@
                         this.$router.push({ name: "ventas-lista-index" });
                     }else if(respRoles==400){
                         this.sendMessage("La serie "+this.data.serie+" y el correlativo "+this.data.correlativo+" ya existe","AlertTriangleIcon","danger")
-                    }else{
+                    }else if(respRoles==401){
+                        this.sendMessage("No puede editar esta venta, esta asociada a una NOTA DE CREDITO","AlertTriangleIcon","danger")
+                    } else {
                         this.sendMessage(respRoles,"AlertTriangleIcon","danger")
                     }
                 }

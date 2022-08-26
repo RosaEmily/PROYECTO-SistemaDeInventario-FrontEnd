@@ -113,6 +113,17 @@ export default {
                                 this.loadDataSource();
                                 this.$emit("deletedCompra");
                             }
+                            if(r === 201){
+                                this.$swal({
+                                    icon: "error",
+                                    title: "Accion denegada!",
+                                    text: "El registro esta asociada a una nota de credito.",
+                                    customClass: {
+                                        confirmButton: "btn btn-danger",
+                                    },
+                                });
+                                this.currentPage=1;                         
+                            }
                             if(r === 400){
                                 this.$toast({
                                     component: ToastificationContent,

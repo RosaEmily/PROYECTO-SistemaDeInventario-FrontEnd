@@ -218,19 +218,12 @@
                     </b-row>                   
                     <b-row>
                         <b-col sm="12">
-                            <b-form-group label="Descripcion: " >
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Descripcion"
-                                    rules="required"
-                                > 
+                            <b-form-group label="Descripcion: " >                                
                                 <b-input-group>
                                     <b-form-input 
                                         v-model= "data.descripcion"
                                     />
-                                </b-input-group>
-                                <small class="text-danger">{{ errors[0] }}</small>
-                                </validation-provider> 
+                                </b-input-group>                     
                             </b-form-group>   
                         </b-col>                        
                     </b-row>
@@ -772,6 +765,11 @@
             validationFormCompra(){
                 this.$refs.agregarCompraRules.validate().then(success => {              
                     if(success){
+                        if(this.data.detalle_producto.length<=0){
+                            this.sendMessage("Debe tener registrado por lo menos un PRODUCTO",
+                                "AlertTriangleIcon","danger");
+                            return false;
+                        }
                         for(let i=0;i<this.data.detalle_producto.length;i++){
                             if(this.data.detalle_producto[i].cantidad<=0){
                                 this.sendMessage("Existe PRODUCTOS con CANTIDAD MENOR O IGUAL a 0",
@@ -787,7 +785,7 @@
                         this.Guardar();
                     }                    
                 })
-            },
+            }, 
             async getSerieNumero(){
                 let cat = {
                     url: "/api/compra/list/"+this.data.tipodoc,
@@ -814,7 +812,7 @@
                             letra=serieA.substring(0,1);
                         }
                         serie=letra+"0".repeat(3-(numSerie).toString().length)
-                            +(numSerie).toString();
+                            +(numSerie).toString(); 
                     }else{
                         auxcorrelativo=parseInt(correlativoA)+1;
                         serie=serieA;

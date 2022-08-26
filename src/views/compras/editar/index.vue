@@ -131,7 +131,7 @@
                                             v-model="data.serie"
                                             :maxlength="4"
                                             placeholder="Ingrese serie"
-                                            :readonly="true"
+                                            :readonly="true" 
                                             @keypress="onlyNumbersAndLetters($event)"
                                         />
                                     </b-input-group>
@@ -192,19 +192,12 @@
                     </b-row>                   
                     <b-row>
                         <b-col sm="12">
-                            <b-form-group label="Descripcion: " >
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Descripcion"
-                                    rules="required"
-                                > 
+                            <b-form-group label="Descripcion: " >                                
                                 <b-input-group>
                                     <b-form-input 
                                         v-model= "data.descripcion"
                                     />
-                                </b-input-group>
-                                <small class="text-danger">{{ errors[0] }}</small>
-                                </validation-provider> 
+                                </b-input-group>                            
                             </b-form-group>   
                         </b-col>                        
                     </b-row>
@@ -786,7 +779,26 @@
             },         
             validationFormCompra(){
                 this.$refs.agregarCompraRules.validate().then(success => {
-                     this.Guardar();                    
+                    if(success){
+                        if(this.data.detalle_producto.length<=0){
+                            this.sendMessage("Debe tener registrado por lo menos un PRODUCTO",
+                                "AlertTriangleIcon","danger");
+                            return false;
+                        }
+                        for(let i=0;i<this.data.detalle_producto.length;i++){
+                            if(this.data.detalle_producto[i].cantidad<=0){
+                                this.sendMessage("Existe PRODUCTOS con CANTIDAD MENOR O IGUAL a 0",
+                                "AlertTriangleIcon","danger");
+                                return false;
+                            }
+                            if(this.data.detalle_producto[i].precio<=0){
+                                this.sendMessage("Existe PRODUCTOS con PRECIO MENOR O IGUAL a 0",
+                                "AlertTriangleIcon","danger");
+                                return false;
+                            }
+                        }
+                        this.Guardar();
+                    }              
                 })
             },
             showModalProductoAgregar(){
@@ -1074,10 +1086,16 @@
                     if(respRoles==201){
                         this.sendMessage('Compra registrada satisfactoriamente',"CheckSquareIcon","success")
                         this.$router.push({ name: "compras-lista-index" });
-                    }else if(respRoles==400){
-                        this.sendMessage("La serie "+this.data.serie+" y el correlativo "+this.data.correlativo+" ya existe","AlertTriangleIcon","danger")
-                    }else{
-                        this.sendMessage(respRoles,"AlertTriangleIcon","danger")
+                    }else {
+                        if(respRoles==400){
+                            this.sendMessage("La serie "+this.data.serie+" y el correlativo "+this.data.correlativo+" ya existe","AlertTriangleIcon","danger")
+                        }else {
+                            if(respRoles==401){
+                                this.sendMessage("No puede editar esta compra, esta asociada a una NOTA DE CREDITO","AlertTriangleIcon","danger")
+                            } else {
+                                this.sendMessage(respRoles,"AlertTriangleIcon","danger")
+                            }
+                        }
                     }
                 }
                 catch(e){

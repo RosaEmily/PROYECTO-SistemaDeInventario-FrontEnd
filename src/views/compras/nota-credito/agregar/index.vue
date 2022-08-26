@@ -7,7 +7,7 @@
             <validation-observer ref="agregarCompraRules">
                 <b-form>
                     <b-row> 
-                        <b-col sm="4">
+                        <b-col sm="5">
                             <b-form-group label="Documento: ">
                                 <validation-provider
                                     #default="{ errors }"
@@ -403,7 +403,9 @@
             },         
             validationFormCompra(){
                 this.$refs.agregarCompraRules.validate().then(success => {
-                     this.Guardar();                    
+                    if(success){
+                       this.Guardar();
+                    }
                 })
             },
             showModalProductoAgregar(){

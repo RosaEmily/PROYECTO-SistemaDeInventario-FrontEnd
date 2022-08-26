@@ -137,7 +137,7 @@ export default {
       localStorage.removeItem(useJwt.jwtConfig.storageRefreshTokenKeyName)
       // Remove userData from localStorage
       localStorage.removeItem('userData')
-      // Redirect to login page
+      localStorage.removeItem('accessToken')
       this.$router.go({ name: 'login' })
     },
     perfil() {

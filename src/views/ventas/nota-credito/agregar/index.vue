@@ -7,7 +7,7 @@
             <validation-observer ref="agregarCompraRules">
                 <b-form>
                     <b-row> 
-                        <b-col sm="3">
+                        <b-col sm="5">
                             <b-form-group label="Documento: ">
                                 <validation-provider
                                     #default="{ errors }"
@@ -17,16 +17,16 @@
                                     <b-input-group>
                                         <v-select
                                             v-model="nota_credito.venta"
-                                            style="width: 83%"
+                                            style="width: 100%"
                                             label="serie"
                                             :options="documentos"
                                             @input="getInfoByID(nota_credito.venta.id)"
                                         >
                                          <template v-slot:selected-option="option">
-                                                {{ option.serie }} - {{ option.correlativo }}
+                                                {{ option.serie }} - {{ option.correlativo }} - {{ option.desctipo }}
                                             </template>
                                             <template v-slot:option="option">
-                                                {{ option.serie }} - {{ option.correlativo }}
+                                                {{ option.serie }} - {{ option.correlativo }} - {{ option.desctipo }}
                                             </template> 
                                         </v-select> 
                                     </b-input-group>
@@ -405,7 +405,9 @@
             },         
             validationFormCompra(){
                 this.$refs.agregarCompraRules.validate().then(success => {
-                     this.Guardar();                    
+                    if(success){
+                       this.Guardar();
+                    }                    
                 })
             },
             showModalProductoAgregar(){
@@ -416,7 +418,7 @@
                 this.saveCompra();                
             },
             Cancelar(){
-                this.$router.push({ name: "compras-lista-index" });
+                this.$router.push({ name: "nota-credito-venta-lista-index" });
             },                     
             async getConfiguraciones(){                
                 let cat = {

@@ -330,7 +330,9 @@ export default {
                                             "EditIcon",
                                             "success"
                                         );
-                                        this.$router.push({ name: 'login' })
+                                        localStorage.removeItem('userData')
+                                        localStorage.removeItem('accessToken')
+                                        this.$router.go({ name: 'login' })
                                         //this.$router.push({ name: "usuario-lista-index" });
                                     } else if (r == 400) {
                                         this.sendMessage("El usuario que quiere editar ya existe", "AlertTriangleIcon", "danger");
@@ -356,12 +358,14 @@ export default {
                             try {
                                 store.dispatch("back/EXECUTE", request).then((r) => {
                                     if (r == 201) {
+                                        localStorage.removeItem('userData')
+                                        localStorage.removeItem('accessToken')
+                                        this.$router.go({ name: 'login' })
                                         this.sendMessage(
                                             "Perfil editado satisfactoriamente",
                                             "EditIcon",
                                             "success"
                                         );
-                                        this.$router.push({ name: 'login' })
                                         //this.$router.push({ name: "usuario-lista-index" });
                                     } else if (r == 400) {
                                         this.sendMessage("El usuario que quiere editar ya existe", "AlertTriangleIcon", "danger");
