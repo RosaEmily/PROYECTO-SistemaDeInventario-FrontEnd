@@ -4,6 +4,7 @@
 <script>
     import Vue from "vue";
     import { BootstrapVue } from "bootstrap-vue";
+    import ListarPDF from "./ListarPDF";
     import generalTable from "@/components/generalTable.vue";
     import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
     import * as XLSX from 'xlsx/xlsx.mjs';
@@ -16,6 +17,8 @@
     export default {
         components: {
             generalTable,
+            VueHtml2pdf,
+            ListarPDF,
         },
         data() {
             return {
@@ -140,9 +143,10 @@
             },
 
             async exportarPDF(){
-                const doc = new jsPDF();
+                this.$refs.html2Pdf.generatePdf();
+                /*const doc = new jsPDF();
                 doc.text("Hello world!", 10, 10);
-                doc.save("a4.pdf");
+                doc.save("a4.pdf");*/
             },
 
             addImport(){
@@ -267,8 +271,9 @@
                     alert("FileReader are not supported in this browser.");
                 }
             },
-
-            
+            onProgress(event) {
+                console.log(`Processed: ${event} / 100`);
+            },           
             agregarCuenta() {
                 this.$router.push({ name: "compras-proveedor-agregar" });
             },
@@ -277,6 +282,26 @@
 </script>
 <template>
     <div>
+        <vue-html2pdf
+            :show-layout="false"
+            :float-layout="true"
+            :enable-download="false"
+            :preview-modal="true"
+            :paginate-elements-by-height="1400"
+            filename="Proveedores"
+            :pdf-quality="2"
+            :manual-pagination="false"
+            pdf-format="a4"
+            :pdf-margin="10"
+            pdf-orientation="portrait"
+            pdf-content-width="800px"
+            @progress="onProgress($event)"
+            ref="html2Pdf"
+            >
+            <section slot="pdf-content">
+                <ListarPDF />
+            </section>
+        </vue-html2pdf>       
         <b-modal
             centered
             title="Importación de datos"
