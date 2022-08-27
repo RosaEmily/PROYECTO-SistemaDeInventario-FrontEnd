@@ -23,13 +23,14 @@ export default {
                 titulo:"LISTADO DE USUARIOS",
                 data: [],
                 fields:[
-                    { key: "doi", label: "DNI/RUC", sortable: false },
-                    { key: "tipoDoi", label: "TIPO", sortable: false },
+                    { key: "id", label: "ID", sortable: false },
+                    { key: "username", label: "USERNAME", sortable: false },
+                    { key: "email", label: "CORREO", sortable: false },
                     { key: "nombre", label: "NOMBRE", sortable: false },
-                    { key: "direccion", label: "DIRECCION", sortable: false },
-                    { key: "email", label: "EMAIL", sortable: false },
+                    { key: "apellido", label: "APELLIDO", sortable: false },
+                    { key: "roles", label: "ROLES", sortable: false },
                     { key: "estado", label: "ESTADO", sortable: false },
-                    { key: "created_at", label: "FECHA DE CREACIÓN", sortable: false },
+                    { key: "created_at", label: "FECHA CREACIÓN", sortable: false },
                 ],
             },
             parse_header: [],
@@ -121,41 +122,41 @@ export default {
         };
     },
     mounted() {
-        //this.listarData();
+        this.listarData();
     },
     methods: {
         async listarData() {
             let list = {
-                url: "/api/cliente/all",
+                url: "/api/auth/all",
                 method: "GET",
                 headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                 },
             };
             var resp = await store.dispatch("back/EXECUTE", list);
-            var tipodoi="DNI",estado="ACTIVO",email="N/A"
+            var estado="ACTIVO"
             for(let i=0;i<resp.length;i++){
-                if(resp[i].tipoDoi==="02"){
-                    tipodoi="DNI"
-                }else{
-                    tipodoi="RUC"
+                var roles=""
+                for(let j=0;j<resp[i].roles.length;j++){
+                    if(j+1==resp[i].roles.length){
+                        roles=roles+resp[i].roles[j].name
+                    }else{
+                        roles=roles+resp[i].roles[j].name+","
+                    }
+                    
                 }
                 if(resp[i].estado){
                     estado="ACTIVO"
                 }else{
                     estado="INACTIVO"
-                }
-                if(resp[i].email===""){
-                    email="N/A"
-                }else{
-                    email=resp[i].email
-                }
+                }                
                 this.ListData.data.push({
-                    tipoDoi:tipodoi,
-                    doi:resp[i].doi,
+                    id:resp[i].id,
+                    username:resp[i].username,
+                    email:resp[i].email,
                     nombre:resp[i].nombre,
-                    email:email,
-                    direccion:resp[i].direccion,
+                    apellido:resp[i].apellido,
+                    roles:roles,                  
                     created_at:resp[i].created_at,
                     estado:estado,
                 })
@@ -178,12 +179,21 @@ export default {
             var respRoles = await store.dispatch("back/EXECUTE", request);
             var respuestas= [];
             respRoles.forEach(element => {
+                var roles=""
+                for(let j=0;j<element.roles.length;j++){
+                    if(j+1==element.roles.length){
+                        roles=roles+element.roles[j].name
+                    }else{
+                        roles=roles+element.roles[j].name+","
+                    }                    
+                }
                 let respuesta = {
-                    "DOI": element.doi,
-                    "TIPO DOI": element.tipo_doi==1?"RUC":"DNI",
+                    "ID": element.id,
+                    "USERNAME": element.username,
+                    "CORREO": element.email,
                     "NOMBRE": element.nombre,
-                    "DIRECCIÓN": element.direccion,
-                    "EMAIL": element.email?element.email:"N/A",
+                    "APELLIDO": element.apellido,
+                    "ROLES": roles,
                     "ESTADO": element.estado?"ACTIVO":"INACTIVO",
                     "FECHA CREACIÓN": element.created_at,
                 };

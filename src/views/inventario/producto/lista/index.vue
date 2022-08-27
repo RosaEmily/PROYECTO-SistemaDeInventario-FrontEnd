@@ -5,6 +5,7 @@ import { BootstrapVue } from "bootstrap-vue";
 import generalTable from "@/components/generalTable.vue";
 import planCuenta from "@/components/plan-cuenta/edicion.vue";
 import store from "@/store/index";
+import generalData from "@fakedata";
 import ListarPDF from "@/components/ListarPDF.vue";
 import VueHtml2pdf from 'vue-html2pdf';
 import * as XLSX from 'xlsx/xlsx.mjs';
@@ -17,21 +18,25 @@ export default {
     },
     data() {
         return {
-            filename: 'Usuarios' + this.getDateNow(),
+            filename: 'Productos' + this.getDateNow(),
             ListData:{
-                titulo:"LISTADO DE USUARIOS",
+                titulo:"LISTADO DE PRODUCTOS",
                 data: [],
                 fields:[
-                    { key: "doi", label: "DNI/RUC", sortable: false },
-                    { key: "tipoDoi", label: "TIPO", sortable: false },
+                    { key: "codigo", label: "CODIGO", sortable: false },
                     { key: "nombre", label: "NOMBRE", sortable: false },
-                    { key: "direccion", label: "DIRECCION", sortable: false },
-                    { key: "email", label: "EMAIL", sortable: false },
+                    { key: "marca", label: "MARCA", sortable: false },
+                    { key: "descripcion", label: "DESCRIPCION", sortable: false },
+                    { key: "categoria", label: "CATEGORIA", sortable: false },
+                    { key: "unidad", label: "UNIDAD", sortable: false },
+                    { key: "precio", label: "PRECIO", sortable: false },
+                    { key: "stock", label: "STOCK", sortable: false },
                     { key: "estado", label: "ESTADO", sortable: false },
-                    { key: "created_at", label: "FECHA DE CREACIÓN", sortable: false },
+                    { key: "created_at", label: "FECHA CREACIÓN", sortable: false },
                 ],
             },
             parse_header: [],
+            unidades: generalData.inventario.unidades,
             parse_csv: [],
             sortOrders: {},
             alertMsg: [],
@@ -136,14 +141,15 @@ export default {
                     estado="ACTIVO"
                 }else{
                     estado="INACTIVO"
-                }                   
+                }
                 this.ListData.data.push({
                     codigo:resp[i].codigo,
                     nombre:resp[i].nombre,
                     marca:resp[i].marca,
-                    nombre:resp[i].nombre,
                     descripcion:resp[i].descripcion,
                     precio:resp[i].precio,
+                    categoria:resp[i].categoria.nombre,
+                    unidad:this.unidades.find((unid) => unid.value == resp[i].unidad).text,
                     stock:resp[i].stock,
                     estado:estado,
                     fecha:resp[i].created_at,                        
@@ -168,11 +174,14 @@ export default {
             var respuestas= [];
             respRoles.forEach(element => {
                 let respuesta = {
-                    "DOI": element.doi,
-                    "TIPO DOI": element.tipo_doi==1?"RUC":"DNI",
+                    "CODIGO": element.codigo,
                     "NOMBRE": element.nombre,
-                    "DIRECCIÓN": element.direccion,
-                    "EMAIL": element.email?element.email:"N/A",
+                    "MARCA": element.marca,
+                    "DESCRIPCION": element.descripcion,
+                    "PRECIO": element.precio,
+                    "CATEGORIA": element.categoria.nombre,
+                    "UNIDAD": this.unidades.find((unid) => unid.value == element.unidad).text,
+                    "STOCK": element.stock,
                     "ESTADO": element.estado?"ACTIVO":"INACTIVO",
                     "FECHA CREACIÓN": element.created_at,
                 };

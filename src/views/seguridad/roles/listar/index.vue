@@ -23,11 +23,9 @@ export default {
                 titulo:"LISTADO DE ROLES",
                 data: [],
                 fields:[
-                    { key: "doi", label: "DNI/RUC", sortable: false },
-                    { key: "tipoDoi", label: "TIPO", sortable: false },
-                    { key: "nombre", label: "NOMBRE", sortable: false },
-                    { key: "direccion", label: "DIRECCION", sortable: false },
-                    { key: "email", label: "EMAIL", sortable: false },
+                    { key: "id", label: "ID", sortable: false },
+                    { key: "rol", label: "ROL", sortable: false },
+                    { key: "permisos", label: "PERMISOS", sortable: false },
                     { key: "estado", label: "ESTADO", sortable: false },
                     { key: "created_at", label: "FECHA DE CREACIÓN", sortable: false },
                 ],
@@ -106,41 +104,38 @@ export default {
         };
     },
     mounted() {
-        //this.listarData();
+        this.listarData();
     },
     methods: {
         async listarData() {
             let list = {
-                url: "/api/cliente/all",
+                url: "/api/rol/all",
                 method: "GET",
                 headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                 },
             };
             var resp = await store.dispatch("back/EXECUTE", list);
-            var tipodoi="DNI",estado="ACTIVO",email="N/A"
+            var estado="ACTIVO"
             for(let i=0;i<resp.length;i++){
-                if(resp[i].tipoDoi==="02"){
-                    tipodoi="DNI"
-                }else{
-                    tipodoi="RUC"
+                var permisos=""
+                for(let j=0;j<resp[i].permisos.length;j++){
+                    if(j+1==resp[i].permisos.length){
+                        permisos=permisos+resp[i].permisos[j].permiso
+                    }else{
+                        permisos=permisos+resp[i].permisos[j].permiso+","
+                    }
+                    
                 }
                 if(resp[i].estado){
                     estado="ACTIVO"
                 }else{
                     estado="INACTIVO"
-                }
-                if(resp[i].email===""){
-                    email="N/A"
-                }else{
-                    email=resp[i].email
-                }
+                }                
                 this.ListData.data.push({
-                    tipoDoi:tipodoi,
-                    doi:resp[i].doi,
-                    nombre:resp[i].nombre,
-                    email:email,
-                    direccion:resp[i].direccion,
+                    id:resp[i].id,
+                    rol:resp[i].name,
+                    permisos:permisos,                  
                     created_at:resp[i].created_at,
                     estado:estado,
                 })
@@ -163,12 +158,18 @@ export default {
             var respRoles = await store.dispatch("back/EXECUTE", request);
             var respuestas= [];
             respRoles.forEach(element => {
+                var permisos=""
+                for(let j=0;j<element.permisos.length;j++){
+                    if(j+1==element.permisos.length){
+                        permisos=permisos+element.permisos[j].permiso
+                    }else{
+                        permisos=permisos+element.permisos[j].permiso+","
+                    }                    
+                }
                 let respuesta = {
-                    "DOI": element.doi,
-                    "TIPO DOI": element.tipo_doi==1?"RUC":"DNI",
-                    "NOMBRE": element.nombre,
-                    "DIRECCIÓN": element.direccion,
-                    "EMAIL": element.email?element.email:"N/A",
+                    "ID": element.id,
+                    "ROL": element.name,
+                    "PERMISOS": permisos,
                     "ESTADO": element.estado?"ACTIVO":"INACTIVO",
                     "FECHA CREACIÓN": element.created_at,
                 };
