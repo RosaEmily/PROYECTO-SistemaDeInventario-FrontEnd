@@ -7,7 +7,7 @@
     import generalTable from "@/components/generalTable.vue";
     import planCuenta from "@/components/plan-cuenta/edicion.vue";
     import ListarPDF from "@/components/ListarPDF.vue";
-    import VueHtml2pdf from 'vue-html2pdf';
+    import VueHtml2pdf from 'vue-html2pdf'; 
     import * as XLSX from 'xlsx/xlsx.mjs';
     import store from '@/store';
     
@@ -95,6 +95,10 @@
                         redirect: true,
                         ruta: "/ventas/clientes/editar",
                     },
+                    pdf: {
+                        available: false,
+                        redirect: true,
+                    },
                     delete: {
                         available: true,
                         ruta: "/api/cliente",
@@ -103,7 +107,7 @@
                         responsive: true,
                         primaryKey: "id",
                     },
-                    pagination: true,
+                    pagination: true, 
                 },
             };
         },

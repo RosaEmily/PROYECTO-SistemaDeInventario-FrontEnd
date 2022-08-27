@@ -96,6 +96,10 @@
                         redirect: true,
                         ruta: "/compras/proveedores/editar",
                     },
+                    pdf: {
+                        available: false,
+                        redirect: true,
+                    },
                     delete: {
                         available: true,
                         ruta: "/api/proveedor",

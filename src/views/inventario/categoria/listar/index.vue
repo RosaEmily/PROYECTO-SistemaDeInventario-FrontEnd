@@ -92,6 +92,10 @@
                         redirect: true,
                         ruta: "/inventario/categoria/editar",
                     },
+                    pdf: {
+                        available: false,
+                        redirect: true,
+                    },
                     delete: {
                         available: true,
                         ruta: "/api/categoria",

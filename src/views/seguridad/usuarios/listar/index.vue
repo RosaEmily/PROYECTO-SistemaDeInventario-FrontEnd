@@ -109,6 +109,10 @@ export default {
                     redirect: true,
                     ruta: "/seguridad/usuarios/editar/index",
                 },
+                pdf: {
+                    available: false,
+                    redirect: true,
+                },
                 delete: {
                     available: true,
                     ruta: "/api/auth",

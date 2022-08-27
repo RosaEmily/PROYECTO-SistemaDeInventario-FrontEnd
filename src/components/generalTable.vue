@@ -8,6 +8,8 @@ import vSelect from "vue-select";
 import Ripple from "vue-ripple-directive";
 import VueSweetalert2 from "vue-sweetalert2";
 import moment from "moment";
+import DocumentoPDF from "@/components/DocumentoPDF.vue";
+import VueHtml2pdf from 'vue-html2pdf';
 
 Vue.use(VueSweetalert2);
 Vue.use(BootstrapVue);
@@ -15,6 +17,8 @@ export default {
     props: ["paramsGrid"],
     components: {
         vSelect,
+        VueHtml2pdf,
+        DocumentoPDF,
     },
     directives: {
         Ripple,
@@ -24,6 +28,7 @@ export default {
             selected: [],
             currentPage: 1,
             rows: 0,
+            filename: "",
             showEntrie: 10,
             totalElements: 0,
             entries: [10, 20, 50, 100],
@@ -33,6 +38,7 @@ export default {
             },
             arrayFilters:[],
             filtro:"",
+            ListData:[],
         };
     },
     mounted() {
@@ -47,7 +53,37 @@ export default {
                 }
             }
         },
-
+        getDateNow(){
+            let date = new Date();
+            let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
+            return output;
+        },  
+        async downloadPDF(item) {
+            if(item.proveedor){
+                let list = {
+                    url: "/api/compra/" + item.id,
+                    method: "GET",
+                    headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                };
+                var resp = await store.dispatch("back/EXECUTE", list);
+                this.filename="C-"+resp.desctipo+"-"+resp.serie+"-"+resp.correlativo+"-"+this.getDateNow()
+            }else{
+                let list = {
+                    url: "/api/venta/" + item.id,
+                    method: "GET",
+                    headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                };
+                var resp = await store.dispatch("back/EXECUTE", list);
+                this.filename="V-"+resp.desctipo+"-"+resp.serie+"-"+resp.correlativo+"-"+this.getDateNow()
+            }
+            console.log(this.filename)
+            this.ListData=resp
+            this.$refs.html2Pdf.generatePdf();
+        },
         filterColumn(field) {
             //this.filtro="&doi="+this.paramsGrid.filters["doi"].trim()+"&nombre="+this.paramsGrid.filters["nombre"].trim();
             if (this.paramsGrid.filters[field.key].trim() != "") {
@@ -224,6 +260,25 @@ export default {
 
 <template>
     <div>
+        <vue-html2pdf
+            :show-layout="false"
+            :float-layout="true"
+            :enable-download="true"
+            :preview-modal="false"
+            :paginate-elements-by-height="1400"
+            :filename=this.filename
+            :pdf-quality="2"
+            :manual-pagination="true"
+            pdf-format="a4"
+            :pdf-margin="10"
+            pdf-orientation="landscape"
+            pdf-content-width="100%"
+            ref="html2Pdf"
+            >
+            <section slot="pdf-content">
+                <DocumentoPDF :ListData="ListData"> </DocumentoPDF>
+            </section>
+        </vue-html2pdf>
         <b-row class="mb-1">
             <b-col sm="9"> </b-col>
         </b-row>
@@ -275,6 +330,18 @@ export default {
                     </template>
                     <template #cell(actions)="data">                       
                         <div class="text-nowrap">
+                            <feather-icon
+                                v-if="paramsGrid.pdf.available"
+                                :id="`invoice-row-${data.item.id}-preview-icon`"
+                                icon="DownloadIcon"
+                                size="16"
+                                class="mx-1"
+                                @click="downloadPDF(data.item)"
+                            />
+                            <b-tooltip
+                                title="PDF"
+                                :target="`invoice-row-${data.item.id}-preview-icon`"
+                            />
                             <feather-icon
                                 v-if="paramsGrid.edit.available"
                                 :id="`invoice-row-${data.item.id}-preview-icon`"

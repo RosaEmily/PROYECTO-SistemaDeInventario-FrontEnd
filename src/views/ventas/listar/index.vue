@@ -93,6 +93,10 @@
                         redirect: true,
                         ruta: "/ventas/editar",
                     },
+                    pdf: {
+                        available: true,
+                        redirect: true,
+                    },
                     delete: {
                         available: true,
                         ruta: "/api/venta",

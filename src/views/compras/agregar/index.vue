@@ -760,7 +760,7 @@
                     precio:0,
                 },
                 categorias: [],
-                permiso_vista: false,          
+                permiso_vista: true,          
             };
         },
         mounted() {

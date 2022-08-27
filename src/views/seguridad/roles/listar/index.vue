@@ -91,6 +91,10 @@ export default {
                     redirect: true,
                     ruta: "/seguridad/roles/editar/index",
                 },
+                pdf: {
+                    available: false,
+                    redirect: true,
+                },
                 delete: {
                     available: true,
                     ruta: "/api/rol",

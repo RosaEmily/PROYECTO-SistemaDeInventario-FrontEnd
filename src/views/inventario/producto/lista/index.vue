@@ -110,6 +110,10 @@ export default {
                     redirect: true,
                     ruta: "/inventario/producto/editar/index",
                 },
+                pdf: {
+                    available: false,
+                    redirect: true,
+                },
                 delete: {
                     available: true,
                     ruta: "/api/producto",
