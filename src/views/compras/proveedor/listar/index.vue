@@ -26,6 +26,7 @@
                 parse_csv: [],
                 sortOrders: {},
                 alertMsg: [],
+                filename: 'Proveedores' + this.getDateNow(),
                 prepareForExport: [],
                 prepareForImport: false,
                 proveedor:[],
@@ -94,13 +95,14 @@
                 },
             };
         },
+        mounted() {
+        },
         methods: {
             getDateNow(){
                 let date = new Date();
                 let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
                 return output;
-            },
-
+            },           
             async getProveedores(){
                 let request = {
                     url: this.paramsGrid.urlBack+"/all",
@@ -137,7 +139,7 @@
                 });
                 let data = XLSX.utils.json_to_sheet(respuestas)
                 const workbook = XLSX.utils.book_new()
-                const filename = 'Proveedores' + this.getDateNow()
+                const filename = this.filename
                 XLSX.utils.book_append_sheet(workbook, data, filename)
                 XLSX.writeFile(workbook, `${filename}.xlsx`)
             },
@@ -270,10 +272,7 @@
                 } else {
                     alert("FileReader are not supported in this browser.");
                 }
-            },
-            onProgress(event) {
-                console.log(`Processed: ${event} / 100`);
-            },           
+            },          
             agregarCuenta() {
                 this.$router.push({ name: "compras-proveedor-agregar" });
             },
@@ -285,17 +284,16 @@
         <vue-html2pdf
             :show-layout="false"
             :float-layout="true"
-            :enable-download="false"
-            :preview-modal="true"
+            :enable-download="true"
+            :preview-modal="false"
             :paginate-elements-by-height="1400"
-            filename="Proveedores"
+            :filename=this.filename
             :pdf-quality="2"
-            :manual-pagination="false"
+            :manual-pagination="true"
             pdf-format="a4"
             :pdf-margin="10"
-            pdf-orientation="portrait"
-            pdf-content-width="800px"
-            @progress="onProgress($event)"
+            pdf-orientation="landscape"
+            pdf-content-width="100%"
             ref="html2Pdf"
             >
             <section slot="pdf-content">

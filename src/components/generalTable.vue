@@ -208,15 +208,13 @@ export default {
             this.rows = respRoles.responseFilter.total_rows;
             this.showEntrie = respRoles.responseFilter.limit;
         },
-
         editElement(item) {
             if (this.paramsGrid.edit.redirect) {
                 this.$router.push(this.paramsGrid.edit.ruta + "/" + item.id);
             } else {
                 this.$children[3].showModal();
             }
-        },
-        
+        },        
         onRowSelected(items) {
             this.selected = items;
         },
