@@ -2,7 +2,7 @@
 /* eslint-disable */
 </script>
 <template>
-    <div>
+    <div v-if="permiso_vista">
         <b-card>
             <validation-observer ref="agregarCompraRules">
                 <b-form>
@@ -666,10 +666,13 @@
             </b-card-text>      
         </b-modal>
     </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
+    </div>
 </template>
-
 <script>
     import Vue from "vue";
+    import NotAuthorized from "@/views/NotAuthorized.vue";
     import store from "@/store/index";
     import { BootstrapVue, BFormSelect } from "bootstrap-vue";
     import vSelect from "vue-select";
@@ -695,6 +698,7 @@
             vSelect,
             ValidationProvider,
             ValidationObserver,
+            NotAuthorized,
         },
         directives: {
             Ripple,
@@ -755,13 +759,20 @@
                     unidad:"",
                     precio:0,
                 },
-                categorias: [],               
+                categorias: [],
+                permiso_vista: false,          
             };
         },
         mounted() {
+            //this.redirectNotAuthorized();
             this.getConfiguraciones();
         },
-        methods: {           
+        methods: {
+            redirectNotAuthorized(){
+                if(!this.permiso_vista){
+                    this.$router.push({ name: "compras-lista-index" });
+                }
+            },        
             validationFormCompra(){
                 this.$refs.agregarCompraRules.validate().then(success => {              
                     if(success){
@@ -882,7 +893,7 @@
                 this.data.correlativo=this.data.correlativo.substring(0,this.maxLenghtCorr);
                 this.getSerieNumero();
             },          
-            async getConfiguraciones(){                
+            async getConfiguraciones(){              
                 let cat = {
                     url: "/api/categoria/lista",
                     method: "GET",

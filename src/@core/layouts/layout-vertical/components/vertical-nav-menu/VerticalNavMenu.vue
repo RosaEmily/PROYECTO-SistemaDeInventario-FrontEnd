@@ -1,3 +1,6 @@
+<script>
+/* eslint-disable */
+</script>
 <template>
   <div
     class="main-menu menu-fixed menu-accordion menu-shadow"
