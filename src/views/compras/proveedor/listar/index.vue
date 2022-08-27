@@ -4,7 +4,7 @@
 <script>
     import Vue from "vue";
     import { BootstrapVue } from "bootstrap-vue";
-    import ListarPDF from "./ListarPDF";
+    import ListarPDF from "@/components/ListarPDF.vue";
     import generalTable from "@/components/generalTable.vue";
     import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
     import * as XLSX from 'xlsx/xlsx.mjs';
@@ -22,6 +22,19 @@
         },
         data() {
             return {
+                ListData:{
+                    titulo:"LISTADO DE PROVEEDORES",
+                    data: [],
+                    fields:[
+                        { key: "doi", label: "DNI/RUC", sortable: false },
+                        { key: "tipoDoi", label: "TIPO", sortable: false },
+                        { key: "nombre", label: "NOMBRE", sortable: false },
+                        { key: "direccion", label: "DIRECCION", sortable: false },
+                        { key: "email", label: "EMAIL", sortable: false },
+                        { key: "estado", label: "ESTADO", sortable: false },
+                        { key: "created_at", label: "FECHA DE CREACIÓN", sortable: false },
+                    ],
+                },
                 parse_header: [],
                 parse_csv: [],
                 sortOrders: {},
@@ -96,8 +109,46 @@
             };
         },
         mounted() {
+            this.listarData();
         },
         methods: {
+            async listarData() {
+                let list = {
+                    url: "/api/proveedor/all",
+                    method: "GET",
+                    headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                };
+                var resp = await store.dispatch("back/EXECUTE", list);
+                var tipodoi="DNI",estado="HABILITADO",email="N/A"
+                for(let i=0;i<resp.length;i++){
+                    if(resp[i].tipoDoi==="02"){
+                        tipodoi="DNI"
+                    }else{
+                        tipodoi="RUC"
+                    }
+                    if(resp[i].estado){
+                        estado="ACTIVO"
+                    }else{
+                        estado="INACTIVO"
+                    }
+                    if(resp[i].email===""){
+                        email="N/A"
+                    }else{
+                        email=resp[i].email
+                    }
+                    this.ListData.data.push({
+                        tipoDoi:tipodoi,
+                        doi:resp[i].doi,
+                        nombre:resp[i].nombre,
+                        email:email,
+                        direccion:resp[i].direccion,
+                        created_at:resp[i].created_at,
+                        estado:estado,
+                    })
+                }
+            },
             getDateNow(){
                 let date = new Date();
                 let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
@@ -297,9 +348,9 @@
             ref="html2Pdf"
             >
             <section slot="pdf-content">
-                <ListarPDF />
+                <ListarPDF :ListData="ListData"> </ListarPDF>
             </section>
-        </vue-html2pdf>       
+        </vue-html2pdf>
         <b-modal
             centered
             title="Importación de datos"

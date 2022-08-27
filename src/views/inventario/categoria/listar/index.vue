@@ -6,15 +6,32 @@
     import { BootstrapVue } from "bootstrap-vue";
     import generalTable from "@/components/generalTable.vue";
     import planCuenta from "@/components/plan-cuenta/edicion.vue";
-    
+    import ListarPDF from "@/components/ListarPDF.vue";
+    import VueHtml2pdf from 'vue-html2pdf';
+    import * as XLSX from 'xlsx/xlsx.mjs';
+    import store from '@/store';
+
     Vue.use(BootstrapVue);
 
     export default {
         components: {
             generalTable,
+            VueHtml2pdf,
+            ListarPDF,
         },
         data() {
             return {
+                filename: 'Categorias' + this.getDateNow(),
+                ListData:{
+                    titulo:"LISTADO DE CATEGORIAS",
+                    data: [],
+                    fields:[
+                        { key: "codigo", label: "CODIGO", sortable: false },
+                        { key: "nombre", label: "NOMBRE", sortable: false },
+                        { key: "estado", label: "ESTADO", sortable: false },
+                        { key: "fecha", label: "FECHA DE CREACIÓN", sortable: false },
+                    ],
+                },
                 parse_header: [],
                 parse_csv: [],
                 sortOrders: {},
@@ -87,7 +104,70 @@
                 },
             };
         },
+        mounted() {
+            this.listarData();
+        },
         methods: {
+            async listarData() {
+                let list = {
+                    url: "/api/categoria/all",
+                    method: "GET",
+                    headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                };
+                var resp = await store.dispatch("back/EXECUTE", list);
+                var estado="ACTIVO"
+                for(let i=0;i<resp.length;i++){                    
+                    if(resp[i].estado){
+                        estado="ACTIVO"
+                    }else{
+                        estado="INACTIVO"
+                    }                   
+                    this.ListData.data.push({
+                        codigo:resp[i].codigo,
+                        nombre:resp[i].nombre,
+                        estado:estado,
+                        fecha:resp[i].created_at,                        
+                    })
+                }
+            },
+            async exportarPDF(){
+                this.$refs.html2Pdf.generatePdf();
+                /*const doc = new jsPDF();
+                doc.text("Hello world!", 10, 10);
+                doc.save("a4.pdf");*/
+            },
+            async exportar(){
+                let request = {
+                    url: this.paramsGrid.urlBack+"/all",
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                };
+                var respRoles = await store.dispatch("back/EXECUTE", request);
+                var respuestas= [];
+                respRoles.forEach(element => {
+                    let respuesta = {
+                        "CODIGO": element.codigo,
+                        "NOMBRE": element.nombre,
+                        "ESTADO": element.estado?"ACTIVO":"INACTIVO",
+                        "FECHA CREACIÓN": element.created_at,
+                    };
+                    respuestas.push(respuesta);
+                });
+                let data = XLSX.utils.json_to_sheet(respuestas)
+                const workbook = XLSX.utils.book_new()
+                const filename = this.filename
+                XLSX.utils.book_append_sheet(workbook, data, filename)
+                XLSX.writeFile(workbook, `${filename}.xlsx`)
+            },
+            getDateNow(){
+                let date = new Date();
+                let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
+                return output;
+            },
             importarCsv(){
             },
 
@@ -167,6 +247,25 @@
 </script>
 <template>
     <div>
+        <vue-html2pdf
+            :show-layout="false"
+            :float-layout="true"
+            :enable-download="true"
+            :preview-modal="false"
+            :paginate-elements-by-height="1400"
+            :filename=this.filename
+            :pdf-quality="2"
+            :manual-pagination="true"
+            pdf-format="a4"
+            :pdf-margin="10"
+            pdf-orientation="landscape"
+            pdf-content-width="100%"
+            ref="html2Pdf"
+            >
+            <section slot="pdf-content">
+                <ListarPDF :ListData="ListData"> </ListarPDF>
+            </section>
+        </vue-html2pdf>
         <b-modal
             centered
             title="Importación de datos"
@@ -211,10 +310,9 @@
         <b-card>
             <b-row>
                 <b-col md="6" class="">
-                    <b-button variant="success"> Exportar </b-button>
-                    <b-button class="ml-25" variant="light" @click="importar">
-                        Importar
-                    </b-button>
+                    <b-button variant="light" @click="importar"> Importar Csv </b-button>
+                    <b-button variant="success" class="ml-25" @click="exportar"> Exportar Excel </b-button>
+                    <b-button variant="danger" class="ml-25" @click="exportarPDF"> Exportar Pdf </b-button>
                 </b-col>
                 <b-col md="6" class="text-right">
                     <b-button variant="primary" @click="agregarCuenta">

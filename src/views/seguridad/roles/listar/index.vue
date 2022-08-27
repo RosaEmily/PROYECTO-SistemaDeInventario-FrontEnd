@@ -5,13 +5,33 @@ import { BootstrapVue } from "bootstrap-vue";
 import generalTable from "@/components/generalTable.vue";
 import planCuenta from "@/components/plan-cuenta/edicion.vue";
 import store from "@/store/index";
+import ListarPDF from "@/components/ListarPDF.vue";
+import VueHtml2pdf from 'vue-html2pdf';
+import * as XLSX from 'xlsx/xlsx.mjs';
+
 Vue.use(BootstrapVue);
 export default {
     components: {
         generalTable,
+        VueHtml2pdf,
+        ListarPDF,
     },
     data() {
         return {
+            filename: 'Roles' + this.getDateNow(),
+            ListData:{
+                titulo:"LISTADO DE ROLES",
+                data: [],
+                fields:[
+                    { key: "doi", label: "DNI/RUC", sortable: false },
+                    { key: "tipoDoi", label: "TIPO", sortable: false },
+                    { key: "nombre", label: "NOMBRE", sortable: false },
+                    { key: "direccion", label: "DIRECCION", sortable: false },
+                    { key: "email", label: "EMAIL", sortable: false },
+                    { key: "estado", label: "ESTADO", sortable: false },
+                    { key: "created_at", label: "FECHA DE CREACIÓN", sortable: false },
+                ],
+            },
             parse_header: [],
             parse_csv: [],
             sortOrders: {},
@@ -84,8 +104,87 @@ export default {
                 pagination: true,
             },
         };
-    },    
-    methods: {        
+    },
+    mounted() {
+        //this.listarData();
+    },
+    methods: {
+        async listarData() {
+            let list = {
+                url: "/api/cliente/all",
+                method: "GET",
+                headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                },
+            };
+            var resp = await store.dispatch("back/EXECUTE", list);
+            var tipodoi="DNI",estado="ACTIVO",email="N/A"
+            for(let i=0;i<resp.length;i++){
+                if(resp[i].tipoDoi==="02"){
+                    tipodoi="DNI"
+                }else{
+                    tipodoi="RUC"
+                }
+                if(resp[i].estado){
+                    estado="ACTIVO"
+                }else{
+                    estado="INACTIVO"
+                }
+                if(resp[i].email===""){
+                    email="N/A"
+                }else{
+                    email=resp[i].email
+                }
+                this.ListData.data.push({
+                    tipoDoi:tipodoi,
+                    doi:resp[i].doi,
+                    nombre:resp[i].nombre,
+                    email:email,
+                    direccion:resp[i].direccion,
+                    created_at:resp[i].created_at,
+                    estado:estado,
+                })
+            }
+        },
+        async exportarPDF(){
+            this.$refs.html2Pdf.generatePdf();
+            /*const doc = new jsPDF();
+            doc.text("Hello world!", 10, 10);
+            doc.save("a4.pdf");*/
+        },
+        async exportar(){
+            let request = {
+                url: this.paramsGrid.urlBack+"/all",
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                },
+            };
+            var respRoles = await store.dispatch("back/EXECUTE", request);
+            var respuestas= [];
+            respRoles.forEach(element => {
+                let respuesta = {
+                    "DOI": element.doi,
+                    "TIPO DOI": element.tipo_doi==1?"RUC":"DNI",
+                    "NOMBRE": element.nombre,
+                    "DIRECCIÓN": element.direccion,
+                    "EMAIL": element.email?element.email:"N/A",
+                    "ESTADO": element.estado?"ACTIVO":"INACTIVO",
+                    "FECHA CREACIÓN": element.created_at,
+                };
+                respuestas.push(respuesta);
+            });
+            let data = XLSX.utils.json_to_sheet(respuestas)
+            const workbook = XLSX.utils.book_new()
+            const filename = this.filename
+            XLSX.utils.book_append_sheet(workbook, data, filename)
+            XLSX.writeFile(workbook, `${filename}.xlsx`)
+        },
+        getDateNow(){
+            let date = new Date();
+            let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
+            return output;
+        },      
         async importarCsv() {
             let request = {
                 url: "/api/producto/insertArrayProduct/1",
@@ -179,6 +278,25 @@ export default {
 
 <template>
     <div>
+        <vue-html2pdf
+            :show-layout="false"
+            :float-layout="true"
+            :enable-download="true"
+            :preview-modal="false"
+            :paginate-elements-by-height="1400"
+            :filename=this.filename
+            :pdf-quality="2"
+            :manual-pagination="true"
+            pdf-format="a4"
+            :pdf-margin="10"
+            pdf-orientation="landscape"
+            pdf-content-width="100%"
+            ref="html2Pdf"
+            >
+            <section slot="pdf-content">
+                <ListarPDF :ListData="ListData"> </ListarPDF>
+            </section>
+        </vue-html2pdf>
         <b-modal
             centered
             title="Importación de datos"
@@ -223,10 +341,9 @@ export default {
         <b-card>
             <b-row>
                 <b-col md="6" class="">
-                    <b-button variant="success"> Exportar </b-button>
-                    <b-button class="ml-25" variant="light" @click="importar">
-                        Importar
-                    </b-button>
+                    <b-button variant="light" @click="importar"> Importar Csv </b-button>
+                    <b-button variant="success" class="ml-25" @click="exportar"> Exportar Excel </b-button>
+                    <b-button variant="danger" class="ml-25" @click="exportarPDF"> Exportar Pdf </b-button>
                 </b-col>
                 <b-col md="6" class="text-right">
                     <b-button variant="primary" @click="agregarCuenta">
