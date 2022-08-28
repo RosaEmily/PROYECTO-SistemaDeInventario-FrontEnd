@@ -615,14 +615,14 @@ const router = new VueRouter({
             component: () => import("@/views/inventario/categoria/listar/index.vue"),
             meta: {
                 middleware: auth,
-                pageTitle: "Categoria",
+                pageTitle: "Lista de Categorías",
                 breadcrumb: [
                     {
                         text: "Inventario",
                         active: true,
                     },
                     {
-                        text: "Categoría",
+                        text: "Categorías",
                         to: { name: "inventario-categoria-listar-index" },
                         active: false,
                     },
@@ -639,14 +639,14 @@ const router = new VueRouter({
             component: () => import("@/views/inventario/categoria/agregar/index.vue"),
             meta: {
                 middleware: auth,
-                pageTitle: "Categoria",
+                pageTitle: "Agregar Categoría",
                 breadcrumb: [
                     {
                         text: "Inventario",
                         active: true,
                     },
                     {
-                        text: "Categoría",
+                        text: "Categorías",
                         to: { name: "inventario-categoria-listar-index" },
                         active: false,
                     },
@@ -663,14 +663,14 @@ const router = new VueRouter({
             component: () => import("@/views/inventario/categoria/editar/index.vue"),
             meta: {
                 middleware: auth,
-                pageTitle: "Categoria",
+                pageTitle: "Editar Categoría",
                 breadcrumb: [
                     {
                         text: "Inventario",
                         active: true,
                     },
                     {
-                        text: "Categoria",
+                        text: "Categorías",
                         to: { name: "inventario-categoria-listar-index" },
                         active: false,
                     },
