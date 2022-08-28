@@ -3,48 +3,7 @@
 </script>
 <template>
     <div  class="container">
-        <b-card>
-            <!--<b-row>
-                <b-col sm="6" align="center">
-                    <label>AÑO</label>
-                    <b-input-group>
-                        <v-select
-                            v-model="anio"
-                            label="text"
-                            style="width: 100%"
-                            :options="anios"
-                            @input="getAnioMes()"
-                        >
-                            <template v-slot:selected-option="option">
-                                {{ option.text }}
-                            </template>
-                            <template v-slot:option="option">
-                                {{ option.text }}
-                            </template>
-                        </v-select>
-                    </b-input-group>            
-                </b-col>
-                <b-col sm="6"  align="center">
-                    <label>MES</label>
-                    <b-input-group>
-                        <v-select
-                            v-model="mes"
-                            label="text"
-                            style="width: 100%"
-                            :options="meses"
-                            @input="functionGraficoParametroMes()"
-                        >
-                            <template v-slot:selected-option="option">
-                                {{ option.text }}
-                            </template>
-                            <template v-slot:option="option">
-                                {{ option.text }}
-                            </template>
-                        </v-select>
-                    </b-input-group> 
-                </b-col>
-            </b-row>
-            <br>-->
+        <b-card>            
             <b-row>               
                 <b-col sm="4" align="center">
                     <label>INGRESOS</label>
@@ -102,7 +61,6 @@
         </b-card>        
     </div>
 </template>
-
 <script>
     import Chart from 'chart.js';
     import Vue from "vue";

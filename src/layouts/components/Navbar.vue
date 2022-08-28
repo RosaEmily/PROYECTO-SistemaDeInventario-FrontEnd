@@ -20,12 +20,6 @@
     <div class="bookmark-wrapper align-items-center flex-grow-1 d-none d-lg-flex">
       <dark-Toggler class="d-none d-lg-block" />
     </div>
-    <b-col sm="3">
-      <b-form-select
-        v-model="selected"
-        :options="options"
-      />
-    </b-col>
     <b-navbar-nav class="nav align-items-center ml-auto">
       <b-nav-item-dropdown
         right
@@ -81,15 +75,13 @@
 
 <script>
 import {
-  BCol, BFormSelect, BLink, BNavbarNav, BNavItemDropdown, BDropdownItem, BDropdownDivider, BAvatar,
+  BLink, BNavbarNav, BNavItemDropdown, BDropdownItem, BDropdownDivider, BAvatar,
 } from 'bootstrap-vue'
 import DarkToggler from '@core/layouts/components/app-navbar/components/DarkToggler.vue'
 import useJwt from '@/auth/jwt/useJwt'
 
 export default {
   components: {
-    BCol,
-    BFormSelect,
     BLink,
     BNavbarNav,
     BNavItemDropdown,

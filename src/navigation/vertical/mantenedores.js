@@ -128,13 +128,6 @@ export default [
     },
   },
   {
-    title: 'Dashboard',
-    route:
-    {
-      name: 'producto-reporte2',
-    },
-  },
-  {
     title: 'P. Reposición',
     route:
     {
