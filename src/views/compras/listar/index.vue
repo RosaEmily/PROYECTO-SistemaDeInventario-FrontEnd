@@ -3,6 +3,7 @@
 </script>
 <script>
     import Vue from "vue";
+    import NotAuthorized from "@/views/NotAuthorized.vue";
     import { BootstrapVue } from "bootstrap-vue";
     import store from "@/store/index";
     import generalTable from "@/components/generalTable.vue";
@@ -19,6 +20,7 @@
         components: {
             generalTable,
             BTable,
+            NotAuthorized,
         },
         directives: {
             'b-popover': VBPopover,
@@ -206,13 +208,23 @@
                         },
                     ],
                     pagination: true,
-                },            
+                },
+                thisViewPermission: false,     
             };
         },
         mounted() {
+            this.isAuthorized();
             this.loadDataSource2();
         },
         methods: {
+            isAuthorized(){
+                var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+                permissions.forEach(element => {
+                    if(element=='Compras'){
+                        this.thisViewPermission=true;
+                    }
+                });
+            },
             rowClass(item){
                 try{
                     const colorClass = 'table-primary'
@@ -387,7 +399,7 @@
                     tipodoc:  "",
                     tipo_cambio: "",
                     producto:"",
-                    monedaO:parseFloat(totalO).toFixed(2),
+                    monedaO:"",
                     monedaN:parseFloat(totalN).toFixed(2),            
                 });
             },
@@ -404,7 +416,7 @@
     };
 </script>
 <template>
-    <div>
+    <div v-if="thisViewPermission">
         <b-modal
             centered
             title="Importación de datos"
@@ -502,11 +514,15 @@
             </b-tabs>
         </b-card>       
     </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
+    </div>
 </template>
 <style lang="scss">
     .sticky-footer tr:last-child {
         font-weight: 500;
         position: sticky;
         inset-block-end: 0;
+        background: #dbd9fa;
     }
 </style>

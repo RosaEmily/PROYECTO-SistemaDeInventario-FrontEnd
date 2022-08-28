@@ -27,21 +27,6 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/second-page",
-            name: "second-page",
-            component: () => import("@/views/SecondPage.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Second Page",
-                breadcrumb: [
-                    {
-                        text: "Second Page",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
             path: "/compras/listar/",
             name: "compras-lista-index",
             component: () => import("@/views/compras/listar/index.vue"),
@@ -91,7 +76,8 @@ const router = new VueRouter({
                 breadcrumb: [
                     {
                         text: "Compras",
-                        active: true,
+                        to: { name: "compras-lista-index" },
+                        active: false,
                     },
                     {
                         text: "Editar",
@@ -145,81 +131,6 @@ const router = new VueRouter({
                     },
                     { 
                         text: "Agregar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/compras/plantillas/listar/",
-            name: "compras-plantilla",
-            component: () => import("@/views/compras/plantilla/listar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Lista de Plantillas de Compras",
-                breadcrumb: [
-                    {
-                        text: "Compras",
-                        to: { name: "compras-lista-index" },
-                        active: false,
-                    },
-                    {
-                        text: "Plantillas",
-                        to: { name: "compras-plantilla" },
-                        active: false,
-                    },
-                    {
-                        text: "Listar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/compras/plantillas/agregar/",
-            name: "compras-plantilla-agregar",
-            component: () => import("@/views/compras/plantilla/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Agregar Plantilla de Compras",
-                breadcrumb: [
-                    {
-                        text: "Compras",
-                        to: { name: "compras-lista-index" },
-                        active: false,
-                    },
-                    {
-                        text: "Plantillas",
-                        to: { name: "compras-plantilla" },
-                        active: false,
-                    },
-                    {
-                        text: "Agregar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/compras/plantillas/editar/:id",
-            name: "compras-plantilla-editar",
-            component: () => import("@/views/compras/plantilla/editar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Editar Plantilla de Compras",
-                breadcrumb: [
-                    {
-                        text: "Compras",
-                        to: { name: "compras-lista-index" },
-                        active: false,
-                    },
-                    {
-                        text: "Plantillas",
-                        to: { name: "compras-plantilla" },
-                        active: false,
-                    },
-                    {
-                        text: "Editar",
                         active: true,
                     },
                 ],
