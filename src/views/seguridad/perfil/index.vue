@@ -86,42 +86,16 @@
                                     }}</small>
                                 </validation-provider>
                             </b-form-group>
-                            <b-form-group label="Contraseña: ">                              
-                                <b-input-group>                                   
-                                    <b-form-input
-                                        v-model="password0"
-                                        :type="passwordFieldType"
-                                        class="form-control-merge"                                        
-                                        placeholder="Contraseña"
-                                    />
-
-                                    <b-input-group-append is-text>
-                                        <feather-icon
-                                            class="cursor-pointer"
-                                            :icon="passwordToggleIcon"
-                                            @click="togglePasswordVisibility"
-                                        />
-                                    </b-input-group-append>
-                                </b-input-group>                                
-                            </b-form-group>
-                            <b-form-group label="Confirmar contraseña: ">                               
-                                <b-input-group>                                   
-                                    <b-form-input
-                                        v-model="password1"
-                                        :type="passwordFieldType1"
-                                        class="form-control-merge"                                        
-                                        placeholder="Confirmar Contraseña"
-                                    />
-
-                                    <b-input-group-append is-text>
-                                        <feather-icon
-                                            class="cursor-pointer"
-                                            :icon="passwordToggleIcon1"
-                                            @click="togglePasswordVisibility1"
-                                        />
-                                    </b-input-group-append>
-                                </b-input-group>                                     
-                            </b-form-group>
+                            <b-col md="12" class="text-center mt-1">
+                                <b-button
+                                    v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                                    variant="primary"
+                                    class="mr-1"
+                                    @click="booleanpassword=false,validatePassword()"
+                                >
+                                    Cambiar contraseña 
+                                </b-button>                   
+                            </b-col>
                             <b-form-group label="Elegir Foto: ">                               
                                 <b-input-group>                                   
                                     <b-form-file
@@ -151,13 +125,158 @@
                         v-ripple.400="'rgba(255, 255, 255, 0.15)'"
                         variant="primary"
                         class="mr-1"
-                        @click="Guardar"
+                        @click="booleanpassword=true,validatePassword()"
                     >
-                        Guardar
+                        Guardar 
                     </b-button>                   
                 </b-col>
             </b-row>
-        </b-card>     
+        </b-card>
+        <b-modal
+            id="modalCambiarPassword"
+            ref="modalCambiarPassword"
+            centered
+            title="Cambiar Contraseña"
+            ok-only
+            hide-footer
+            size="sm"
+        >
+            <b-card-text>
+                <validation-observer ref="validatePasswordCambioForm">
+                    <b-form class="ml-1 mr-1 mt-1">
+                        <b-row>
+                            <b-col>
+                                <b-form-group label="Nueva Contraseña: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="Nuevo contraseña"
+                                        rules="required"
+                                    >                           
+                                        <b-input-group>                                   
+                                            <b-form-input
+                                                v-model="password0"
+                                                :type="passwordFieldType"
+                                                class="form-control-merge"                                        
+                                                placeholder="Contraseña"
+                                            />
+
+                                            <b-input-group-append is-text>
+                                                <feather-icon
+                                                    class="cursor-pointer"
+                                                    :icon="passwordToggleIcon"
+                                                    @click="togglePasswordVisibility"
+                                                />
+                                            </b-input-group-append>
+                                        </b-input-group>   
+                                        <small class="text-danger">{{
+                                            errors[0]
+                                        }}</small>
+                                    </validation-provider>                                   
+                                </b-form-group>
+                                <b-form-group label="Confirmar contraseña: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="confirmar contraseña"
+                                        rules="required"
+                                    >                           
+                                        <b-input-group>                                   
+                                            <b-form-input
+                                                v-model="password1"
+                                                :type="passwordFieldType1"
+                                                class="form-control-merge"                                        
+                                                placeholder="Confirmar Contraseña"
+                                            />
+
+                                            <b-input-group-append is-text>
+                                                <feather-icon
+                                                    class="cursor-pointer"
+                                                    :icon="passwordToggleIcon1"
+                                                    @click="togglePasswordVisibility1"
+                                                />
+                                            </b-input-group-append>
+                                        </b-input-group>
+                                        <small class="text-danger">{{
+                                            errors[0]
+                                        }}</small>
+                                    </validation-provider>                                   
+                                </b-form-group>
+                            </b-col>
+                        </b-row>
+                    </b-form>
+                </validation-observer>           
+                <b-row>
+                    <b-col md="12" class="text-center mt-1">
+                        <b-button
+                            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                            variant="primary"
+                            class="mr-1"
+                            @click="Guardar"
+                        >
+                            Guardar 
+                        </b-button>                   
+                    </b-col>
+                </b-row>
+            </b-card-text>      
+        </b-modal>
+        <b-modal
+            id="modalValidatePassword"
+            ref="modalValidatePassword"
+            centered
+            title="Confirmar con la contraseña"
+            ok-only
+            hide-footer
+            size="sm"
+        >
+            <b-card-text>
+                <validation-observer ref="validatePasswordForm">
+                    <b-form class="ml-1 mr-1 mt-1">
+                          <b-row>
+                            <b-col>
+                                <b-form-group label="Confirmar contraseña: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="password"
+                                        rules="required"
+                                    >                           
+                                        <b-input-group>                                   
+                                            <b-form-input
+                                                v-model="validatepassword"
+                                                :type="passwordFieldType2"
+                                                class="form-control-merge"                                        
+                                                placeholder="Escriba Contraseña"
+                                            />
+                                
+                                            <b-input-group-append is-text>
+                                                <feather-icon
+                                                    class="cursor-pointer"
+                                                    :icon="passwordToggleIcon2"
+                                                    @click="togglePasswordVisibility2"
+                                                />
+                                            </b-input-group-append>
+                                        </b-input-group>
+                                        <small class="text-danger">{{
+                                            errors[0]
+                                        }}</small>
+                                    </validation-provider>                                   
+                                </b-form-group>
+                            </b-col>
+                        </b-row>
+                    </b-form>
+                </validation-observer>           
+                <b-row>
+                    <b-col md="12" class="text-center mt-1">
+                        <b-button
+                            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                            variant="primary"
+                            class="mr-1"
+                            @click="savePassword"
+                        >
+                            Confirmar 
+                        </b-button>                   
+                    </b-col>
+                </b-row>
+            </b-card-text>      
+        </b-modal> 
     </div>
 </template>
 <script>
@@ -213,7 +332,10 @@ export default {
                 restablecer:false,
                 foto:"",
             },
+            booleanpassword:true,
+            validatepassword:"",
             formData:null,
+            formData1:null,
             sideImg: require("@/assets/images/pages/login-v2.svg"),
             required,
             password0:"",
@@ -222,7 +344,7 @@ export default {
             foto:null,       
         };
     },
-    computed: {
+    computed: {      
         passwordToggleIcon() {
             return this.passwordFieldType === "password"
                 ? "EyeIcon"
@@ -230,6 +352,11 @@ export default {
         },
         passwordToggleIcon1() {
             return this.passwordFieldType1 === "password"
+                ? "EyeIcon"
+                : "EyeOffIcon";
+        },
+        passwordToggleIcon2() {
+            return this.passwordFieldType2 === "password"
                 ? "EyeIcon"
                 : "EyeOffIcon";
         },
@@ -245,6 +372,45 @@ export default {
         this.getInfoByID();
     },
     methods: {
+        validatePassword(){
+            this.validatepassword=""
+            this.$refs["modalValidatePassword"].show(); 
+        },
+        validateCambiarPassword(){
+            this.validatepassword=""
+            this.$refs["modalCambiarPassword"].show(); 
+        },
+        async savePassword(){
+            this.$refs.validatePasswordForm.validate().then((success) => {
+                if (success) {
+                    let passowrd = {
+                        url: "/api/auth/password/"+ this.usuarioData.id+"/"+this.validatepassword,
+                        method: "GET",                        
+                    };
+                    store.dispatch("back/EXECUTE", passowrd).then((resp) => {
+                        if(resp){                            
+                            this.$refs["modalValidatePassword"].hide();
+                            this.sendMessage(
+                                "Password correcto",
+                                "EditIcon",
+                                "success"
+                            );
+                            if(this.booleanpassword){
+                                this.validationForm();
+                            }else{
+                                this.validateCambiarPassword();
+                            }
+                        }else{
+                            this.sendMessage(
+                                "Password incorrecto",
+                                "AlertTriangleIcon",
+                                "danger"
+                            );
+                        }
+                    });                                       
+                }
+            })
+        },
         Validar(input) {
             var uploadFile = input.target.files[0];
             if (!(/\.(jpg|jpeg|png)$/i).test(uploadFile.name)) {                
@@ -288,10 +454,11 @@ export default {
             if(this.password0!==this.password1){
                 this.sendMessage(
                     "El password no coincide",
-                    "EditIcon",
+                    "AlertTriangleIcon",
                     "danger"
                 );
             }else{
+                this.$refs["modalCambiarPassword"].hide();
                 this.$swal({
                     title: "¿Está seguro que desea editar su perfil?",
                     text: "El sistema cerrar la sesion y tendra que volver a iniciar sesion con los nuevos datos.",
@@ -381,7 +548,7 @@ export default {
                       
                     }
                 });
-            }            
+            }
         },
         validationForm() {
             this.$refs.simpleRules.validate().then((success) => {

@@ -10,6 +10,7 @@ import VueSweetalert2 from "vue-sweetalert2";
 import moment from "moment";
 import DocumentoPDF from "@/components/DocumentoPDF.vue";
 import VueHtml2pdf from 'vue-html2pdf';
+import generalData from "@fakedata";
 
 Vue.use(VueSweetalert2);
 Vue.use(BootstrapVue);
@@ -25,10 +26,11 @@ export default {
     },
     data() {
         return {
+            unidades: generalData.inventario.unidades,
             selected: [],
             currentPage: 1,
             rows: 0,
-            filename: "",
+            namefilename: "",
             showEntrie: 10,
             totalElements: 0,
             entries: [10, 20, 50, 100],
@@ -38,7 +40,10 @@ export default {
             },
             arrayFilters:[],
             filtro:"",
-            ListData:[],
+            ListData:{
+                data:{},
+                productos:[]
+            },
         };
     },
     mounted() {
@@ -58,30 +63,46 @@ export default {
             let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
             return output;
         },  
-        async downloadPDF(item) {
-            if(item.proveedor){
-                let list = {
-                    url: "/api/compra/" + item.id,
-                    method: "GET",
-                    headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    },
-                };
-                var resp = await store.dispatch("back/EXECUTE", list);
-                this.filename="C-"+resp.desctipo+"-"+resp.serie+"-"+resp.correlativo+"-"+this.getDateNow()
-            }else{
-                let list = {
-                    url: "/api/venta/" + item.id,
-                    method: "GET",
-                    headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    },
-                };
-                var resp = await store.dispatch("back/EXECUTE", list);
-                this.filename="V-"+resp.desctipo+"-"+resp.serie+"-"+resp.correlativo+"-"+this.getDateNow()
+        downloadPDF(item) {
+            this.ListData={
+                data:{},
+                productos:[]
             }
-            console.log(this.filename)
-            this.ListData=resp
+            if(item.proveedor){               
+                this.namefilename="C-"+item.desctipo+"-"+item.serie+"-"+item.correlativo+"-"+this.getDateNow()
+                this.ListData.data.desctipo=item.desctipo
+                this.ListData.data.serie=item.serie
+                this.ListData.data.correlativo=item.correlativo
+                this.ListData.data.nombre=item.proveedor.nombre
+                this.ListData.data.doi=item.proveedor.doi
+                this.ListData.data.direccion=item.proveedor.direccion
+                this.ListData.data.fecha=item.created_at
+            }else{                
+                this.namefilename="V-"+item.desctipo+"-"+item.serie+"-"+item.correlativo+"-"+this.getDateNow()
+                this.ListData.data.desctipo=item.desctipo
+                this.ListData.data.serie=item.serie
+                this.ListData.data.correlativo=item.correlativo
+                this.ListData.data.nombre=item.cliente.nombre
+                this.ListData.data.doi=item.cliente.doi
+                this.ListData.data.direccion=item.cliente.direccion
+                this.ListData.data.fecha=item.created_at
+            }           
+            for(let i=0;i<item.detalle_producto.length;i++){
+                this.ListData.productos.push({
+                    nombre:item.detalle_producto[i].producto.nombre,
+                    unidad:this.unidades.find((unid) => unid.value == item.detalle_producto[i].producto.unidad).text,
+                    cantidad:item.detalle_producto[i].cantidad,
+                    precio:parseFloat(item.detalle_producto[i].precio).toFixed(2),
+                    subtotal:parseFloat(item.detalle_producto[i].cantidad*item.detalle_producto[i].precio).toFixed(2)
+                })
+            }
+            this.ListData.productos.push({
+                nombre:"",
+                unidad:"",
+                cantidad:"",
+                precio:"TOTAL",
+                subtotal:parseFloat(item.total).toFixed(2),
+            })            
             this.$refs.html2Pdf.generatePdf();
         },
         filterColumn(field) {
@@ -266,7 +287,7 @@ export default {
             :enable-download="true"
             :preview-modal="false"
             :paginate-elements-by-height="1400"
-            :filename=this.filename
+            :filename=namefilename
             :pdf-quality="2"
             :manual-pagination="true"
             pdf-format="a4"

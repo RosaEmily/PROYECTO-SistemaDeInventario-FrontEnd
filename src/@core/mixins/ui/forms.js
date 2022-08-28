@@ -4,6 +4,7 @@ export const togglePasswordVisibility = {
     return {
       passwordFieldType: 'password',
       passwordFieldType1: 'password',
+      passwordFieldType2: 'password',
     }
   },
   methods: {
@@ -12,6 +13,9 @@ export const togglePasswordVisibility = {
     },
     togglePasswordVisibility1() {
       this.passwordFieldType1 = this.passwordFieldType1 === 'password' ? 'text' : 'password'
+    },
+    togglePasswordVisibility2() {
+      this.passwordFieldType2 = this.passwordFieldType2 === 'password' ? 'text' : 'password'
     },
   },
 }

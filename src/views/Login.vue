@@ -16,7 +16,7 @@
                 </b-link>
 
                 <b-card-text class="text-center mb-2">
-                    Bienvenid@ a Ferretería y Matizados Tonny 's, por favor ingresa con tus
+                    Bienvenid@ a Ferretería y Matizados Tonny's, por favor ingresa con tus
                     credenciales
                 </b-card-text>
 
