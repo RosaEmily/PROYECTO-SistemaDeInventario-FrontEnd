@@ -2,66 +2,129 @@
 /* eslint-disable */
 </script>
 <template>
-  <div>
-    <div  class="container">
-        <b-card>            
-            <b-row>               
-                <b-col sm="4" align="center">
-                    <label>INGRESOS</label>
-                    <h1> S/. {{this.ingresos.toFixed(2)}} </h1>
-                </b-col>
-                  <b-col sm="4" align="center">
-                    <label>EGRESOS</label>
-                    <h1> S/. {{this.egresos.toFixed(2)}} </h1>
-                </b-col>
-                <b-col sm="4" align="center">
-                    <label>UTILIDAD</label>
-                    <h1> S/. {{this.utilidad.toFixed(2)}} </h1>
-                </b-col>            
+    <div>
+        <div>
+            <b-row>
+                <div class="col-4">
+                    <b-card>
+                        <b-row>
+                            <b-col align="center">
+                                <label>INGRESOS</label>
+                                <h1> S/. {{this.ingresos.toFixed(2)}} </h1>
+                            </b-col>          
+                        </b-row>
+                    </b-card>
+                </div>
+                <div class="col-4">
+                    <b-card>
+                        <b-row>
+                            <b-col align="center">
+                                <label>EGRESOS</label>
+                                <h1> S/. {{this.egresos.toFixed(2)}} </h1>
+                            </b-col>
+                        </b-row>
+                    </b-card>
+                </div>
+                <div class="col-4">
+                    <b-card>
+                        <b-row>
+                            <b-col align="center">
+                                <label>UTILIDAD</label>
+                                <h1> S/. {{this.utilidad.toFixed(2)}} </h1>
+                            </b-col>
+                        </b-row>
+                    </b-card>   
+                </div>       
             </b-row>
             <b-row>
-                <b-col sm="4" align="center">
-                    <label>CLIENTES</label>
-                    <h1> {{this.clientes}} </h1>
-                </b-col>
-                <b-col sm="4" align="center">
-                    <label>PROVEEDORES</label>
-                    <h1> {{this.proveedores}} </h1>
-                </b-col>             
-                <b-col sm="4" align="center">
-                    <label>PRODUCTOS</label>
-                    <h1> {{this.productos}} </h1>
-                </b-col>          
+                <div class="col-4">
+                    <b-card>
+                        <b-row>
+                            <b-col align="center">
+                                <label>CLIENTES</label>
+                                <h1> {{this.clientes}} </h1>
+                            </b-col>
+                        </b-row>
+                    </b-card>   
+                </div>
+                <div class="col-4">
+                    <b-card>
+                        <b-row>
+                            <b-col align="center">
+                                <label>PROVEEDORES</label>
+                                <h1> {{this.proveedores}} </h1>
+                            </b-col>
+                        </b-row>
+                    </b-card>   
+                </div>
+                <div class="col-4">
+                    <b-card>
+                        <b-row>
+                            <b-col align="center">
+                                <label>PRODUCTOS</label>
+                                <h1> {{this.productos}} </h1>
+                            </b-col>
+                        </b-row>
+                    </b-card>   
+                </div>       
             </b-row>
-            <br>
             <b-row>
-                <b-col sm="4" align="center">
-                    <label>GRAFICO DE INGRESOS</label>
-                    <canvas id="myLineI" width="400" height="400"></canvas>               
-                </b-col>
-                <b-col sm="4"  align="center">
-                    <label>GRAFICO DE EGRESOS</label>
-                    <canvas id="myLineE" width="400" height="400"></canvas>
-                </b-col>
-                <b-col sm="4"  align="center">
-                    <label>GRAFICO DE UTILIDAD</label>
-                    <canvas id="myLineU" width="400" height="400"></canvas>
-                </b-col>
+                <div class="col-6">
+                    <b-card>
+                        <b-row>
+                            <div class="col-6 mt-2">
+                                <span class="p-2 text-primary" style="background: rgba(115,103,240,0.15)">
+                                    <feather-icon icon="SearchIcon" size="18"/>
+                                </span>
+                            </div>
+                            <div class="col-6" align="right">
+                                <span>TOTAL</span>
+                                <h1>S/. {{this.ingresos.toFixed(2)}}</h1>
+                            </div>
+                        </b-row>
+                        <br>
+                        <b-row>
+                            <b-col align="center">
+                                <canvas id="myLineI" height="200px" max-height="200px"></canvas>               
+                            </b-col>
+                        </b-row>
+                    </b-card>   
+                </div>
+                <div class="col-6">
+                    <b-card>
+                        <b-row>
+                            <b-col align="center">
+                                <label>GRAFICO DE EGRESOS</label>
+                                <canvas id="myLineE" height="200px" max-height="200px"></canvas>
+                            </b-col>
+                        </b-row>
+                    </b-card>   
+                </div>       
             </b-row>
-            <br>
             <b-row>
-                <b-col sm="6" align="center">
-                    <label>TOP 10 DE LOS PROVEEDORES MAS FRECUENTES</label>
-                    <canvas id="myPie" width="400" height="400"></canvas>
-                </b-col>
-                <b-col sm="6"  align="center">
-                    <label>TOP 10 DE LOS CLIENTES MAS FRECUENTES</label>
-                    <canvas id="myPolar" width="400" height="400"></canvas>
-                </b-col>
+                <div class="col-12">
+                    <b-card>
+                        <b-row>
+                            <b-col align="center">
+                                <label>GRAFICO DE UTILIDAD</label>
+                                <canvas id="myLineU" height="100px" max-height="100px"></canvas>
+                            </b-col>
+                        </b-row>
+                    </b-card>   
+                </div>       
             </b-row>
-        </b-card>        
+                <b-row>
+                    <b-col sm="6" align="center">
+                        <label>TOP 10 DE LOS PROVEEDORES MAS FRECUENTES</label>
+                        <canvas id="myPie" width="400" height="400"></canvas>
+                    </b-col>
+                    <b-col sm="6"  align="center">
+                        <label>TOP 10 DE LOS CLIENTES MAS FRECUENTES</label>
+                        <canvas id="myPolar" width="400" height="400"></canvas>
+                    </b-col>
+                </b-row>      
+        </div>
     </div>
-  </div>
 </template> 
 
 <script>
@@ -401,7 +464,7 @@ export default {
             data:  {
                 labels: nombresMes,
                 datasets: [{
-                    label: 'Total',
+                    label: 'INGRESOS',
                     data: cantidadMes,
                     fill: false,
                     borderColor: 'rgb(75, 192, 192)',
