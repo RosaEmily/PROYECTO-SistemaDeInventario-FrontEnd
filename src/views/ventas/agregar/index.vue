@@ -2,7 +2,7 @@
 /* eslint-disable */
 </script>
 <template>
-    <div>
+    <div v-if="thisViewPermission">
         <b-card>
             <validation-observer ref="agregarCompraRules">
                 <b-form>
@@ -666,9 +666,12 @@
             </b-card-text>      
         </b-modal>
     </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
+    </div>
 </template>
-
 <script>
+    import NotAuthorized from "@/views/NotAuthorized.vue";
     import Vue from "vue";
     import store from "@/store/index";
     import { BootstrapVue, BFormSelect } from "bootstrap-vue";
@@ -695,12 +698,14 @@
             vSelect,
             ValidationProvider,
             ValidationObserver,
+            NotAuthorized
         },
         directives: {
             Ripple,
         },
         data() {
             return {
+                thisViewPermission: false,
                 tipos_doc: generalData.compra.documentos,
                 tipo: {
                     cod: "",
@@ -759,9 +764,18 @@
             };
         },
         mounted() {
+            this.isAuthorized();
             this.getConfiguraciones();
         },
-        methods: {           
+        methods: {
+            isAuthorized(){
+                var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+                permissions.forEach(element => {
+                    if(element=='Ventas'){
+                        this.thisViewPermission=true;
+                    }
+                });
+            },        
             validationFormCompra(){
                 this.$refs.agregarCompraRules.validate().then(success => {
                     if(success){

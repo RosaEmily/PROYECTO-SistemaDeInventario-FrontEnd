@@ -3,6 +3,7 @@
 </script>
 <script>
     import Vue from "vue";
+    import NotAuthorized from "@/views/NotAuthorized.vue";
     import { BootstrapVue } from "bootstrap-vue";
     import store from "@/store/index";
     import generalTable from "@/components/generalTable.vue";
@@ -19,6 +20,7 @@
         components: {
             generalTable,
             BTable,
+            NotAuthorized
         },
         directives: {
             'b-popover': VBPopover,
@@ -26,6 +28,7 @@
         },
         data() {
             return {
+                thisViewPermission: false,
                 stickyHeader: true,
                 parse_header: [],
                 parse_csv: [],
@@ -165,9 +168,18 @@
             };
         },
         mounted() {
+            this.isAuthorized();
             this.loadDataSource2();
         },
         methods: {
+            isAuthorized(){
+                var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+                permissions.forEach(element => {
+                    if(element=='Ventas'){
+                        this.thisViewPermission=true;
+                    }
+                });
+            },
             rowClass(item){
                 try{
                     const colorClass = 'table-primary'
@@ -328,9 +340,9 @@
     };
 </script>
 <template>
-    <div>
+    <div v-if="thisViewPermission">
         <b-modal
-            centered
+            centered 
             title="Importación de datos"
             ok-only
             hide-footer
@@ -425,6 +437,9 @@
                 </b-tab>
             </b-tabs>
         </b-card>       
+    </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
     </div>
 </template>
 <style lang="scss">
