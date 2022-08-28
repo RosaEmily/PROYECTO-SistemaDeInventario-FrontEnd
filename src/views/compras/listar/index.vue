@@ -417,61 +417,16 @@
 </script>
 <template>
     <div v-if="thisViewPermission">
-        <b-modal
-            centered
-            title="Importación de datos"
-            ok-only
-            hide-footer
-            id="modal-import"
-            ref="modal-import"
-            size="md"
-        >
-            <b-card-text class="">
-                <b-form-group
-                    label="CSV file to import: *"
-                    label-for="account-nombres"
-                    class="text-center"
-                >
-                    <input
-                        type="file"
-                        id="csv_file"
-                        name="csv_file"
-                        class="form-control"
-                        @change="loadCSV($event)"
-                    />
-                </b-form-group>
-                <b-alert
-                    v-if="alertMsg.length > 0"
-                    :variant="prepareForImport ? 'success' : 'danger'"
-                    show
-                >
-                    <div class="alert-body">
-                        <span v-for="item in alertMsg" :key="item">
-                            {{ item }}<br />
-                        </span>
-                    </div>
-                </b-alert>
-            </b-card-text>
-            <div class="text-center">
-                <b-button variant="primary" @click="importarCsv"
-                    >Importar Datos
-                </b-button>
-            </div>
-        </b-modal>
         <b-card>
             <b-tabs>
                 <b-tab active title="Registro General">                   
                     <b-row>
                         <b-col md="6" class="">
-                            <b-button variant="success"> Exportar </b-button>
-                            <b-button class="ml-25" variant="light" @click="importar">
-                                Importar
-                            </b-button>
                         </b-col>
                         <b-col md="6" class="text-right">
                             <b-button variant="primary" @click="agregarCuenta">
-                                Agregar Elemento
-                            </b-button>                            
+                                Nueva Compra
+                            </b-button>                  
                         </b-col>
                     </b-row>
                     <generalTable @deletedCompra="loadDataSource2()" :paramsGrid="paramsGrid"> </generalTable>

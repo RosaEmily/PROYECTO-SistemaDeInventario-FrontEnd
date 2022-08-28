@@ -127,7 +127,7 @@
                 var resp = await store.dispatch("back/EXECUTE", list);
                 var tipodoi="DNI",estado="HABILITADO",email="N/A"
                 for(let i=0;i<resp.length;i++){
-                    if(resp[i].tipoDoi==="02"){
+                    if(resp[i].tipoDoi==="2"){
                         tipodoi="DNI"
                     }else{
                         tipodoi="RUC"
@@ -226,6 +226,7 @@
                 this.proveedor.forEach(element => {
                     this.saveImport(element);
                 });
+                console.log(this.proveedor);
                 this.$refs["modal-import"].hide();
                 this.proveedor = [];
             },
@@ -382,9 +383,9 @@
             ref="modal-import"
             size="md"
         >
-            <b-card-text class="">
+            <b-card-text class="text-center">
+                <div class="mb-1">Archivo CSV para importar:</div>
                 <b-form-group
-                    label="CSV file to import:"
                     label-for="account-nombres"
                     class="text-center"
                 >
@@ -414,17 +415,25 @@
                     Importar Datos
                 </b-button>
             </div>
+            <br>
+            <b-alert variant="secondary" show>
+                <div class="alert-body" style="font-weight: 400; text-align: justify;">
+                Recuerda que el archivo CSV debe tener el formato establecido para importalo 
+                correctamente, si desconoce este formato por favor descárguelo desde 
+                <a class="text-primary" href="https://drive.google.com/uc?id=13f-G0FvU4Y-Xa6ZzS7Te1Ri5dRlrAmU3&export=download" style="font-weight: 500;" download="">este enlace</a>
+                </div>
+            </b-alert>
         </b-modal>
         <b-card>
             <b-row>
                 <b-col md="6" class="">
-                    <b-button variant="light" @click="importar"> Importar Csv </b-button>
+                    <b-button variant="primary" @click="importar"> Importar Csv </b-button>
                     <b-button variant="success" class="ml-25" @click="exportar"> Exportar Excel </b-button>
                     <b-button variant="danger" class="ml-25" @click="exportarPDF"> Exportar Pdf </b-button>
                 </b-col>
                 <b-col md="6" class="text-right">
                     <b-button variant="primary" @click="agregarCuenta">
-                        Agregar Elemento
+                        Nuevo Proveedor
                     </b-button>
                 </b-col>               
             </b-row>

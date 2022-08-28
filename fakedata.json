@@ -162,8 +162,8 @@
     },
     "persona":{
         "documentos":[
-            { "value": "01", "text": "RUC" },
-            { "value": "02", "text": "DNI" } 
+            { "value": "1", "text": "RUC" },
+            { "value": "2", "text": "DNI" } 
         ],
         "estado":[
             {"value":true,"text":"ACTIVO"}, 

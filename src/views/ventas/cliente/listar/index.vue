@@ -363,13 +363,13 @@
         <b-card>
             <b-row>
                 <b-col md="6" class="">
-                    <b-button variant="light" @click="importar"> Importar Csv </b-button>
+                    <b-button variant="primary" @click="importar"> Importar Csv </b-button>
                     <b-button variant="success" class="ml-25" @click="exportar"> Exportar Excel </b-button>
                     <b-button variant="danger" class="ml-25" @click="exportarPDF"> Exportar Pdf </b-button>
                 </b-col>
                 <b-col md="6" class="text-right">
                     <b-button variant="primary" @click="agregarCuenta">
-                        Agregar Elemento
+                        Nuevo Cliente
                     </b-button>
                 </b-col>
             </b-row>
