@@ -23,7 +23,7 @@
         data() {
             return {
                 ListData:{
-                    titulo:"LISTADO DE PROVEEDORES",
+                    titulo:this.getNameWithLongDate(),
                     data: [],
                     fields:[
                         { key: "doi", label: "DNI/RUC", sortable: false },
@@ -39,7 +39,7 @@
                 parse_csv: [],
                 sortOrders: {},
                 alertMsg: [],
-                filename: 'Proveedores' + this.getDateNow(),
+                filename: this.getNameWithShortDate(),
                 prepareForExport: [],
                 prepareForImport: false,
                 proveedor:[],
@@ -153,6 +153,20 @@
                     })
                 }
             },
+            getNameWithShortDate(){ 
+                let date = new Date();
+                let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
+                return "Proveedores"+output;
+            },
+            getNameWithLongDate(){
+                let date = new Date();
+                let output = String(date.getDate()).padStart(2, '0') +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+ date.getFullYear() +" "+  String(date.getHours()).padStart(2, '0') +":"+ String(date.getMinutes()).padStart(2, '0')+":"+ String(date.getSeconds()).padStart(2, '0');
+                return "LISTA DE PROVEEDORES ("+output+")";
+            },
+            updateDateNames(){
+                this.filename=this.getNameWithShortDate();
+                this.ListData.titulo=this.getNameWithLongDate();
+            },
             getDateNow(){
                 let date = new Date();
                 let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
@@ -171,6 +185,7 @@
             },
 
             async exportar(){
+                this.updateDateNames();
                 let request = {
                     url: this.paramsGrid.urlBack+"/all",
                     method: "GET",
@@ -200,6 +215,7 @@
             },
 
             async exportarPDF(){
+                this.updateDateNames();
                 this.$refs.html2Pdf.generatePdf();
                 /*const doc = new jsPDF();
                 doc.text("Hello world!", 10, 10);
@@ -354,7 +370,7 @@
                 >
                 <section slot="pdf-content">
                     <ListarPDF :ListData="ListData"> </ListarPDF>
-                </section>
+                </section> 
             </vue-html2pdf>
         </div>        
         <b-modal

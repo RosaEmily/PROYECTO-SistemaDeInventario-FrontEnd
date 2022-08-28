@@ -18,9 +18,9 @@ export default {
     },
     data() {
         return {
-            filename: 'Usuarios' + this.getDateNow(),
+            filename: this.getNameWithShortDate(),
             ListData:{
-                titulo:"LISTADO DE USUARIOS",
+                titulo:this.getNameWithLongDate(),
                 data: [],
                 fields:[
                     { key: "id", label: "ID", sortable: false },
@@ -166,13 +166,29 @@ export default {
                 })
             }
         },
+        getNameWithShortDate(){ 
+            let date = new Date();
+            let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
+            return "Usuarios"+output;
+        },
+        getNameWithLongDate(){
+            let date = new Date();
+            let output = String(date.getDate()).padStart(2, '0') +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+ date.getFullYear() +" "+  String(date.getHours()).padStart(2, '0') +":"+ String(date.getMinutes()).padStart(2, '0')+":"+ String(date.getSeconds()).padStart(2, '0');
+            return "LISTA DE USUARIOS ("+output+")";
+        },
+        updateDateNames(){
+            this.filename=this.getNameWithShortDate();
+            this.ListData.titulo=this.getNameWithLongDate();
+        },
         async exportarPDF(){
+            this.updateDateNames();
             this.$refs.html2Pdf.generatePdf();
             /*const doc = new jsPDF();
             doc.text("Hello world!", 10, 10);
             doc.save("a4.pdf");*/
         },
         async exportar(){
+            this.updateDateNames();
             let request = {
                 url: this.paramsGrid.urlBack+"/all",
                 method: "GET",
@@ -323,7 +339,7 @@ export default {
                 :manual-pagination="true"
                 pdf-format="a4"
                 :pdf-margin="10"
-                pdf-orientation="landscape"
+                pdf-orientation="landscape" 
                 pdf-content-width="100%"
                 ref="html2Pdf"
                 >

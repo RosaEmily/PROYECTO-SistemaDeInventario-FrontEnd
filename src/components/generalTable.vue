@@ -30,7 +30,7 @@ export default {
             selected: [],
             currentPage: 1,
             rows: 0,
-            namefilename: "",
+            namefilename: "Documento"+this.getDateNow(),
             showEntrie: 10,
             totalElements: 0,
             entries: [10, 20, 50, 100],
@@ -69,7 +69,6 @@ export default {
                 productos:[]
             }
             if(item.proveedor){               
-                this.namefilename="C-"+item.desctipo+"-"+item.serie+"-"+item.correlativo+"-"+this.getDateNow()
                 this.ListData.data.desctipo=item.desctipo
                 this.ListData.data.serie=item.serie
                 this.ListData.data.correlativo=item.correlativo
@@ -78,7 +77,6 @@ export default {
                 this.ListData.data.direccion=item.proveedor.direccion
                 this.ListData.data.fecha=item.created_at
             }else{                
-                this.namefilename="V-"+item.desctipo+"-"+item.serie+"-"+item.correlativo+"-"+this.getDateNow()
                 this.ListData.data.desctipo=item.desctipo
                 this.ListData.data.serie=item.serie
                 this.ListData.data.correlativo=item.correlativo

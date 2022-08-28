@@ -22,9 +22,9 @@
         },
         data() {
             return {
-                filename: 'NotaCreditosVentas' + this.getDateNow(),
+                filename: this.getNameWithShortDate(),
                 ListData:{
-                    titulo:"LISTADO DE NOTAS DE CREDITOS DE VENTAS",
+                    titulo:this.getNameWithLongDate(),
                     data: [],
                     fields:[
                         { key: "id", label: "ID", sortable: false },
@@ -126,13 +126,29 @@
                     })
                 }
             },
+            getNameWithShortDate(){ 
+                let date = new Date();
+                let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
+                return "NotaCreditosVenta"+output;
+            },
+            getNameWithLongDate(){
+                let date = new Date();
+                let output = String(date.getDate()).padStart(2, '0') +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+ date.getFullYear() +" "+  String(date.getHours()).padStart(2, '0') +":"+ String(date.getMinutes()).padStart(2, '0')+":"+ String(date.getSeconds()).padStart(2, '0');
+                return "LISTA DE NOTAS DE CREDITOS DE VENTAS ("+output+")";
+            },
+            updateDateNames(){
+                this.filename=this.getNameWithShortDate();
+                this.ListData.titulo=this.getNameWithLongDate();
+            },
             async exportarPDF(){
+                this.updateDateNames();
                 this.$refs.html2Pdf.generatePdf();
                 /*const doc = new jsPDF();
                 doc.text("Hello world!", 10, 10);
                 doc.save("a4.pdf");*/
             },
             async exportar(){
+                this.updateDateNames();
                 let request = {
                     url: this.paramsGrid.urlBack+"/all",
                     method: "GET",
@@ -259,7 +275,7 @@
                 pdf-format="a4"
                 :pdf-margin="10"
                 pdf-orientation="landscape"
-                pdf-content-width="100%"
+                pdf-content-width="100%" 
                 ref="html2Pdf"
                 >
                 <section slot="pdf-content">

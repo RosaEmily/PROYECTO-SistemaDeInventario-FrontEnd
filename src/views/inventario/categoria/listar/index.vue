@@ -14,16 +14,16 @@
     Vue.use(BootstrapVue);
 
     export default {
-        components: {
+        components: { 
             generalTable,
             VueHtml2pdf,
             ListarPDF,
         },
         data() {
             return {
-                filename: 'Categorias' + this.getDateNow(),
+                filename: this.getNameWithShortDate(),
                 ListData:{
-                    titulo:"LISTADO DE CATEGORIAS",
+                    titulo:this.getNameWithLongDate(),
                     data: [],
                     fields:[
                         { key: "codigo", label: "CODIGO", sortable: false },
@@ -136,13 +136,29 @@
                     })
                 }
             },
+            getNameWithShortDate(){ 
+                let date = new Date();
+                let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
+                return "Categorias"+output;
+            },
+            getNameWithLongDate(){
+                let date = new Date();
+                let output = String(date.getDate()).padStart(2, '0') +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+ date.getFullYear() +" "+  String(date.getHours()).padStart(2, '0') +":"+ String(date.getMinutes()).padStart(2, '0')+":"+ String(date.getSeconds()).padStart(2, '0');
+                return "LISTA DE CATEGORIAS ("+output+")";
+            },
+            updateDateNames(){
+                this.filename=this.getNameWithShortDate();
+                this.ListData.titulo=this.getNameWithLongDate();
+            },
             async exportarPDF(){
+                this.updateDateNames();
                 this.$refs.html2Pdf.generatePdf();
                 /*const doc = new jsPDF();
                 doc.text("Hello world!", 10, 10);
                 doc.save("a4.pdf");*/
             },
             async exportar(){
+                this.updateDateNames();
                 let request = {
                     url: this.paramsGrid.urlBack+"/all",
                     method: "GET",
