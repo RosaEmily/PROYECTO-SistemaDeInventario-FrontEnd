@@ -306,7 +306,6 @@ export default {
     },
 };
 </script>
-
 <template>
     <div>
         <div hidden>
@@ -388,7 +387,6 @@ export default {
         </b-card>
     </div>
 </template>
-
 <style lang="scss">
 @import "@core/scss/vue/libs/vue-select.scss";
 </style>

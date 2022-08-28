@@ -771,7 +771,7 @@
             isAuthorized(){
                 var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
                 permissions.forEach(element => {
-                    if(element=='Listar Compras'){
+                    if(element=='Compras'){
                         this.thisViewPermission=true;
                     }
                 });

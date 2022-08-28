@@ -35,7 +35,7 @@ export default [
     header: 'Módulo Compras',
   },
   {
-    title: 'Listar Compras',
+    title: 'Compras',
     route:
     {
       name: 'compras-lista-index',
@@ -60,7 +60,7 @@ export default [
     header: 'Módulo Ventas',
   },
   {
-    title: 'Listar Ventas',
+    title: 'Ventas',
     route:
     {
       name: 'ventas-lista-index',
@@ -86,17 +86,10 @@ export default [
     header: 'Módulo Inventario',
   },
   {
-    title: 'Listar Productos',
+    title: 'Productos',
     route:
     {
       name: 'inventario-lista-index',
-    },
-  },
-  {
-    title: 'Agregar Producto',
-    route:
-    {
-      name: 'inventario-agregar-index',
     },
   },
   {
