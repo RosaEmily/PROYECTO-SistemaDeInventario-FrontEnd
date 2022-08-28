@@ -246,7 +246,8 @@
 </script>
 <template>
     <div>
-        <vue-html2pdf
+        <div hidden>
+            <vue-html2pdf
             :show-layout="false"
             :float-layout="true"
             :enable-download="true"
@@ -265,6 +266,7 @@
                 <ListarPDF :ListData="ListData"> </ListarPDF>
             </section>
         </vue-html2pdf>
+        </div>        
         <b-modal
             centered
             title="Importación de datos"
