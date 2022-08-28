@@ -107,7 +107,7 @@ export default {
                 edit: {
                     available: true,
                     redirect: true,
-                    ruta: "/seguridad/usuarios/editar/index",
+                    ruta: "/seguridad/usuarios/editar",
                 },
                 pdf: {
                     available: false,

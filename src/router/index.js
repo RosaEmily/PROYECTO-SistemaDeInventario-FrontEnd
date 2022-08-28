@@ -682,7 +682,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/usuario-lista-index",
+            path: "/seguridad/usuarios/listar",
             name: "usuario-lista-index",
             component: () => import("@/views/seguridad/usuarios/listar/index.vue"),
             meta: {
@@ -706,7 +706,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/usuario-agregar-index",
+            path: "/seguridad/usuarios/agregar",
             name: "usuario-agregar-index",
             component: () => import("@/views/seguridad/usuarios/agregar/index.vue"),
             meta: {
@@ -730,7 +730,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/seguridad/usuarios/editar/index/:id",
+            path: "/seguridad/usuarios/editar/:id",
             name: "usuario-editar-index",
             component: () => import("@/views/seguridad/usuarios/editar/index.vue"),
             meta: {
@@ -754,7 +754,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/rol-lista-index",
+            path: "/seguridad/roles/listar",
             name: "rol-lista-index",
             component: () => import("@/views/seguridad/roles/listar/index.vue"),
             meta: {
@@ -778,7 +778,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/rol-agregar-index",
+            path: "/seguridad/roles/agregar",
             name: "rol-agregar-index",
             component: () => import("@/views/seguridad/roles/agregar/index.vue"),
             meta: {
@@ -802,7 +802,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/seguridad/roles/editar/index/:id",
+            path: "/seguridad/roles/editar/:id",
             name: "rol-editar-index",
             component: () => import("@/views/seguridad/roles/editar/index.vue"),
             meta: {
