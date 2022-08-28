@@ -2,7 +2,7 @@
 /* eslint-disable */
 </script>
 <template>
-    <div v-if="permiso_vista">
+    <div v-if="thisViewPermission">
         <b-card>
             <validation-observer ref="agregarCompraRules">
                 <b-form>
@@ -760,14 +760,22 @@
                     precio:0,
                 },
                 categorias: [],
-                permiso_vista: true,          
+                thisViewPermission: false,
             };
         },
         mounted() {
-            //this.redirectNotAuthorized();
+            this.isAuthorized();
             this.getConfiguraciones();
         },
         methods: {
+            isAuthorized(){
+                var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+                permissions.forEach(element => {
+                    if(element=='Listar Compras'){
+                        this.thisViewPermission=true;
+                    }
+                });
+            },
             redirectNotAuthorized(){
                 if(!this.permiso_vista){
                     this.$router.push({ name: "compras-lista-index" });

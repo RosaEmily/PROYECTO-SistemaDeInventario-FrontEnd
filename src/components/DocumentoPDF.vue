@@ -20,6 +20,7 @@
       <b-col sm="12" style="text-align:center">
         <h1>{{ListData.correlativo}}</h1>
       </b-col>
-    </b-row><br>    
+    </b-row>
+    <br>    
   </div>
 </template>

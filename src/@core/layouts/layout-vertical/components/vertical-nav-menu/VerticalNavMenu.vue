@@ -131,6 +131,7 @@ export default {
         method: 'GET',
       }
       const repermisos = await store.dispatch('back/EXECUTE', permisos)
+      localStorage.setItem('UserDataPermisos',JSON.stringify(repermisos));
       this.permisosA = repermisos
       for (let i = 0; i < navMenuItems.length; i += 1) {
         if (navMenuItems[i].header) {

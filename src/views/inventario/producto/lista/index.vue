@@ -18,21 +18,19 @@ export default {
     },
     data() {
         return {
-            filename: 'Productos' + this.getDateNow(),
+            filename: this.getNameWithShortDate(),
             ListData:{
-                titulo:"LISTADO DE PRODUCTOS",
+                titulo: this.getNameWithLongDate(),
                 data: [],
                 fields:[
                     { key: "codigo", label: "CODIGO", sortable: false },
                     { key: "nombre", label: "NOMBRE", sortable: false },
                     { key: "marca", label: "MARCA", sortable: false },
-                    { key: "descripcion", label: "DESCRIPCION", sortable: false },
                     { key: "categoria", label: "CATEGORIA", sortable: false },
                     { key: "unidad", label: "UNIDAD", sortable: false },
                     { key: "precio", label: "PRECIO", sortable: false },
                     { key: "stock", label: "STOCK", sortable: false },
                     { key: "estado", label: "ESTADO", sortable: false },
-                    { key: "created_at", label: "FECHA CREACIÓN", sortable: false },
                 ],
             },
             parse_header: [],
@@ -150,23 +148,23 @@ export default {
                     codigo:resp[i].codigo,
                     nombre:resp[i].nombre,
                     marca:resp[i].marca,
-                    descripcion:resp[i].descripcion,
                     precio:resp[i].precio,
                     categoria:resp[i].categoria.nombre,
                     unidad:this.unidades.find((unid) => unid.value == resp[i].unidad).text,
                     stock:resp[i].stock,
-                    estado:estado,
-                    fecha:resp[i].created_at,                        
+                    estado:estado,                      
                 })
             }
         },
         async exportarPDF(){
+            this.updateDateNames();
             this.$refs.html2Pdf.generatePdf();
             /*const doc = new jsPDF();
             doc.text("Hello world!", 10, 10);
             doc.save("a4.pdf");*/
         },
         async exportar(){
+            this.updateDateNames();
             let request = {
                 url: this.paramsGrid.urlBack+"/all",
                 method: "GET",
@@ -181,13 +179,11 @@ export default {
                     "CODIGO": element.codigo,
                     "NOMBRE": element.nombre,
                     "MARCA": element.marca,
-                    "DESCRIPCION": element.descripcion,
                     "PRECIO": element.precio,
                     "CATEGORIA": element.categoria.nombre,
                     "UNIDAD": this.unidades.find((unid) => unid.value == element.unidad).text,
                     "STOCK": element.stock,
                     "ESTADO": element.estado?"ACTIVO":"INACTIVO",
-                    "FECHA CREACIÓN": element.created_at,
                 };
                 respuestas.push(respuesta);
             });
@@ -197,10 +193,19 @@ export default {
             XLSX.utils.book_append_sheet(workbook, data, filename)
             XLSX.writeFile(workbook, `${filename}.xlsx`)
         },
-        getDateNow(){
+        getNameWithShortDate(){
             let date = new Date();
             let output = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
-            return output;
+            return "Productos"+output;
+        },
+        getNameWithLongDate(){
+            let date = new Date();
+            let output = String(date.getDate()).padStart(2, '0') +"-"+ String(date.getMonth() + 1).padStart(2, '0') +"-"+ date.getFullYear() +" "+  String(date.getHours()).padStart(2, '0') +":"+ String(date.getMinutes()).padStart(2, '0')+":"+ String(date.getSeconds()).padStart(2, '0');
+            return "LISTA DE PRODUCTOS ("+output+")";
+        },
+        updateDateNames(){
+            this.filename=this.getNameWithShortDate();
+            this.ListData.titulo=this.getNameWithLongDate();
         },
         async listaCategoria(){
             let cat = {
@@ -304,13 +309,14 @@ export default {
 
 <template>
     <div>
-        <vue-html2pdf
+        <div hidden>
+            <vue-html2pdf
             :show-layout="false"
             :float-layout="true"
             :enable-download="true"
             :preview-modal="false"
             :paginate-elements-by-height="1400"
-            :filename=this.filename
+            :filename=filename
             :pdf-quality="2"
             :manual-pagination="true"
             pdf-format="a4"
@@ -319,10 +325,11 @@ export default {
             pdf-content-width="100%"
             ref="html2Pdf"
             >
-            <section slot="pdf-content">
-                <ListarPDF :ListData="ListData"> </ListarPDF>
-            </section>
-        </vue-html2pdf>
+                <section slot="pdf-content">
+                    <ListarPDF :ListData="ListData"> </ListarPDF>
+                </section>
+            </vue-html2pdf>
+        </div>
         <b-modal
             centered
             title="Importación de datos"
