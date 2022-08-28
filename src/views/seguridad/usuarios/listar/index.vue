@@ -311,25 +311,27 @@ export default {
 
 <template>
     <div>
-        <vue-html2pdf
-            :show-layout="false"
-            :float-layout="true"
-            :enable-download="true"
-            :preview-modal="false"
-            :paginate-elements-by-height="1400"
-            :filename=this.filename
-            :pdf-quality="2"
-            :manual-pagination="true"
-            pdf-format="a4"
-            :pdf-margin="10"
-            pdf-orientation="landscape"
-            pdf-content-width="100%"
-            ref="html2Pdf"
-            >
-            <section slot="pdf-content">
-                <ListarPDF :ListData="ListData"> </ListarPDF>
-            </section>
-        </vue-html2pdf>
+        <div hidden>
+            <vue-html2pdf
+                :show-layout="false"
+                :float-layout="true"
+                :enable-download="true"
+                :preview-modal="false"
+                :paginate-elements-by-height="1400"
+                :filename=this.filename
+                :pdf-quality="2"
+                :manual-pagination="true"
+                pdf-format="a4"
+                :pdf-margin="10"
+                pdf-orientation="landscape"
+                pdf-content-width="100%"
+                ref="html2Pdf"
+                >
+                <section slot="pdf-content">
+                    <ListarPDF :ListData="ListData"> </ListarPDF>
+                </section>
+            </vue-html2pdf>
+        </div>
         <b-modal
             centered
             title="Importación de datos"
