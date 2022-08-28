@@ -288,7 +288,7 @@ export default {
                 :enable-download="true"
                 :preview-modal="false"
                 :paginate-elements-by-height="1400"
-                :filename=this.filename
+                :filename=this.namefilename
                 :pdf-quality="2"
                 :manual-pagination="true"
                 pdf-format="a4"

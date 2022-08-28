@@ -384,34 +384,6 @@
                             <b-button variant="primary" @click="agregarCuenta">
                                 Agregar Elemento
                             </b-button>
-                            <b-button
-                                id="popover-reactive-1"
-                                ref="button"
-                                v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-                                title="Información"
-                                variant="primary"
-                                class="ml-1"
-                                style="padding-left: 0.8rem; padding-right: 0.8rem;"
-                            >
-                                <feather-icon icon="InfoIcon" />
-                            </b-button>
-                            <b-popover
-                                ref="popover"
-                                target="popover-reactive-1"
-                                triggers="hover"
-                                placement="auto"
-                                container="my-container"
-                            >
-                                <template v-slot:title>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span>Información</span>
-                                    </div>
-                                </template>
-                                <div style="text-align: justify;">
-                                    Las compras con <b>ACCIONES</b> de color <b style="color:rgb(254, 107, 123);">rojo</b> no se pueden <b style="color:rgb(254, 107, 123);"><feather-icon icon="PenToolIcon" /> (editar)</b> ni <b style="color:rgb(254, 107, 123);"><feather-icon icon="Trash2Icon" /> (eliminar)</b> 
-                                    ya que poseen una nota de crédito asociada.
-                                </div>
-                            </b-popover>
                         </b-col>
                     </b-row>
                     <generalTable @deletedCompra="loadDataSource2()" :paramsGrid="paramsGrid"> </generalTable>
