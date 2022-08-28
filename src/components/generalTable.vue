@@ -203,7 +203,6 @@ export default {
             this.currentPage = e;
             this.loadDataSource();
         },
- 
         changeSizePage() {
             this.loadDataSource();
         },
@@ -278,7 +277,6 @@ export default {
     },
 };
 </script>
-
 <template>
     <div>
         <div hidden>
@@ -355,15 +353,15 @@ export default {
                         <div class="text-nowrap">
                             <feather-icon
                                 v-if="paramsGrid.pdf.available"
-                                :id="`invoice-row-${data.item.id}-preview-icon`"
+                                :id="`invoice-row-${data.item.id}-download-icon`"
                                 icon="DownloadIcon"
                                 size="16"
                                 class="mx-1"
                                 @click="downloadPDF(data.item)"
                             />
                             <b-tooltip
-                                title="PDF"
-                                :target="`invoice-row-${data.item.id}-preview-icon`"
+                                title="Documento"
+                                :target="`invoice-row-${data.item.id}-download-icon`"
                             />
                             <feather-icon
                                 v-if="paramsGrid.edit.available"
