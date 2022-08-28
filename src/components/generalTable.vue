@@ -281,25 +281,27 @@ export default {
 
 <template>
     <div>
-        <vue-html2pdf
-            :show-layout="false"
-            :float-layout="true"
-            :enable-download="true"
-            :preview-modal="false"
-            :paginate-elements-by-height="1400"
-            :filename=namefilename
-            :pdf-quality="2"
-            :manual-pagination="true"
-            pdf-format="a4"
-            :pdf-margin="10"
-            pdf-orientation="landscape"
-            pdf-content-width="100%"
-            ref="html2Pdf"
-            >
-            <section slot="pdf-content">
-                <DocumentoPDF :ListData="ListData"> </DocumentoPDF>
-            </section>
-        </vue-html2pdf>
+        <div hidden>
+            <vue-html2pdf
+                :show-layout="false"
+                :float-layout="true"
+                :enable-download="true"
+                :preview-modal="false"
+                :paginate-elements-by-height="1400"
+                :filename=this.filename
+                :pdf-quality="2"
+                :manual-pagination="true"
+                pdf-format="a4"
+                :pdf-margin="10"
+                pdf-orientation="landscape"
+                pdf-content-width="100%"
+                ref="html2Pdf"
+                >
+                <section slot="pdf-content">
+                    <DocumentoPDF :ListData="ListData"> </DocumentoPDF>
+                </section>
+            </vue-html2pdf>
+        </div>
         <b-row class="mb-1">
             <b-col sm="9"> </b-col>
         </b-row>

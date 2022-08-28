@@ -90,6 +90,7 @@
               >                           
           </b-table>
       </b-col>
-    </b-row>    
+    </b-row>
+    <br>    
   </div>
 </template>
