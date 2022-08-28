@@ -2,7 +2,7 @@
 /* eslint-disable */
 </script>
 <template>
-    <div>
+    <div v-if="thisViewPermission">
         <b-card>
             <validation-observer ref="simpleRules">
                     <b-form class="ml-1 mr-1 mt-1">
@@ -77,12 +77,16 @@
                     </b-button>
                 </b-col>
             </b-row>
-        </b-card>     
+        </b-card>
+    </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
     </div>
 </template>
 
 <script>
 /* eslint-disable */
+import NotAuthorized from "@/views/NotAuthorized.vue";
 import Vue from "vue";
 import store from "@/store/index";
 import {
@@ -90,7 +94,7 @@ import {
     BFormSelect,
     BButton,
     BModal,
-    VBModal,
+    VBModal    
 } from "bootstrap-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 import Ripple from "vue-ripple-directive";
@@ -108,6 +112,7 @@ export default {
         vSelect,
         BButton,
         BModal,
+        NotAuthorized
     },
     directives: {
         "b-modal": VBModal,
@@ -115,6 +120,7 @@ export default {
     },
     data() {
         return {
+            thisViewPermission: false,
             permisos:[],
             rol: {
                 name:"",
@@ -123,9 +129,18 @@ export default {
         };
     },
     mounted() {
+        this.isAuthorized();
         this.getInfoByID();
     },
     methods: {
+        isAuthorized(){
+            var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+            permissions.forEach(element => {
+                if(element=='Roles'){
+                    this.thisViewPermission=true;
+                }
+            });
+        },
         async getInfoByID() {
             let permiso = {
                 url: "/api/permiso",

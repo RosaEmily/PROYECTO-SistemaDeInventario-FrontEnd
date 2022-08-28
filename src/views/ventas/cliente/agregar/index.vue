@@ -2,7 +2,7 @@
 /* eslint-disable */
 </script>
 <template>
-    <div>
+    <div v-if="thisViewPermission">
         <b-card>
             <validation-observer ref="rulesAgregarCliente">
                 <b-form class="ml-1 mr-1 mt-1">
@@ -129,8 +129,12 @@
             </b-row>
         </b-card>
     </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
+    </div>
 </template>
 <script>
+    import NotAuthorized from "@/views/NotAuthorized.vue";
     import Vue from "vue";
     import store from "@/store/index";
     import { BootstrapVue, BFormSelect } from "bootstrap-vue";
@@ -152,12 +156,14 @@
             BFormSelect,
             ValidationProvider,
             ValidationObserver,
+            NotAuthorized
         },
         directives: {
             Ripple,
         },
         data() {
             return {
+                thisViewPermission: false,
                 estado: generalData.persona.estado[0].value,
                 estados: generalData.persona.estado,
                 tipos: generalData.persona.documentos,
@@ -171,8 +177,18 @@
                 },
             };
         },
-        mounted() {},
+        mounted() {
+            this.isAuthorized();
+        },
         methods: {
+            isAuthorized(){
+                var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+                permissions.forEach(element => {
+                    if(element=='Clientes'){
+                        this.thisViewPermission=true;
+                    }
+                });
+            },
             validationAgregarCliente() {
                 this.$refs.rulesAgregarCliente.validate().then((success) => {
                     if (success) {
@@ -185,7 +201,7 @@
                 this.$router.push({ name: "ventas-lista-cliente" });
             },
             
-            validarDocumento() {
+            validarDocumento() { 
                 this.isLoading = true;
                 if (this.customerData.doi.length === 8) {
                     axios.get(API_PERU_URL + "dni/" + this.customerData.doi + "?api_token=" + API_PERU_TOKEN)

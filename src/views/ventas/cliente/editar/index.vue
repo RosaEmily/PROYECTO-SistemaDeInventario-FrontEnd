@@ -2,7 +2,7 @@
 /* eslint-disable */
 </script>
 <template>
-    <div>
+    <div v-if="thisViewPermission">
         <b-card>
             <validation-observer ref="rulesEditarCliente">
                 <b-form class="ml-1 mr-1 mt-1">
@@ -70,7 +70,7 @@
                             </b-form-group>
                         </b-col>
                         <b-col sm="6">
-                            <b-form-group label="Correo: "  >
+                            <b-form-group label="Correo: " >
                                 <validation-provider
                                     #default="{ errors }"
                                     name="Email"
@@ -123,8 +123,12 @@
             </b-row>
         </b-card>
     </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
+    </div>
 </template>
 <script>
+    import NotAuthorized from "@/views/NotAuthorized.vue";
     import Vue from "vue";
     import store from "@/store/index";
     import { BootstrapVue, BFormSelect } from "bootstrap-vue";
@@ -145,12 +149,14 @@
             BFormSelect,
             ValidationProvider,
             ValidationObserver,
+            NotAuthorized
         },
         directives: {
             Ripple,
         },
         data() {
             return {
+                thisViewPermission: false,
                 estado: generalData.persona.estado[0].value,
                 estados: generalData.persona.estado,
                 tipos: generalData.persona.documentos,
@@ -165,9 +171,18 @@
             };
         },
         mounted() {
+            this.isAuthorized();
             this.getInfoByID();
         },
         methods: {
+            isAuthorized(){
+                var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+                permissions.forEach(element => {
+                    if(element=='Clientes'){
+                        this.thisViewPermission=true;
+                    }
+                });
+            },
             async getInfoByID() {
                 let request = {
                     url: "/api/cliente/" + this.$route.params.id,

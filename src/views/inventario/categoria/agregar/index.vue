@@ -2,7 +2,7 @@
 /* eslint-disable */
 </script>
 <template>
-    <div>
+    <div v-if="thisViewPermission">
         <b-card>
             <validation-observer ref="rulesAgregarCategoria">
                 <b-form class="ml-1 mr-1 mt-1">
@@ -82,8 +82,12 @@
             </b-row>
         </b-card>
     </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
+    </div>
 </template>
 <script>
+    import NotAuthorized from "@/views/NotAuthorized.vue";
     import Vue from "vue";
     import store from "@/store/index";
     import { BootstrapVue, BFormSelect } from "bootstrap-vue";
@@ -105,12 +109,14 @@
             BFormSelect,
             ValidationProvider,
             ValidationObserver,
+            NotAuthorized
         },
         directives: {
             Ripple,
         },
         data() {
-            return {             
+            return {
+                thisViewPermission: false,            
                 categoria: {
                     nombre: "",
                     codigo: "",
@@ -118,8 +124,18 @@
                 },
             };
         },
-        mounted() {},
+        mounted() {
+            this.isAuthorized();
+        },
         methods: {
+            isAuthorized(){
+                var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+                permissions.forEach(element => {
+                    if(element=='Categorias'){
+                        this.thisViewPermission=true;
+                    }
+                });
+            },
             validationAgregarCategoria() {
                 this.$refs.rulesAgregarCategoria.validate().then((success) => {
                     if (success) {

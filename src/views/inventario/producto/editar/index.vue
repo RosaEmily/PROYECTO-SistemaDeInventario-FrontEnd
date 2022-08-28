@@ -2,7 +2,7 @@
 /* eslint-disable */
 </script>
 <template>
-    <div>
+    <div v-if="thisViewPermission">
         <b-card>
             <validation-observer ref="simpleRules">
                 <b-form class="ml-1 mr-1 mt-1">
@@ -192,10 +192,14 @@
             </b-row>
         </b-card>     
     </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
+    </div>
 </template>
 
 <script>
 /* eslint-disable */
+import NotAuthorized from "@/views/NotAuthorized.vue";
 import Vue from "vue";
 import store from "@/store/index";
 import {
@@ -221,6 +225,7 @@ export default {
         vSelect,
         BButton,
         BModal,
+        NotAuthorized
     },
     directives: {
         "b-modal": VBModal,
@@ -228,6 +233,7 @@ export default {
     },
     data() {
         return {
+            thisViewPermission: false,
             productData: {
                 codigo:"",
                 nombre: "",
@@ -243,9 +249,18 @@ export default {
         };
     },
     mounted() {
+        this.isAuthorized();
         this.getConfiguraciones();
     },
-    methods: {        
+    methods: {
+        isAuthorized(){
+            var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+            permissions.forEach(element => {
+                if(element=='Productos'){
+                    this.thisViewPermission=true;
+                }
+            });
+        },       
         async getConfiguraciones() {         
             let cat = {
                 url: "/api/categoria/lista",
