@@ -84,7 +84,7 @@ export default {
                 edit: {
                     available: false,
                     redirect: true,
-                    ruta: "/inventario/producto/editar/index",
+                    ruta: "/inventario/productos/editar",
                 },
                 delete: {
                     available: false,

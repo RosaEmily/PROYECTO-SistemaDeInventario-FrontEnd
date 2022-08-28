@@ -106,7 +106,7 @@ export default {
                 edit: {
                     available: true,
                     redirect: true,
-                    ruta: "/inventario/producto/editar/index",
+                    ruta: "/inventario/productos/editar",
                 },
                 pdf: {
                     available: false,

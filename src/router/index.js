@@ -538,7 +538,7 @@ const router = new VueRouter({
             },
         },      
         {
-            path: "/inventario-lista-index",
+            path: "/inventario/productos/listar",
             name: "inventario-lista-index",
             component: () => import("@/views/inventario/producto/lista/index.vue"),
             meta: {
@@ -562,7 +562,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/inventario-agregar-index",
+            path: "/inventario/productos/agregar",
             name: "inventario-agregar-index",
             component: () => import("@/views/inventario/producto/agregar/index.vue"),
             meta: {
@@ -586,7 +586,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/inventario/producto/editar/index/:id",
+            path: "/inventario/productos/editar/:id",
             name: "inventario-editar-index",
             component: () => import("@/views/inventario/producto/editar/index.vue"),
             meta: {
@@ -600,6 +600,78 @@ const router = new VueRouter({
                     {
                         text: "Productos",
                         to: { name: "inventario-lista-index" },
+                        active: false,
+                    },
+                    {
+                        text: "Editar",
+                        active: true,
+                    },
+                ],
+            },
+        },            
+        {
+            path: "/inventario/categorias/listar",
+            name: "inventario-categoria-listar-index",
+            component: () => import("@/views/inventario/categoria/listar/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Categoria",
+                breadcrumb: [
+                    {
+                        text: "Inventario",
+                        active: true,
+                    },
+                    {
+                        text: "Categoría",
+                        to: { name: "inventario-categoria-listar-index" },
+                        active: false,
+                    },
+                    {
+                        text: "Listar",
+                        active: true,
+                    },
+                ],
+            },
+        },
+        {
+            path: "/inventario/categorias/agregar",
+            name: "inventario-categoria-agregar-index",
+            component: () => import("@/views/inventario/categoria/agregar/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Categoria",
+                breadcrumb: [
+                    {
+                        text: "Inventario",
+                        active: true,
+                    },
+                    {
+                        text: "Categoría",
+                        to: { name: "inventario-categoria-listar-index" },
+                        active: false,
+                    },
+                    {
+                        text: "Agregar",
+                        active: true,
+                    },
+                ],
+            },
+        },
+        {
+            path: "/inventario/categorias/editar/:id",
+            name: "inventario-categoria-editar-index",
+            component: () => import("@/views/inventario/categoria/editar/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Categoria",
+                breadcrumb: [
+                    {
+                        text: "Inventario",
+                        active: true,
+                    },
+                    {
+                        text: "Categoria",
+                        to: { name: "inventario-categoria-listar-index" },
                         active: false,
                     },
                     {
@@ -744,78 +816,6 @@ const router = new VueRouter({
                     {
                         text: "Roles",
                         to: { name: "rol-lista-index" },
-                        active: false,
-                    },
-                    {
-                        text: "Editar",
-                        active: true,
-                    },
-                ],
-            },
-        },            
-        {
-            path: "/inventario-categoria-listar-index",
-            name: "inventario-categoria-listar-index",
-            component: () => import("@/views/inventario/categoria/listar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Categoria",
-                breadcrumb: [
-                    {
-                        text: "Inventario",
-                        active: true,
-                    },
-                    {
-                        text: "Categoria",
-                        to: { name: "inventario-categoria-listar-index" },
-                        active: false,
-                    },
-                    {
-                        text: "Listar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/inventario-categoria-agregar-index",
-            name: "inventario-categoria-agregar-index",
-            component: () => import("@/views/inventario/categoria/agregar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Categoria",
-                breadcrumb: [
-                    {
-                        text: "Inventario",
-                        active: true,
-                    },
-                    {
-                        text: "Categoria",
-                        to: { name: "inventario-categoria-listar-index" },
-                        active: false,
-                    },
-                    {
-                        text: "Agregar",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/inventario/categoria/editar/:id",
-            name: "inventario-categoria-editar-index",
-            component: () => import("@/views/inventario/categoria/editar/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Categoria",
-                breadcrumb: [
-                    {
-                        text: "Inventario",
-                        active: true,
-                    },
-                    {
-                        text: "Categoria",
-                        to: { name: "inventario-categoria-listar-index" },
                         active: false,
                     },
                     {

@@ -90,7 +90,7 @@
                     edit: {
                         available: true,
                         redirect: true,
-                        ruta: "/inventario/categoria/editar",
+                        ruta: "/inventario/categorias/editar",
                     },
                     pdf: {
                         available: false,
