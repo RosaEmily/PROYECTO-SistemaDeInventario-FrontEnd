@@ -123,14 +123,14 @@
                                 </validation-provider>
                                 </b-form-group>
                             </b-col>
-                             <b-col sm="2">
+                            <b-col sm="2">
                                 <b-form-group>
                                     <b-form-checkbox
                                         v-model="usuarioData.restablecer"
                                         class="mt-50"
                                         @change="Functionrestablecer()"
                                     >
-                                    ¿De se ha restablecer contraseña?
+                                    ¿Desea restablecer su contraseña?
                                     </b-form-checkbox>
                                 </b-form-group>                               
                             </b-col>               

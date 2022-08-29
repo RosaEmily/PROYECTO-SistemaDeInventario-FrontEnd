@@ -8,9 +8,14 @@
     "inventario":{
         "unidades":[
             { "value": "u", "text": "Unidades" },
-            { "value": "kg", "text": "Kilagramos" },
+            { "value": "kg", "text": "Kilogramos" },
             { "value": "lt", "text": "Litros" },
-            { "value": "m", "text": "Metros" }
+            { "value": "mt", "text": "Metros" },
+            { "value": "btl", "text": "Botellas" },
+            { "value": "dec", "text": "Decenas" },
+            { "value": "doc", "text": "Docenas" },
+            { "value": "cnt", "text": "Cientos" },
+            { "value": "mll", "text": "Millares" }
         ]
     },
     "contabilidad":{
