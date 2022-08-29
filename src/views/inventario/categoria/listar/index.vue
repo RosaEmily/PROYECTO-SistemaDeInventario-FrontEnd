@@ -300,51 +300,9 @@
                 </section>
             </vue-html2pdf>
         </div>
-        <b-modal
-            centered
-            title="Importación de datos"
-            ok-only
-            hide-footer
-            id="modal-import"
-            ref="modal-import"
-            size="md"
-        >
-            <b-card-text class="">
-                <b-form-group
-                    label="CSV file to import: *"
-                    label-for="account-nombres"
-                    class="text-center"
-                >
-                    <input
-                        type="file"
-                        id="csv_file"
-                        name="csv_file"
-                        class="form-control"
-                        @change="loadCSV($event)"
-                    />
-                </b-form-group>
-                <b-alert
-                    v-if="alertMsg.length > 0"
-                    :variant="prepareForImport ? 'success' : 'danger'"
-                    show
-                >
-                    <div class="alert-body">
-                        <span v-for="item in alertMsg" :key="item">
-                            {{ item }}<br />
-                        </span>
-                    </div>
-                </b-alert>
-            </b-card-text>
-            <div class="text-center">
-                <b-button variant="primary" @click="importarCsv"
-                    >Importar Datos
-                </b-button>
-            </div>
-        </b-modal>
         <b-card>
             <b-row>
                 <b-col md="6" class="">
-                    <b-button variant="primary" @click="importar"> Importar Csv </b-button>
                     <b-button variant="success" class="ml-25" @click="exportar"> Exportar Excel </b-button>
                     <b-button variant="danger" class="ml-25" @click="exportarPDF"> Exportar Pdf </b-button>
                 </b-col>
