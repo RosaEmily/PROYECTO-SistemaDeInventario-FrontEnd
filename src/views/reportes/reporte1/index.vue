@@ -4,67 +4,119 @@
 <template>
     <div class="container" v-if="thisViewPermission">
         <b-row>
-            <b-col sm="6" align="center">
-                <label>AÑO</label>
-                <b-input-group>
-                    <v-select
-                        v-model="anio"
-                        label="text"
-                        style="width: 100%"
-                        :options="anios"
-                        @input="getAnioMes()"
-                    >
-                        <template v-slot:selected-option="option">
-                            {{ option.text }}
-                        </template>
-                        <template v-slot:option="option">
-                            {{ option.text }}
-                        </template>
-                    </v-select>
-                </b-input-group>            
-            </b-col>
-            <b-col sm="6"  align="center">
-                <label>MES</label>
-                 <b-input-group>
-                    <v-select
-                        v-model="mes"
-                        label="text"
-                        style="width: 100%"
-                        :options="meses"
-                        @input="functionGraficoParametroMes()"
-                    >
-                        <template v-slot:selected-option="option">
-                            {{ option.text }}
-                        </template>
-                        <template v-slot:option="option">
-                            {{ option.text }}
-                        </template>
-                    </v-select>
-                </b-input-group> 
-            </b-col>
-       </b-row>
-       <br>
-       <b-row>
-            <b-col sm="6" align="center">
-                <label>CANTIDAD DE PRODUCTOS VENDIDOS</label>
-                <canvas id="myLine" width="400" height="400"></canvas>               
-            </b-col>
-            <b-col sm="6"  align="center">
-                <label>TOP 10 DE LOS PRODUCTOS MAS VENDIDOS</label>
-                <canvas id="myChart" width="400" height="400"></canvas>
-            </b-col>
-       </b-row>
-       <br>
-       <b-row>
-            <b-col sm="6" align="center">
-                <label>TOP 10 DE LOS PROVEEDORES MAS FRECUENTES</label>
-                <canvas id="myPie" width="400" height="400"></canvas>
-            </b-col>
-            <b-col sm="6"  align="center">
-                <label>TOP 10 DE LOS CLIENTES MAS FRECUENTES</label>
-                <canvas id="myPolar" width="400" height="400"></canvas>
-            </b-col>
-       </b-row>
+            <div class="col-12">
+                <b-card>
+                    <b-row>
+                    <div class="col-6">
+                        <label>AÑO</label>
+                        <b-input-group>
+                            <v-select
+                                v-model="anio"
+                                label="text"
+                                style="width: 100%"
+                                :options="anios"
+                                @input="getAnioMes()"
+                            >
+                                <template v-slot:selected-option="option">
+                                    {{ option.text }}
+                                </template>
+                                <template v-slot:option="option">
+                                    {{ option.text }}
+                                </template>
+                            </v-select>
+                        </b-input-group>
+                    </div>
+                    <div class="col-6">
+                        <label>MES</label>
+                        <b-input-group>
+                            <v-select
+                                v-model="mes"
+                                label="text"
+                                style="width: 100%"
+                                :options="meses"
+                                @input="functionGraficoParametroMes()"
+                            >
+                                <template v-slot:selected-option="option">
+                                    {{ option.text }}
+                                </template>
+                                <template v-slot:option="option">
+                                    {{ option.text }}
+                                </template>
+                            </v-select>
+                        </b-input-group>
+                    </div>
+                    </b-row>
+                </b-card>   
+            </div>
+        </b-row>
+        <b-row>
+            <div class="col-6">
+                <b-card>
+                    <b-row>
+                        <div class="col-12" align="center">
+                            <h1>PRODUCTOS VENDIDOS</h1>
+                            <div class="pb-1">CANTIDAD TOTAL</div>
+                        </div>
+                    </b-row>
+                    <br>
+                    <b-row>
+                        <b-col align="center">
+                            <canvas id="myLine" height="200px" max-height="200px"></canvas>
+                        </b-col>
+                    </b-row>
+                </b-card>   
+            </div>
+            <div class="col-6">
+                <b-card>
+                    <b-row>
+                        <div class="col-12" align="center">
+                            <h1>PRODUCTOS MAS VENDIDOS</h1>
+                            <div class="pb-1">TOP 10</div>
+                        </div>
+                    </b-row>
+                    <br>
+                    <b-row>
+                        <b-col align="center">
+                            <canvas id="myChart" height="200px" max-height="200px"></canvas>
+                        </b-col>
+                    </b-row>
+                </b-card>   
+            </div>
+        </b-row>
+        <b-row>
+            <div class="col-6">
+                <b-card>
+                    <b-row>
+                        <div class="col-12" align="center">
+                            <h1>TOP 10 DE PROVEEDORES</h1>
+                            <div class="pb-1">SEGÚN CANTIDAD DE COMPRAS</div>
+                        </div>
+                    </b-row>
+                    <br>
+                    <b-row>
+                        <b-col align="center">
+                            <canvas id="myPie" height="200px" max-height="200px"></canvas>
+                        </b-col>
+                    </b-row>
+                </b-card>   
+            </div>
+            <div class="col-6">
+                <b-card>
+                    <b-row>
+                        <div class="col-12" align="center">
+                            <h1>TOP 10 DE CLIENTES</h1>
+                            <div class="pb-1">SEGÚN CANTIDAD DE VENTAS</div>
+                        </div>
+                    </b-row>
+                    <br>
+                    <b-row>
+                        <b-col align="center">
+                            <canvas id="myPolar" height="200px" max-height="200px"></canvas>
+                        </b-col>
+                    </b-row>
+                </b-card>   
+            </div>
+        </b-row>
     </div>
     <div v-else>
         <NotAuthorized></NotAuthorized>
