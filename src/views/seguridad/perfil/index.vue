@@ -86,16 +86,6 @@
                                     }}</small>
                                 </validation-provider>
                             </b-form-group>
-                            <b-col md="12" class="text-center mt-1">
-                                <b-button
-                                    v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                                    variant="primary"
-                                    class="mr-1"
-                                    @click="booleanpassword=false,validatePassword()"
-                                >
-                                    Cambiar contraseña 
-                                </b-button>                   
-                            </b-col>
                             <b-form-group label="Elegir Foto: ">                               
                                 <b-input-group>                                   
                                     <b-form-file
@@ -115,22 +105,30 @@
                                     </b-form-file>                                    
                                 </b-input-group>                                     
                             </b-form-group>
+                            <b-row>
+                                <b-col md="6" class="text-left mt-1">
+                                    <b-button
+                                        v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                                        variant="primary"
+                                        @click="booleanpassword=false,validatePassword()"
+                                    >
+                                        Cambiar contraseña 
+                                    </b-button>                   
+                                </b-col>
+                                <b-col md="6" class="text-right mt-1">
+                                    <b-button
+                                        v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                                        variant="primary"
+                                        @click="booleanpassword=true,validatePassword()"
+                                    >
+                                        Guardar 
+                                    </b-button>                   
+                                </b-col>
+                            </b-row>
                         </b-col>                                                 
                     </b-row>
                 </b-form>
             </validation-observer>
-            <b-row>
-                <b-col md="12" class="text-center mt-1">
-                    <b-button
-                        v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                        variant="primary"
-                        class="mr-1"
-                        @click="booleanpassword=true,validatePassword()"
-                    >
-                        Guardar 
-                    </b-button>                   
-                </b-col>
-            </b-row>
         </b-card>
         <b-modal
             id="modalCambiarPassword"

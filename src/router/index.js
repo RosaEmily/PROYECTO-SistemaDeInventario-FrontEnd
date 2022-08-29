@@ -792,7 +792,7 @@ const router = new VueRouter({
                 pageTitle: "Perfil de Usuario",
                 breadcrumb: [
                     {
-                        text: "Pefil",
+                        text: "Perfil de Usuario",
                         active: true,
                     },
                 ],
@@ -857,26 +857,6 @@ const router = new VueRouter({
         {
             path: "*",
             redirect: "error-404",
-        },
-        {
-            path: "/reporte2",
-            name: "producto-reporte2",
-            component: () => import("@/views/reportes/reporte2/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Dashboard",
-                breadcrumb: [
-                    {
-                        text: "Reportes",
-                        active: true,
-                    },
-                    {
-                        text: "Productos",
-                        to: { name: "producto-reporte" },
-                        active: false,
-                    },
-                ],
-            },
         },
     ],
 });
