@@ -270,6 +270,7 @@ export default {
             final_producto.stock=parseInt(producto.stock)
             final_producto.unidad=producto.unidad
             final_producto.categoria=categoria
+            final_producto.descripcion=producto.descripcion
             let request = {
                 url: "/api/producto",
                 method: "POST",
@@ -277,7 +278,6 @@ export default {
             };
             try {
                 var respRoles = await store.dispatch("back/EXECUTE", request);
-                console.log("ERROR",respRoles)
                 if (respRoles == 201) {
                     this.sendMessage("Producto registrado satisfactoriamente","CheckSquareIcon","success");
                 } else if (respRoles == 400) {
@@ -339,7 +339,7 @@ export default {
             if(parsedCsv.length == 0){
                 this.prepareForImport = false;
                 return "El archivo no contiene datos";
-            } else if(!(Object.keys(parsedCsv[0])[0]=="codigo"&&Object.keys(parsedCsv[0])[1]=="marca"&&Object.keys(parsedCsv[0])[2]=="nombre"&&Object.keys(parsedCsv[0])[3]=="precio"&&Object.keys(parsedCsv[0])[4]=="stock"&&Object.keys(parsedCsv[0])[5]=="unidad"&&Object.keys(parsedCsv[0])[6]=="ccategoria"&&Object.keys(parsedCsv[0])[7]=="ncategoria")){
+            } else if(!(Object.keys(parsedCsv[0])[0]=="codigo"&&Object.keys(parsedCsv[0])[1]=="marca"&&Object.keys(parsedCsv[0])[2]=="nombre"&&Object.keys(parsedCsv[0])[3]=="precio"&&Object.keys(parsedCsv[0])[4]=="stock"&&Object.keys(parsedCsv[0])[5]=="unidad"&&Object.keys(parsedCsv[0])[6]=="descripcion"&&Object.keys(parsedCsv[0])[7]=="ccategoria"&&Object.keys(parsedCsv[0])[8]=="ncategoria")){
                 this.prepareForImport = false;
                 return "El archivo no contiene el formato necesario";
             } else {
