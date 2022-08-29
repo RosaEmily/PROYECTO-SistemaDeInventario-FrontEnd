@@ -124,7 +124,7 @@ export default [
     },
   },
   {
-    header: 'Módulo De Reporte',
+    header: 'Módulo De Reportes',
   },
   {
     title: 'Gráficos',

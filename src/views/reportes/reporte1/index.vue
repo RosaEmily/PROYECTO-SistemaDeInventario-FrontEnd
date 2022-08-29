@@ -2,7 +2,7 @@
 /* eslint-disable */
 </script>
 <template>
-    <div class="container" v-if="thisViewPermission">
+    <div v-if="thisViewPermission">
         <b-row>
             <div class="col-12">
                 <b-card>
@@ -647,16 +647,6 @@
                             borderWidth: 1
                         }]
                     },
-                    options: {
-                        scales: {
-                            xAxes: [{
-                                stacked: true
-                            }],
-                            yAxes: [{
-                                stacked: true
-                            }]
-                        }
-                    }
                 });
             },
             functionPolar(nombres,cantidad){
@@ -680,16 +670,6 @@
                             borderWidth: 1
                         }]
                     },
-                    options: {
-                        scales: {
-                            xAxes: [{
-                                stacked: true
-                            }],
-                            yAxes: [{
-                                stacked: true
-                            }]
-                        }
-                    }
                 });
             }      
         }

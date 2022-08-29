@@ -480,10 +480,10 @@ export default {
                 <div class="alert-body" style="font-weight: 400; text-align: justify;">
                 Estimado usuario, recuerde que el archivo CSV debe tener el formato establecido 
                 para importar los datos de PRODUCTOS correctamente, si desconoce este formato puede descargarlo desde
-                <a class="text-primary" href="https://drive.google.com/uc?id=13f-G0FvU4Y-Xa6ZzS7Te1Ri5dRlrAmU3&export=download" style="font-weight: 500;" download="">este enlace</a>
+                <a class="text-primary" href="https://drive.google.com/uc?id=1TIB-mt-QBwUgDXrRYcpaL4eDKVPL84WV&export=download" style="font-weight: 500;" download="">este enlace</a>
                 </div>
             </b-alert>
-        </b-modal>       
+        </b-modal>
         <b-card>
             <b-row>
                 <b-col md="6" class="">

@@ -593,6 +593,30 @@ const router = new VueRouter({
             },
         },
         {
+            path: "/inventario/productos/reposicion",
+            name: "producto-reporte3",
+            component: () => import("@/views/reportes/reporte3/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Productos para Reposición",
+                breadcrumb: [
+                    {
+                        text: "Inventario",
+                        active: true,
+                    },
+                    {
+                        text: "Productos",
+                        to: { name: "inventario-lista-index" },
+                        active: false,
+                    },
+                    {
+                        text: "Reposición",
+                        active: true,
+                    },
+                ],
+            },
+        },
+        {
             path: "/seguridad/usuarios/listar",
             name: "usuario-lista-index",
             component: () => import("@/views/seguridad/usuarios/listar/index.vue"),
@@ -760,7 +784,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/usuario-perfil",
+            path: "/usuario/perfil",
             name: "usuario-perfil",
             component: () => import("@/views/seguridad/perfil/index.vue"),
             meta: {
@@ -775,7 +799,7 @@ const router = new VueRouter({
             },
         },
         {
-            path: "/Graficos",
+            path: "/reportes/graficos",
             name: "producto-reporte",
             component: () => import("@/views/reportes/reporte1/index.vue"),
             meta: {
@@ -783,52 +807,32 @@ const router = new VueRouter({
                 pageTitle: "Gráficos",
                 breadcrumb: [
                     {
+                        text: "Reportes",
+                        active: true,
+                    },
+                    {
                         text: "Gráficos",
+                        to: { name: "producto-reporte" },
                         active: true,
                     },
                 ],
             },
         },
         {
-            path: "/reporte2",
-            name: "producto-reporte2",
-            component: () => import("@/views/reportes/reporte2/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Dashboard",
-                breadcrumb: [
-                    {
-                        text: "Dashboard",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/reporte3",
-            name: "producto-reporte3",
-            component: () => import("@/views/reportes/reporte3/index.vue"),
-            meta: {
-                middleware: auth,
-                pageTitle: "Productos",
-                breadcrumb: [
-                    {
-                        text: "Productos en Reposición",
-                        active: true,
-                    },
-                ],
-            },
-        },
-        {
-            path: "/reporte4",
+            path: "/reportes/analisis-abc",
             name: "producto-reporte4",
             component: () => import("@/views/reportes/reporte4/index.vue"),
             meta: {
                 middleware: auth,
-                pageTitle: "Productos",
+                pageTitle: "Análisis ABC",
                 breadcrumb: [
                     {
+                        text: "Reportes",
+                        active: true,
+                    },
+                    {
                         text: "Análisis ABC",
+                        to: { name: "producto-reporte4" },
                         active: true,
                     },
                 ],
@@ -853,6 +857,26 @@ const router = new VueRouter({
         {
             path: "*",
             redirect: "error-404",
+        },
+        {
+            path: "/reporte2",
+            name: "producto-reporte2",
+            component: () => import("@/views/reportes/reporte2/index.vue"),
+            meta: {
+                middleware: auth,
+                pageTitle: "Dashboard",
+                breadcrumb: [
+                    {
+                        text: "Reportes",
+                        active: true,
+                    },
+                    {
+                        text: "Productos",
+                        to: { name: "producto-reporte" },
+                        active: false,
+                    },
+                ],
+            },
         },
     ],
 });
