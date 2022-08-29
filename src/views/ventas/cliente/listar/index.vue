@@ -282,7 +282,7 @@
                     return "El archivo no contiene el formato necesario";
                 } else {
                     parsedCsv.forEach(element => {
-                        if(!(element.doi && element.tipoDoi && element.nombre)){
+                        if(!(element.doi && element.tipoDoi && element.nombre&& element.estado)){
                             contador++;
                         }
                     });
