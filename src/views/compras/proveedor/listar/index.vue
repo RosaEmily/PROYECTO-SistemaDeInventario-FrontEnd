@@ -276,12 +276,12 @@
                 if(parsedCsv.length == 0){
                     this.prepareForImport = false;
                     return "El archivo no contiene datos";
-                } else if(!(Object.keys(parsedCsv[0])[0]=="nombre"&&Object.keys(parsedCsv[0])[1]=="doi"&&Object.keys(parsedCsv[0])[2]=="email"&&Object.keys(parsedCsv[0])[3]=="tipoDoi"&&Object.keys(parsedCsv[0])[4]=="direccion"&&Object.keys(parsedCsv[0])[5]=="estado")){
+                } else if(!(Object.keys(parsedCsv[0])[0]=="nombre"&&Object.keys(parsedCsv[0])[1]=="doi"&&Object.keys(parsedCsv[0])[2]=="email"&&Object.keys(parsedCsv[0])[3]=="tipoDoi"&&Object.keys(parsedCsv[0])[4]=="direccion")){
                     this.prepareForImport = false;
                     return "El archivo no contiene el formato necesario";
                 } else {
                     parsedCsv.forEach(element => {
-                        if(!(element.doi && element.tipoDoi && element.nombre && element.estado)){
+                        if(!(element.doi && element.tipoDoi && element.nombre)){
                             contador++;
                         }
                     });
