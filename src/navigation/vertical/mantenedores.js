@@ -98,8 +98,14 @@ export default [
     {
       name: 'inventario-categoria-listar-index',
     },
-  },   
- 
+  },
+  {
+    title: 'P. Reposición',
+    route:
+    {
+      name: 'producto-reporte3',
+    },
+  },
   {
     header: 'Módulo De Seguridad',
   },
@@ -125,13 +131,6 @@ export default [
     route:
     {
       name: 'producto-reporte',
-    },
-  },
-  {
-    title: 'P. Reposición',
-    route:
-    {
-      name: 'producto-reporte3',
     },
   },
   {
