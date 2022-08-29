@@ -813,7 +813,7 @@ const router = new VueRouter({
                     {
                         text: "Gráficos",
                         to: { name: "producto-reporte" },
-                        active: true,
+                        active: false,
                     },
                 ],
             },
@@ -833,7 +833,7 @@ const router = new VueRouter({
                     {
                         text: "Análisis ABC",
                         to: { name: "producto-reporte4" },
-                        active: true,
+                        active: false,
                     },
                 ],
             },
