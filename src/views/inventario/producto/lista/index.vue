@@ -5,6 +5,7 @@ import Vue from "vue";
 import { BootstrapVue } from "bootstrap-vue";
 import generalTable from "@/components/generalTable.vue";
 import planCuenta from "@/components/plan-cuenta/edicion.vue";
+import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
 import store from "@/store/index";
 import generalData from "@fakedata";
 import ListarPDF from "@/components/ListarPDF.vue";
@@ -124,6 +125,7 @@ export default {
                     primaryKey: "id",
                 },
                 pagination: true,
+                producto:[],
             },
         };
     },
@@ -227,6 +229,77 @@ export default {
             var respCat = await store.dispatch("back/EXECUTE", cat);
             this.datosCombox = respCat;
             console.log(this.datosCombox)        
+        },       
+        sendMessage(title, icon, variant) {
+            this.$toast({
+                component: ToastificationContent,
+                props: {
+                    title: title,
+                    icon: icon,
+                    variant: variant,
+                },
+            });
+        },
+        async saveImport(producto) {
+            var final_producto={},categoria={}
+            let requestCategoria = {
+                url: "/api/categoria/codigo/"+producto.ccategoria,
+                method: "GET",
+            };
+            var respRoles1 = await store.dispatch("back/EXECUTE", requestCategoria);
+            if(respRoles1===""){
+                categoria.codigo=producto.ccategoria;
+                categoria.nombre=producto.ncategoria;
+                let request = {
+                    url: "/api/categoria",
+                    method: "POST",
+                    data: categoria, 
+                };
+                var respRoles = await store.dispatch("back/EXECUTE", request);
+            }
+            let requestCategoria2 = {
+                url: "/api/categoria/codigo/"+producto.ccategoria,
+                method: "GET",
+            };
+            var respRoles2 = await store.dispatch("back/EXECUTE", requestCategoria2);
+            categoria=respRoles2
+            final_producto.codigo=producto.codigo
+            final_producto.marca=producto.marca
+            final_producto.nombre=producto.nombre
+            final_producto.precio=parseFloat(producto.precio).toFixed(2)
+            final_producto.stock=parseInt(producto.stock)
+            final_producto.unidad=producto.unidad
+            final_producto.categoria=categoria
+            let request = {
+                url: "/api/producto",
+                method: "POST",
+                data: final_producto, 
+            };
+            try {
+                var respRoles = await store.dispatch("back/EXECUTE", request);
+                console.log("ERROR",respRoles)
+                if (respRoles == 201) {
+                    this.sendMessage("Producto registrado satisfactoriamente","CheckSquareIcon","success");
+                } else if (respRoles == 400) {
+                    this.sendMessage("El producto que intenta registrar ya existe","AlertTriangleIcon","danger");
+                } else {
+                    this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
+                }
+            } catch (e) {
+                console.log(e.message);
+            }
+            this.$refs.generalTable.loadDataSource();
+        },
+
+        sendMessage(title, icon, variant) {
+            this.$toast({
+                component: ToastificationContent,
+                props: {
+                    title: title,
+                    icon: icon,
+                    variant: variant,
+                },
+            });
         },
         async importarCsv() {
             let request = {
@@ -251,22 +324,52 @@ export default {
             this.prepareForImport = false;
             this.$refs["modal-import"].show();
         },
-        validarCsv() {
-            let msgError = [];
-            return msgError;
+        addImport(){
+            this.producto.forEach(element => {
+                this.saveImport(element);
+            });
+            console.log("proydcots",this.producto);
+            this.$refs["modal-import"].hide();
+            this.producto = [];
         },
+        validarCsv(parsedCsv) {
+            this.alertMsg = [];
+            var contador=0;
+            console.log("parsed",parsedCsv);
+            if(parsedCsv.length == 0){
+                this.prepareForImport = false;
+                return "El archivo no contiene datos";
+            } else if(!(Object.keys(parsedCsv[0])[0]=="codigo"&&Object.keys(parsedCsv[0])[1]=="marca"&&Object.keys(parsedCsv[0])[2]=="nombre"&&Object.keys(parsedCsv[0])[3]=="precio"&&Object.keys(parsedCsv[0])[4]=="stock"&&Object.keys(parsedCsv[0])[5]=="unidad"&&Object.keys(parsedCsv[0])[6]=="ccategoria"&&Object.keys(parsedCsv[0])[7]=="ncategoria")){
+                this.prepareForImport = false;
+                return "El archivo no contiene el formato necesario";
+            } else {
+                parsedCsv.forEach(element => {
+                    if(!(element.codigo && element.marca && element.unidad&& element.nombre && element.precio&& element.stock&& element.ccategoria&& element.ncategoria)){
+                        contador++;
+                    }
+                });
+                if(contador>0){
+                    this.prepareForImport = false;
+                    return "El archivo contiene "+ contador +" filas con campos obligatorios vacíos";
+                } else {
+                    this.prepareForImport = true;
+                    return "El archivo esta listo para importar";
+                }
+            }
+        }, 
         csvJSON(csv) {
             var lines = csv.split("\n");
             var result = [];
-            var headers = lines[0].split(",");
-            this.parse_header = lines[0].split(",");
-            lines[0].split(",").forEach((key) => {
+            this.producto = [];
+            var headers = lines[0].split(";");
+            this.parse_header = lines[0].split(";");
+            lines[0].split(";").forEach((key) => {
                 this.sortOrders[key] = 1;
             });
             lines.map(function (line, indexLine) {
                 if (indexLine < 1) return; // Jump header line
                 var obj = {};
-                var currentline = line.split(",");
+                var currentline = line.split(";");
                 headers.map(function (header, indexHeader) {
                     header = header.trim();
                     if (currentline[indexHeader]) {
@@ -280,34 +383,25 @@ export default {
                 result.push(obj);
             });
             result.pop();
-            console.log("result", result);
+            this.producto = result;
             return result;
         },
         loadCSV(e) {
             if (window.FileReader) {
                 var reader = new FileReader();
                 reader.readAsText(e.target.files[0]);
-                document.querySelector("input[name=csv_file]").value =
-                    e.target.files;
                 reader.onload = (event) => {
                     var csv = event.target.result;
                     this.parse_csv = this.csvJSON(csv);
                     //validar si es error limpiar
-                    let error = this.validarCsv();
-                    if (error != []) {
-                        e.target.value = "";
-                        this.prepareForImport = false;
-                        this.alertMsg = error;
-                    } else {
-                        this.prepareForImport = true;
-                        this.alertMsg = ["Datos listos para la importación"];
-                    }
+                    let error = [this.validarCsv(this.parse_csv)];
+                    this.alertMsg = error;
                 };
                 reader.onerror = function (evt) {
                     if (evt.target.error.name == "NotReadableError") {
                         alert("Canno't read file !");
                     }
-                };
+                };                              
             } else {
                 alert("FileReader are not supported in this browser.");
             }
@@ -346,13 +440,13 @@ export default {
             title="Importación de datos"
             ok-only
             hide-footer
-            id="modal-import"
+            id="modal-import" 
             ref="modal-import"
             size="md"
         >
-            <b-card-text class="">
+            <b-card-text class="text-center">
+                <div class="mb-1">Archivo CSV para importar:</div>
                 <b-form-group
-                    label="CSV file to import: *"
                     label-for="account-nombres"
                     class="text-center"
                 >
@@ -361,6 +455,7 @@ export default {
                         id="csv_file"
                         name="csv_file"
                         class="form-control"
+                        accept="text/csv"
                         @change="loadCSV($event)"
                     />
                 </b-form-group>
@@ -377,11 +472,19 @@ export default {
                 </b-alert>
             </b-card-text>
             <div class="text-center">
-                <b-button variant="primary" @click="importarCsv"
-                    >Importar Datos
+                <b-button variant="primary" @click="addImport()" :disabled="!prepareForImport">
+                    Importar Datos
                 </b-button>
             </div>
-        </b-modal>
+            <br>
+            <b-alert variant="secondary" show>
+                <div class="alert-body" style="font-weight: 400; text-align: justify;">
+                Estimado usuario, recuerde que el archivo CSV debe tener el formato establecido 
+                para importar los datos de PRODUCTOS correctamente, si desconoce este formato puede descargarlo desde
+                <a class="text-primary" href="https://drive.google.com/uc?id=13f-G0FvU4Y-Xa6ZzS7Te1Ri5dRlrAmU3&export=download" style="font-weight: 500;" download="">este enlace</a>
+                </div>
+            </b-alert>
+        </b-modal>       
         <b-card>
             <b-row>
                 <b-col md="6" class="">
@@ -395,7 +498,7 @@ export default {
                     </b-button>
                 </b-col>
             </b-row>
-            <generalTable :paramsGrid="paramsGrid"> </generalTable>
+            <generalTable ref="generalTable" :paramsGrid="paramsGrid"> </generalTable>
         </b-card>
     </div>
     <div v-else>
