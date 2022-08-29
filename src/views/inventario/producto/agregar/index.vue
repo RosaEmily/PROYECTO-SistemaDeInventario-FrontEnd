@@ -241,7 +241,7 @@ export default {
                 descripcion:"",
                 stock: 0,
                 categoria: null,
-                unidad:"",
+                unidad:"u",
                 precio:0,
             },
             categorias: [],

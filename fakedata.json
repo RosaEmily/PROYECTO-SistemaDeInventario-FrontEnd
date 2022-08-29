@@ -7,6 +7,7 @@
     ],
     "inventario":{
         "unidades":[
+            { "value": "u", "text": "Unidades" },
             { "value": "kg", "text": "Kilagromos" },
             { "value": "lt", "text": "Litros" },
             { "value": "m", "text": "Metros" }
