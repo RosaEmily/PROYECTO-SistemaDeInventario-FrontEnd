@@ -2,6 +2,7 @@
 /* eslint-disable */
 </script>
 <script>
+    import NotAuthorized from "@/views/NotAuthorized.vue";
     import Vue from "vue";
     import { BootstrapVue } from "bootstrap-vue";
     import generalTable from "@/components/generalTable.vue";
@@ -19,9 +20,11 @@
             planCuenta,
             VueHtml2pdf,
             ListarPDF,
+            NotAuthorized
         },
         data() {
             return {
+                thisViewPermission: false,
                 filename: this.getNameWithShortDate(),
                 ListData:{
                     titulo: this.getNameWithLongDate(),
@@ -93,9 +96,18 @@
             };
         },
         mounted() {
+            this.isAuthorized();
             this.listarData();
         },
         methods: {
+            isAuthorized(){
+                var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+                permissions.forEach(element => {
+                    if(element=='Notas de Crédito'){
+                        this.thisViewPermission=true;
+                    }
+                });
+            },
             async listarData() {
                 let list = {
                     url: "/api/notaCredito/compra/all",
@@ -260,7 +272,7 @@
     };
 </script>
 <template> 
-    <div>
+    <div v-if="thisViewPermission">
         <div hidden>
             <vue-html2pdf
             :show-layout="false"
@@ -298,6 +310,9 @@
                 <component :is="child_component"></component>
             </generalTable>
         </b-card>
+    </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
     </div>
 </template>
 <style lang="scss">

@@ -2,6 +2,7 @@
 /* eslint-disable */
 </script>
 <script>
+    import NotAuthorized from "@/views/NotAuthorized.vue";
     import Vue from "vue";
     import { BootstrapVue } from "bootstrap-vue";
     import ListarPDF from "@/components/ListarPDF.vue";
@@ -19,10 +20,12 @@
             generalTable,
             VueHtml2pdf,
             ListarPDF,
+            NotAuthorized
         },
         data() {
             return {
-                ListData:{
+                thisViewPermission: false,
+                ListData:{                    
                     titulo:this.getNameWithLongDate(),
                     data: [],
                     fields:[
@@ -113,9 +116,18 @@
             };
         },
         mounted() {
+            this.isAuthorized();
             this.listarData();
         },
         methods: {
+            isAuthorized(){
+                var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+                permissions.forEach(element => {
+                    if(element=='Proveedores'){
+                        this.thisViewPermission=true;
+                    }
+                });
+            },
             async listarData() {
                 let list = {
                     url: "/api/proveedor/all",
@@ -352,7 +364,7 @@
     };
 </script>
 <template>
-    <div>
+    <div v-if="thisViewPermission">
         <div hidden>
             <vue-html2pdf
                 :show-layout="false"
@@ -439,6 +451,9 @@
             </b-row>
             <generalTable ref="generalTable" :paramsGrid="paramsGrid"> </generalTable>
         </b-card>
+    </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
     </div>
 </template>
 <style lang="scss">
