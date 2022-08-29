@@ -276,12 +276,12 @@
                 if(parsedCsv.length == 0){
                     this.prepareForImport = false;
                     return "El archivo no contiene datos";
-                } else if(!(Object.keys(parsedCsv[0])[1]=="doi"&&Object.keys(parsedCsv[0])[2]=="email"&&Object.keys(parsedCsv[0])[3]=="tipoDoi"&&Object.keys(parsedCsv[0])[4]=="direccion")){
+                } else if(!(Object.keys(parsedCsv[0])[0]=="nombre"&&Object.keys(parsedCsv[0])[1]=="doi"&&Object.keys(parsedCsv[0])[2]=="email"&&Object.keys(parsedCsv[0])[3]=="tipoDoi"&&Object.keys(parsedCsv[0])[4]=="direccion"&&Object.keys(parsedCsv[0])[5]=="estado")){
                     this.prepareForImport = false;
                     return "El archivo no contiene el formato necesario";
                 } else {
                     parsedCsv.forEach(element => {
-                        if(!(element.doi && element.tipoDoi && element.nombre)){
+                        if(!(element.doi && element.tipoDoi && element.nombre && element.estado)){
                             contador++;
                         }
                     });
@@ -418,8 +418,8 @@
             <br>
             <b-alert variant="secondary" show>
                 <div class="alert-body" style="font-weight: 400; text-align: justify;">
-                Recuerda que el archivo CSV debe tener el formato establecido para importalo 
-                correctamente, si desconoce este formato por favor descárguelo desde 
+                Estimado usuario, recuerde que el archivo CSV debe tener el formato establecido 
+                para importar los datos de PROVEEDORES correctamente, si desconoce este formato puede descargarlo desde
                 <a class="text-primary" href="https://drive.google.com/uc?id=13f-G0FvU4Y-Xa6ZzS7Te1Ri5dRlrAmU3&export=download" style="font-weight: 500;" download="">este enlace</a>
                 </div>
             </b-alert>

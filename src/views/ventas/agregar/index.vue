@@ -130,7 +130,7 @@
                                 </validation-provider>
                             </b-form-group>
                         </b-col>
-                        <b-col sm="4">
+                        <b-col sm="5">
                             <b-form-group label="Descripción Doc: ">
                                 <validation-provider
                                     #default="{ errors }"

@@ -7,6 +7,7 @@
     import { BootstrapVue } from "bootstrap-vue"    
     import generalTable from "@/components/generalTable.vue";
     import planCuenta from "@/components/plan-cuenta/edicion.vue";
+    import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
     import ListarPDF from "@/components/ListarPDF.vue";
     import VueHtml2pdf from 'vue-html2pdf'; 
     import * as XLSX from 'xlsx/xlsx.mjs';
@@ -41,9 +42,10 @@
                 parse_csv: [],
                 sortOrders: {},
                 alertMsg: [],
-                prepareForImport: false,
-                child_component: planCuenta,
                 filename: this.getNameWithShortDate(),
+                prepareForExport: [],
+                prepareForImport: false,
+                cliente:[],
                 paramsGrid: {
                     selectOptions: {
                         allowSelect: true,
@@ -219,32 +221,94 @@
                 this.filename=this.getNameWithShortDate();
                 this.ListData.titulo=this.getNameWithLongDate();
             },
-            importarCsv(){
+            
+            addImport(){
+                this.cliente.forEach(element => {
+                    this.saveImport(element);
+                });
+                console.log(this.cliente);
+                this.$refs["modal-import"].hide();
+                this.cliente = [];
             },
 
+            async saveImport(cliente) {
+                console.log(cliente);
+                let request = {
+                    url: "/api/cliente",
+                    method: "POST",
+                    data: cliente, 
+                };
+                try {
+                    var respRoles = await store.dispatch("back/EXECUTE", request);
+                    if (respRoles == 201) {
+                        this.sendMessage("Cliente registrado satisfactoriamente","CheckSquareIcon","success");
+                    } else if (respRoles == 400) {
+                        this.sendMessage("El cliente que intenta registrar ya existe","AlertTriangleIcon","danger");
+                    } else {
+                        this.sendMessage("Error de servidor","AlertTriangleIcon","danger");
+                    }
+                } catch (e) {
+                    console.log(e.message);
+                }
+                this.$refs.generalTable.loadDataSource();
+            },
+
+            sendMessage(title, icon, variant) {
+                this.$toast({
+                    component: ToastificationContent,
+                    props: {
+                        title: title,
+                        icon: icon,
+                        variant: variant,
+                    },
+                });
+            },
+            
             importar() {
                 this.alertMsg = [];
                 this.prepareForImport = false;
                 this.$refs["modal-import"].show();
             },
             
-            validarCsv() {
-                let msgError = [];
-                return msgError;
+            validarCsv(parsedCsv) {
+                this.alertMsg = [];
+                var contador=0;
+                console.log("parsed",parsedCsv);
+                if(parsedCsv.length == 0){
+                    this.prepareForImport = false;
+                    return "El archivo no contiene datos";
+                } else if(!(Object.keys(parsedCsv[0])[0]=="nombre"&&Object.keys(parsedCsv[0])[1]=="doi"&&Object.keys(parsedCsv[0])[2]=="email"&&Object.keys(parsedCsv[0])[3]=="tipoDoi"&&Object.keys(parsedCsv[0])[4]=="direccion"&&Object.keys(parsedCsv[0])[5]=="estado")){
+                    this.prepareForImport = false;
+                    return "El archivo no contiene el formato necesario";
+                } else {
+                    parsedCsv.forEach(element => {
+                        if(!(element.doi && element.tipoDoi && element.nombre)){
+                            contador++;
+                        }
+                    });
+                    if(contador>0){
+                        this.prepareForImport = false;
+                        return "El archivo contiene "+ contador +" filas con campos obligatorios vacíos";
+                    } else {
+                        this.prepareForImport = true;
+                        return "El archivo esta listo para importar";
+                    }
+                }
             },
-
+            
             csvJSON(csv) {
                 var lines = csv.split("\n");
                 var result = [];
-                var headers = lines[0].split(",");
-                this.parse_header = lines[0].split(",");
-                lines[0].split(",").forEach((key) => {
+                this.cliente = [];
+                var headers = lines[0].split(";");
+                this.parse_header = lines[0].split(";");
+                lines[0].split(";").forEach((key) => {
                     this.sortOrders[key] = 1;
                 });
                 lines.map(function (line, indexLine) {
                     if (indexLine < 1) return; // Jump header line
                     var obj = {};
-                    var currentline = line.split(",");
+                    var currentline = line.split(";");
                     headers.map(function (header, indexHeader) {
                         header = header.trim();
                         if (currentline[indexHeader]) {
@@ -258,10 +322,11 @@
                     result.push(obj);
                 });
                 result.pop();
-                console.log("result", result);
+                this.cliente = result;
+                console.log(this.cliente);
                 return result;
             },
-
+            
             loadCSV(e) {
                 if (window.FileReader) {
                     var reader = new FileReader();
@@ -270,21 +335,14 @@
                         var csv = event.target.result;
                         this.parse_csv = this.csvJSON(csv);
                         //validar si es error limpiar
-                        let error = this.validarCsv();
-                        if (error != []) {
-                            e.target.value = "";
-                            this.prepareForImport = false;
-                            this.alertMsg = error;
-                        } else {
-                            this.prepareForImport = true;
-                            this.alertMsg = ["Datos listos para la importación"];
-                        }
+                        let error = [this.validarCsv(this.parse_csv)];
+                        this.alertMsg = error;
                     };
                     reader.onerror = function (evt) {
                         if (evt.target.error.name == "NotReadableError") {
                             alert("Canno't read file !");
                         }
-                    };
+                    };                              
                 } else {
                     alert("FileReader are not supported in this browser.");
                 }
@@ -324,13 +382,13 @@
             title="Importación de datos"
             ok-only
             hide-footer
-            id="modal-import"
+            id="modal-import" 
             ref="modal-import"
             size="md"
         >
-            <b-card-text class="">
+            <b-card-text class="text-center">
+                <div class="mb-1">Archivo CSV para importar:</div>
                 <b-form-group
-                    label="CSV file to import: *"
                     label-for="account-nombres"
                     class="text-center"
                 >
@@ -339,6 +397,7 @@
                         id="csv_file"
                         name="csv_file"
                         class="form-control"
+                        accept="text/csv"
                         @change="loadCSV($event)"
                     />
                 </b-form-group>
@@ -355,10 +414,18 @@
                 </b-alert>
             </b-card-text>
             <div class="text-center">
-                <b-button variant="primary" @click="importarCsv"
-                    >Importar Datos
+                <b-button variant="primary" @click="addImport()" :disabled="!prepareForImport">
+                    Importar Datos
                 </b-button>
             </div>
+            <br>
+            <b-alert variant="secondary" show>
+                <div class="alert-body" style="font-weight: 400; text-align: justify;">
+                Estimado usuario, recuerde que el archivo CSV debe tener el formato establecido 
+                para importar los datos de CLIENTES correctamente, si desconoce este formato puede descargarlo desde 
+                <a class="text-primary" href="https://drive.google.com/uc?id=1uopFHsnVhGUDZzVaziZe-_uzJXS-KtDN&export=download" style="font-weight: 500;" download="">este enlace</a>
+                </div>
+            </b-alert>
         </b-modal>
         <b-card>
             <b-row>
@@ -373,7 +440,7 @@
                     </b-button>
                 </b-col>
             </b-row>
-            <generalTable :paramsGrid="paramsGrid"> </generalTable>
+            <generalTable ref="generalTable" :paramsGrid="paramsGrid"> </generalTable>
         </b-card>
     </div>
     <div v-else>

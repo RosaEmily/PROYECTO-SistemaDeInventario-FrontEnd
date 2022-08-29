@@ -139,7 +139,7 @@
                                 </validation-provider>
                             </b-form-group>
                         </b-col>
-                        <b-col sm="3">
+                        <b-col sm="2">
                             <b-form-group label="Número : ">
                                 <validation-provider
                                     #default="{ errors }"

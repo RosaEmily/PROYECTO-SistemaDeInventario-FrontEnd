@@ -60,7 +60,7 @@
                                     </b-input-group>                                  
                             </b-form-group>
                         </b-col>
-                        <b-col sm="4">
+                        <b-col sm="5">
                             <b-form-group label="Nombre Completo / Razón: ">                               
                                     <b-input-group>
                                         <b-form-input
@@ -108,7 +108,7 @@
                                     </b-input-group>                                   
                             </b-form-group>
                         </b-col>
-                        <b-col sm="4">
+                        <b-col sm="5">
                             <b-form-group label="Descripción Doc: ">                                
                                     <b-input-group>
                                         <b-form-input 

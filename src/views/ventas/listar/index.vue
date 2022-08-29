@@ -323,7 +323,7 @@
                     tipodoc:  "",
                     tipo_cambio: "",
                     producto:"",
-                    monedaO:parseFloat(totalO).toFixed(2),
+                    monedaO:"",
                     monedaN:parseFloat(totalN).toFixed(2),            
                 });
             },
