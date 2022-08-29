@@ -1,5 +1,6 @@
 <script>
 /* eslint-disable */
+import NotAuthorized from "@/views/NotAuthorized.vue";
 import Vue from "vue";
 import { BootstrapVue } from "bootstrap-vue";
 import generalTable from "@/components/generalTable.vue";
@@ -9,10 +10,12 @@ Vue.use(BootstrapVue);
 export default {
     components: {
         generalTable,
+        NotAuthorized
     },
     data() {
         return {
             parse_header: [],
+            thisViewPermission: false,
             parse_csv: [],
             sortOrders: {},
             alertMsg: [],
@@ -99,9 +102,18 @@ export default {
         };
     },
     mounted() {
+        this.isAuthorized();
         this.listaCategoria();
     },
     methods: {
+        isAuthorized(){
+            var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+            permissions.forEach(element => {
+                if(element=='P. Reposición'){
+                    this.thisViewPermission=true;
+                }
+            });
+        },
         async listaCategoria(){
             let cat = {
                 url: "/api/categoria/lista",
@@ -203,7 +215,7 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div v-if="thisViewPermission">
         <b-modal
             centered
             title="Importación de datos"
@@ -248,6 +260,9 @@ export default {
         <b-card>         
             <generalTable :paramsGrid="paramsGrid"> </generalTable>
         </b-card>
+    </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
     </div>
 </template>
 

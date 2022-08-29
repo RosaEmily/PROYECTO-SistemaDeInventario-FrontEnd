@@ -2,7 +2,7 @@
 /* eslint-disable */
 </script>
 <template>
-    <div class="container">
+    <div class="container" v-if="thisViewPermission">
         <b-row>
             <b-col sm="6" align="center">
                 <label>AÑO</label>
@@ -66,8 +66,12 @@
             </b-col>
        </b-row>
     </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
+    </div>
 </template>
 <script>
+    import NotAuthorized from "@/views/NotAuthorized.vue";
     import Chart from 'chart.js';
     import Vue from "vue";
     import store from "@/store/index";
@@ -85,6 +89,7 @@
             vSelect,
             ValidationProvider,
             ValidationObserver,
+            NotAuthorized
         },
         directives: {
             Ripple,
@@ -92,6 +97,7 @@
         data() {
             return {
                 cantidad: [],
+                thisViewPermission: false,
                 graficoChar: null,
                 graficoLine: null,
                 graficoPie: null,
@@ -133,10 +139,19 @@
             }
         },
         mounted(){
+            this.isAuthorized();
             this.functionGrafico();
             this.getConfigurarion();
         },
         methods: {
+            isAuthorized(){
+                var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+                permissions.forEach(element => {
+                    if(element=='Gráficos'){
+                        this.thisViewPermission=true;
+                    }
+                });
+            },
             async getAnioMes(){
                 if(this.anio.value!="TODOS"){
                     this.meses = [];

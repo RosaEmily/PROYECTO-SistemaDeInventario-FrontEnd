@@ -1,5 +1,6 @@
 <script>
 /* eslint-disable */
+import NotAuthorized from "@/views/NotAuthorized.vue";
 import Vue from "vue";
 import Chart from 'chart.js';
 import { BootstrapVue } from "bootstrap-vue";
@@ -10,10 +11,12 @@ Vue.use(BootstrapVue);
 export default {
     components: {
         generalTable,
+        NotAuthorized
     },
     data() {
         return {
             dataSource: [],
+            thisViewPermission: false,
             dataResumen: [],
             grafico: null,
             fields: [
@@ -38,9 +41,18 @@ export default {
         };
     },
     mounted() {
+        this.isAuthorized();
         this.loadDataSource();
     },
     methods: {
+        isAuthorized(){
+            var permissions=JSON.parse(localStorage.getItem('UserDataPermisos'));
+            permissions.forEach(element => {
+                if(element=='Análisis ABC'){
+                    this.thisViewPermission=true;
+                }
+            });
+        },
         rowClass(item){
             try{
                 const colorClass = 'table-primary'
@@ -192,7 +204,7 @@ export default {
 </script>
 
 <template>
-    <div>        
+    <div v-if="thisViewPermission">        
         <b-card>
              <b-tabs>
                 <b-tab active title="Tabla de ABC">
@@ -262,6 +274,9 @@ export default {
                 </b-tab>
             </b-tabs>       
         </b-card>
+    </div>
+    <div v-else>
+        <NotAuthorized></NotAuthorized>
     </div>
 </template>
 
