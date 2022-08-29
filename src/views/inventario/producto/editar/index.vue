@@ -5,171 +5,155 @@
     <div v-if="thisViewPermission">
         <b-card>
             <validation-observer ref="simpleRules">
-                <b-form class="ml-1 mr-1 mt-1">
-                    <b-row>
-                        <b-col sm="12">
-                            <b-form-group label="Codigo: ">
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Codigo"
-                                    rules="required"
-                                >
-                                    <b-input-group>
-                                        <b-form-input
-                                            v-model="productData.codigo"
-                                            type="text"
-                                            :state="
-                                                errors.length > 0
-                                                    ? false
-                                                    : null
-                                            "
-                                            placeholder="Ingrese codigo"
-                                        />
-                                    </b-input-group>
-                                    <small class="text-danger">{{
-                                        errors[0]
-                                    }}</small>
-                                </validation-provider>
-                            </b-form-group>
-                        </b-col>
-                        <b-col sm="12">
-                            <b-form-group label="Nombre: ">
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Nombre"
-                                    rules="required"
-                                >
-                                    <b-input-group>
-                                        <b-form-input
-                                            v-model="productData.nombre"
-                                            type="text"
-                                            :state="
-                                                errors.length > 0
-                                                    ? false
-                                                    : null
-                                            "
-                                            placeholder="Ingrese nombre"
-                                        />
-                                    </b-input-group>
-                                    <small class="text-danger">{{
-                                        errors[0]
-                                    }}</small>
-                                </validation-provider>
-                            </b-form-group>
-                        </b-col>
-                        <b-col sm="12">
-                            <b-form-group label="Descripcion: ">
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Descripcion"
-                                    rules="required"
-                                >
+                    <b-form class="ml-1 mr-1 mt-1">
+                        <b-row>
+                            <b-col sm="12">
+                                <b-form-group label="Codigo: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="Codigo"
+                                        rules="required"
+                                    >
+                                        <b-input-group>
+                                            <b-form-input
+                                                v-model="productData.codigo"
+                                                type="text"                                                
+                                                placeholder="Ingrese codigo"
+                                            />
+                                        </b-input-group>
+                                        <small class="text-danger">{{
+                                            errors[0]
+                                        }}</small>
+                                    </validation-provider>
+                                </b-form-group>
+                            </b-col>
+                            <b-col sm="12">
+                                <b-form-group label="Nombre: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="Nombre"
+                                        rules="required"
+                                    >
+                                        <b-input-group>
+                                            <b-form-input
+                                                v-model="productData.nombre"
+                                                type="text"                                                
+                                                placeholder="Ingrese nombre"
+                                            />
+                                        </b-input-group>
+                                        <small class="text-danger">{{
+                                            errors[0]
+                                        }}</small>
+                                    </validation-provider>
+                                </b-form-group>
+                            </b-col>
+                            <b-col sm="12">
+                                <b-form-group label="Descripcion: ">                                    
                                     <b-input-group>
                                         <b-form-input
                                             v-model="productData.descripcion"
-                                            type="text"
-                                            :state="
-                                                errors.length > 0
-                                                    ? false
-                                                    : null
-                                            "
+                                            type="text"                                            
                                             placeholder="Ingrese descripcion"
                                         />
-                                    </b-input-group>
+                                    </b-input-group>                                      
+                                </b-form-group>
+                            </b-col>
+                            <b-col sm="12">
+                                <b-form-group label="Marca: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="Marca"
+                                        rules="required"
+                                    >
+                                        <b-input-group>
+                                            <b-form-input
+                                                v-model="productData.marca"
+                                                type="text"
+                                                placeholder="Ingrese marca"
+                                            />
+                                        </b-input-group>
                                     <small class="text-danger">{{
                                         errors[0]
                                     }}</small>
                                 </validation-provider>
-                            </b-form-group>
-                        </b-col>
-                        <b-col sm="12">
-                            <b-form-group label="Marca: ">
-                                <b-input-group>
-                                    <b-form-input
-                                        v-model="productData.marca"
-                                        type="text"
-                                        placeholder="Ingrese marca"
+                                </b-form-group>
+                            </b-col>
+                            <b-col sm="12">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="Categoria"
+                                        rules="required"
+                                    >
+                                        <b-form-group label="Categoria: ">
+                                            <v-select
+                                                v-model="productData.categoria"
+                                                :dir="'ltr'"
+                                                label="nombre"
+                                                :value.sync="categorias.id"
+                                                :options="categorias"
+                                                placeholder="Ingrese categoria"
+                                            />
+                                        </b-form-group>
+                                    <small class="text-danger">{{
+                                            errors[0]
+                                        }}</small>
+                                    </validation-provider>
+                            </b-col>                               
+                            <b-col sm="3">
+                                <b-form-group label="Stock: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="Stock"
+                                        rules="required|integer"
+                                    >
+                                        <b-input-group>
+                                            <b-form-input
+                                                v-model="productData.stock"
+                                                type="number"                                                
+                                                placeholder="Ingrese stock"
+                                                @keypress="onlyNumbers($event)"
+                                            />
+                                        </b-input-group>
+                                        <small class="text-danger">{{
+                                            errors[0]
+                                        }}</small>
+                                    </validation-provider>
+                                </b-form-group>
+                            </b-col>
+                            <b-col sm="3">
+                                <b-form-group label="Precio: ">
+                                    <validation-provider
+                                        #default="{ errors }"
+                                        name="Stock"
+                                        rules="required"
+                                    >
+                                        <b-input-group>
+                                            <b-form-input
+                                                v-model="productData.precio"
+                                                type="number"                                               
+                                                placeholder="Ingrese Precio"
+                                                @keypress="onlyDecimalNumbers($event)"
+                                            />
+                                        </b-input-group>
+                                        <small class="text-danger">{{
+                                            errors[0]
+                                        }}</small>
+                                    </validation-provider>
+                                </b-form-group>
+                            </b-col>
+                            <b-col sm="6">
+                                <b-form-group label="Unidad de medida: ">
+                                    <b-form-select
+                                        v-model="productData.unidad"
+                                        value-field="value"
+                                        text-field="text"
+                                        :options="unidades"
                                     />
-                                </b-input-group>
-                            </b-form-group>
-                        </b-col>
-                        <b-col sm="12">
-                            <b-form-group label="Categoria: ">
-                                <v-select
-                                    v-model="productData.categoria"
-                                    :dir="'ltr'"
-                                    label="nombre"
-                                    :value.sync="categorias.id"
-                                    :options="categorias"
-                                    placeholder="Ingrese categoria"
-                                />
-                            </b-form-group>
-                        </b-col>                               
-                        <b-col sm="3">
-                            <b-form-group label="Stock: ">
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Stock"
-                                    rules="required|integer"
-                                >
-                                    <b-input-group>
-                                        <b-form-input
-                                            v-model="productData.stock"
-                                            type="number"
-                                            :state="
-                                                errors.length > 0
-                                                    ? false
-                                                    : null
-                                            "
-                                            placeholder="Ingrese stock"
-                                            @keypress="onlyNumbers($event)"
-                                        />
-                                    </b-input-group>
-                                    <small class="text-danger">{{
-                                        errors[0]
-                                    }}</small>
-                                </validation-provider>
-                            </b-form-group>
-                        </b-col>
-                        <b-col sm="3">
-                            <b-form-group label="Precio: ">
-                                <validation-provider
-                                    #default="{ errors }"
-                                    name="Stock"
-                                    rules="required"
-                                >
-                                    <b-input-group>
-                                        <b-form-input
-                                            v-model="productData.precio"
-                                            type="number"
-                                            :state="
-                                                errors.length > 0
-                                                    ? false
-                                                    : null
-                                            "
-                                            placeholder="Ingrese Precio"
-                                            @keypress="onlyDecimalNumbers($event)"
-                                        />
-                                    </b-input-group>
-                                    <small class="text-danger">{{
-                                        errors[0]
-                                    }}</small>
-                                </validation-provider>
-                            </b-form-group>
-                        </b-col>
-                        <b-col sm="6">
-                            <b-form-group label="Unidad de medida: ">
-                                <b-form-select
-                                    v-model="productData.unidad"
-                                    value-field="value"
-                                    text-field="text"
-                                    :options="unidades"
-                                />
-                            </b-form-group>
-                        </b-col>
-                    </b-row>
-                </b-form>
-        </validation-observer>
+                                </b-form-group>
+                            </b-col>
+                        </b-row>
+                    </b-form>
+            </validation-observer>
             <b-row>
                 <b-col md="12" class="text-center mt-1">
                     <b-button
@@ -190,7 +174,7 @@
                     </b-button>
                 </b-col>
             </b-row>
-        </b-card>     
+        </b-card>
     </div>
     <div v-else>
         <NotAuthorized></NotAuthorized>

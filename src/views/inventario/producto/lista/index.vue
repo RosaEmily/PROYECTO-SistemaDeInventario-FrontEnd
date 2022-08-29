@@ -290,7 +290,6 @@ export default {
             }
             this.$refs.generalTable.loadDataSource();
         },
-
         sendMessage(title, icon, variant) {
             this.$toast({
                 component: ToastificationContent,
